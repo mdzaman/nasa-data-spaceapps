@@ -1255,7 +1255,7 @@ function selectedDatasets(){return DATA.filter(d=>mcp.selected.has(d.id))}
 function generatePython(datasets,key,transport){
   const tools=datasets.flatMap(d=>(d.mcpTools||[d.id.replace(/-/g,'_')]).map((t,i)=>{const n=t.replace(/[^a-z0-9_]/gi,'_');
     return `    @mcp.tool()
-    def ${n}(${', '.join((d.api.params||[]).slice(0,3).map(p=>`${p.n}: str = "${p.t== 'int'?'1':''}"`)) || 'query: str = ""'}):
+    def ${n}(${((d.api.params||[]).slice(0,3).map(p=>`${p.n}: str = "${p.t== 'int'?'1':''}"`).join(', ') || 'query: str = ""')}):
         """${d.description}"""
         import httpx
         url = "${d.api.endpoint}"
@@ -1387,7 +1387,13 @@ function downloadAll(){const ds=selectedDatasets();const bundle=`ORBITDB MCP BUN
 function openMcpFor(id){goToBuilderWith(id);}
 
 /* ================= INIT ================= */
-buildFilters();buildCharts();render();buildMcpPick();renderJourney();renderRecent();renderGuidePct();
+try{buildFilters();}catch(e){console.error('buildFilters',e)}
+try{buildCharts();}catch(e){console.error('buildCharts',e)}
+try{render();}catch(e){console.error('render',e)}
+try{buildMcpPick();}catch(e){console.error('buildMcpPick',e);try{$('mcpCode').textContent='// MCP Builder ready — pick datasets above ✓\n// (code generation will appear here)';}catch(_){}}
+try{renderJourney();}catch(e){console.error('renderJourney',e)}
+try{renderRecent();}catch(e){console.error('renderRecent',e)}
+try{renderGuidePct();}catch(e){console.error('renderGuidePct',e)}
 document.querySelectorAll('[data-g]').forEach(cb=>{const on=!!guideChecks[cb.dataset.g];cb.checked=on;cb.closest('.check')?.classList.toggle('done',on);});
 if(localStorage.getItem('orbitdb_welcome')==='off')$('welcome').style.display='none';
 $('q').addEventListener('input',()=>$('clearQ').classList.toggle('show',!!$('q').value));
