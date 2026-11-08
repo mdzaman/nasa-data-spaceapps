@@ -325,7 +325,46 @@ kbd{background:rgba(255,255,255,.08);border:1px solid var(--border);border-botto
 .keybox .ok{color:var(--green)} .keybox .warn{color:var(--amber)}
 .sum.warn{cursor:pointer}
 .sum.warn:hover{border-color:var(--amber)}
-</style>
+/* ============ API KEY GUIDE (in-app reference + step wizard) ============ */
+.keyguide{max-width:1240px;margin:28px auto 0;padding:0 24px}
+.keyguide-hero{background:linear-gradient(135deg,rgba(255,176,32,.1),rgba(108,92,231,.12));border:1px solid rgba(255,176,32,.45);border-radius:18px;padding:24px;display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center}
+@media(max-width:800px){.keyguide-hero{grid-template-columns:1fr}}
+.keyguide-hero h2{font-family:'Space Grotesk';font-size:22px;letter-spacing:-.5px}
+.keyguide-hero p{color:var(--muted);font-size:13.5px;margin-top:6px;max-width:640px}
+.key-steps{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:16px}
+@media(max-width:900px){.key-steps{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.key-steps{grid-template-columns:1fr}}
+.kstep{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px}
+.kstep .n{width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--amber),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:800;color:#10131f;margin-bottom:10px;font-size:14px}
+.kstep h3{font-size:14.5px;margin-bottom:6px}
+.kstep p,.kstep li{color:var(--muted);font-size:12.8px}
+.kstep ol,.kstep ul{padding-left:17px;margin-top:6px}
+.kstep li{margin:4px 0}
+.kstep code{background:rgba(0,210,255,.12);color:var(--accent2);padding:1px 6px;border-radius:6px;font-size:11.5px;font-family:'JetBrains Mono',monospace}
+.kref{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:16px}
+@media(max-width:800px){.kref{grid-template-columns:1fr}}
+.kcard{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px}
+.kcard h3{font-size:15px;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.kcard p,.kcard li{color:var(--muted);font-size:13px}
+.kcard ol,.kcard ul{padding-left:18px;margin-top:7px}
+.kcard li{margin:5px 0}
+.kcard code{background:rgba(0,210,255,.12);color:var(--accent2);padding:1px 6px;border-radius:6px;font-size:12px;font-family:'JetBrains Mono',monospace}
+.kcard .tag{display:inline-block;font-size:11px;font-weight:800;padding:3px 9px;border-radius:99px;margin:6px 6px 0 0}
+.tag.need{background:rgba(255,176,32,.16);color:var(--amber)} .tag.free{background:rgba(0,214,143,.14);color:var(--green)} .tag.login{background:rgba(0,210,255,.14);color:var(--accent2)}
+/* wizard modal */
+.wiz-steps{display:flex;gap:6px;margin:16px 0}
+.wiz-steps button{flex:1;height:8px;border-radius:99px;border:none;background:rgba(255,255,255,.09)}
+.wiz-steps button.done{background:var(--green)} .wiz-steps button.now{background:var(--accent2)}
+.wiz-body{min-height:220px}
+.wiz-body h3{font-size:19px;font-family:'Space Grotesk';margin-bottom:8px}
+.wiz-body p,.wiz-body li{color:var(--muted);font-size:14px}
+.wiz-body ol,.wiz-body ul{padding-left:20px;margin-top:8px}
+.wiz-body li{margin:7px 0}
+.wiz-body code{background:rgba(0,210,255,.12);color:var(--accent2);padding:2px 7px;border-radius:6px;font-size:12.5px;font-family:'JetBrains Mono',monospace}
+.wiz-nav{display:flex;gap:9px;margin-top:20px;flex-wrap:wrap}
+.wiz-nav .btn{flex:1;min-width:110px;text-align:center}
+.wiz-check{display:flex;gap:9px;align-items:flex-start;background:rgba(0,214,143,.08);border:1px solid rgba(0,214,143,.3);border-radius:11px;padding:11px 13px;margin-top:14px;font-size:13px}
+.wiz-check input{accent-color:var(--green);width:18px;height:18px;flex-shrink:0;margin-top:1px}
 </head>
 <body>
 
@@ -334,6 +373,7 @@ kbd{background:rgba(255,255,255,.08);border:1px solid var(--border);border-botto
   <div class="logo"><div class="logo-icon">☄️</div><div>OrbitDB<small>SEMANTIC SPACE DATA</small></div></div>
   <div class="nav-links">
     <a href="#catalog">🔍 Catalog</a>
+    <a href="#apikeys">🔑 API Keys</a>
     <a href="#builder">⚡ MCP Builder</a>
     <a href="#guide">📘 Guide</a>
     <a href="#samples">🔬 Samples</a>
@@ -345,6 +385,7 @@ kbd{background:rgba(255,255,255,.08);border:1px solid var(--border);border-botto
 </nav>
 <div class="mobile-menu" id="mobileMenu">
   <a href="#catalog">🔍 Catalog — search datasets</a>
+  <a href="#apikeys">🔑 API Keys — free key guide</a>
   <a href="#builder">⚡ MCP Builder — create server</a>
   <a href="#guide">📘 Guide — step by step</a>
   <a href="#samples">🔬 Samples — input → output</a>
@@ -399,13 +440,75 @@ kbd{background:rgba(255,255,255,.08);border:1px solid var(--border);border-botto
     <div class="journey-steps" id="journeySteps">
       <button class="jstep" data-step="search" onclick="scrollToQuick('catalog')"><span class="dot">🔍</span><span class="lbl">1 · Search</span><span class="hint">plain English</span></button>
       <button class="jstep" data-step="try" onclick="openPlayground('nasa-neows')"><span class="dot">▶</span><span class="lbl">2 · Try API</span><span class="hint">see live data</span></button>
-      <button class="jstep" data-step="key" onclick="openHelp('key')"><span class="dot">🔑</span><span class="lbl">3 · Get free key</span><span class="hint">1 minute</span></button>
+      <button class="jstep" data-step="key" onclick="openApiKeyGuide()"><span class="dot">🔑</span><span class="lbl">3 · Get free key</span><span class="hint">1 minute · guided</span></button>
       <button class="jstep" data-step="build" onclick="document.getElementById('builder').scrollIntoView({behavior:'smooth'})"><span class="dot">⚡</span><span class="lbl">4 · Build MCP</span><span class="hint">1-click</span></button>
       <button class="jstep" data-step="connect" onclick="document.getElementById('builder').scrollIntoView({behavior:'smooth'})"><span class="dot">🔌</span><span class="lbl">5 · Connect app</span><span class="hint">paste config</span></button>
       <button class="jstep" data-step="test" onclick="scrollToQuick('samples')"><span class="dot">🎉</span><span class="lbl">6 · Test it</span><span class="hint">ask your AI</span></button>
     </div>
   </div>
 </div>
+
+<!-- API KEYS — in-app reference + guided steps -->
+<section id="apikeys" class="keyguide" aria-label="API keys guide">
+  <div class="keyguide-hero">
+    <div>
+      <h2>🔑 API Keys — get them free, step by step</h2>
+      <p>An API key is your free ID for asking NASA for data (like a library card). <b style="color:#fff">DEMO_KEY</b> = shared demo, <b>30 req/hr</b>. Your <b style="color:#fff">free key</b> = <b>1,000 req/hr</b> — 33× more, 1 minute, no card. Below is the full reference + click-through wizard.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;min-width:220px">
+      <button class="btn primary" onclick="openApiKeyGuide()">▶ Start guided wizard (5 steps)</button>
+      <a class="btn" href="https://api.nasa.gov/index.html#browse-api" target="_blank" rel="noopener" style="text-align:center">↗ Open api.nasa.gov now</a>
+      <button class="btn small" onclick="copyText('https://api.nasa.gov/index.html#browse-api','Copied — open it in your browser')">📋 Copy link</button>
+    </div>
+  </div>
+
+  <h3 style="margin-top:22px;font-size:16px">🪜 NASA key — 5 steps at a glance</h3>
+  <div class="key-steps">
+    <div class="kstep"><div class="n">1</div><h3>Open the page</h3><p>Go to <code>api.nasa.gov</code> and scroll to the <b style="color:#fff">Generate API Key</b> / <b>Sign Up</b> form. Direct link: <a href="https://api.nasa.gov/index.html#browse-api" target="_blank" rel="noopener">browse-api ↗</a></p></div>
+    <div class="kstep"><div class="n">2</div><h3>Enter email + purpose</h3><p>Email address + one line like <i>“OrbitDB MCP experiments”</i> → <b>Submit</b>. No password, no card.</p></div>
+    <div class="kstep"><div class="n">3</div><h3>Check inbox</h3><p>Email arrives in <b>~1 minute</b> (check <b>Spam/Junk</b>). Subject contains your key — copy the whole string.</p></div>
+    <div class="kstep"><div class="n">4</div><h3>Save it safely</h3><p>Password manager / notes. It’s <b>not a password</b> (only rate-limits data) — safe in MCP config; keep it out of public git.</p></div>
+    <div class="kstep"><div class="n">5</div><h3>Paste into OrbitDB</h3><p>▶ <b>Playground</b> key field <b>and</b> ⚡ <b>Builder Step 5</b>. Generated code/config show <code>✓ 1,000/hr</code>.</p></div>
+  </div>
+
+  <h3 style="margin-top:22px;font-size:16px">📚 Reference — every agency key in one place</h3>
+  <div class="kref">
+    <div class="kcard">
+      <h3>🇺🇸 NASA APIs <span class="tag need">FREE KEY</span><span class="tag free">1,000/hr</span></h3>
+      <p>Covers APOD, NeoWs asteroids, Mars Photos, EPIC, Exoplanets, DONKI, FIRMS, ISS, Earthdata subsets…</p>
+      <ol><li><a href="https://api.nasa.gov/index.html#browse-api" target="_blank" rel="noopener">api.nasa.gov → Generate API Key ↗</a></li><li>Email → copy key → paste in Playground + Builder Step 5</li><li>Demo fallback: <code>DEMO_KEY</code> = 30/hr (for trying only)</li></ol>
+      <p>Note: <b>NASA Earthdata</b> (MODIS, GPM, SMAP…) is separate — free login at <a href="https://earthdata.nasa.gov/" target="_blank" rel="noopener">earthdata.nasa.gov ↗</a> (account, not api.nasa.gov key).</p>
+    </div>
+    <div class="kcard">
+      <h3>🇪🇺 ESA — Gaia / Copernicus / Hubble–Webb <span class="tag login">FREE LOGIN</span><span class="tag free">OPEN</span></h3>
+      <p>Most ESA data is open without a key. Some services need a free account:</p>
+      <ul>
+        <li><b>Gaia</b> (star catalog): TAP/ADQL — <b>no key</b>. Query at <a href="https://gea.esac.esa.int/archive/" target="_blank" rel="noopener">gea.esac.esa.int ↗</a></li>
+        <li><b>Copernicus / Sentinels</b>: <b>free account</b> at <a href="https://dataspace.copernicus.eu/" target="_blank" rel="noopener">dataspace.copernicus.eu ↗</a> → Register → verify email → OData/API access</li>
+        <li><b>HST/JWST (MAST)</b>: public data, no key — browse at <a href="https://mast.stsci.edu/" target="_blank" rel="noopener">mast.stsci.edu ↗</a></li>
+      </ul>
+    </div>
+    <div class="kcard">
+      <h3>🇯🇵 JAXA / 🇮🇳 ISRO / 🇨🇦 CSA <span class="tag login">FREE ACCOUNT</span></h3>
+      <ul>
+        <li><b>JAXA G-Portal / EORC</b>: free registration at <a href="https://www.eorc.jaxa.jp/" target="_blank" rel="noopener">eorc.jaxa.jp ↗</a> → scenes + quicklooks</li>
+        <li><b>ISRO Bhuvan / MOSDAC</b>: browse free; downloads via <a href="https://bhuvan.nrsc.gov.in/" target="_blank" rel="noopener">bhuvan.nrsc.gov.in ↗</a> + <a href="https://www.mosdac.gov.in/" target="_blank" rel="noopener">mosdac.gov.in ↗</a> (registration for some products)</li>
+        <li><b>CSA RADARSAT</b>: via <a href="https://www.asc-csa.gc.ca/" target="_blank" rel="noopener">asc-csa.gc.ca ↗</a> EO portal (account for downloads)</li>
+      </ul>
+      <p>These are <b>browse/download accounts</b>, not “keys” — OrbitDB Playground covers NASA keys; ESA/JAXA/ISRO/CSA tools in Builder work with account-based access or open endpoints.</p>
+    </div>
+    <div class="kcard">
+      <h3>⚠️ Troubleshooting (copy-paste fixes)</h3>
+      <ul>
+        <li><b><code>429 Too Many Requests</code></b> → you hit 30/hr (DEMO) or 1,000/hr (free). Wait 1 min or paste your key.</li>
+        <li><b>Email missing?</b> → check Spam/Junk; wait 2 min; re-submit with a different email (one key per email).</li>
+        <li><b>Key rejected?</b> → re-copy the full string (no spaces/newlines); check it starts with a letter+numbers.</li>
+        <li><b>“API_KEY_INVALID”</b> → you pasted `DEMO_KEY` where a real key is needed, or the key expired — regenerate.</li>
+        <li><b>Leaked key?</b> → regenerate at api.nasa.gov (old key stops working). Never commit config files with keys to public git.</li>
+      </ul>
+    </div>
+  </div>
+</section>
 
 <!-- STATS -->
 <div class="stats">
@@ -488,7 +591,7 @@ kbd{background:rgba(255,255,255,.08);border:1px solid var(--border);border-botto
           <li>Paste it <b>here</b> and in the <b>▶ Playground</b> — we bake it into your server code + config</li>
         </ol>
         <p>💡 It’s <b>not a password</b> — it only rate-limits NASA data requests. Free forever, no card. If you skip it, nothing breaks — you just get <code>30/hr</code>.</p>
-        <div class="row"><a class="primary" href="https://api.nasa.gov/index.html#browse-api" target="_blank" rel="noopener">↗ Get free key (1 min)</a><button onclick="copyText('https://api.nasa.gov/index.html#browse-api','Copied — open it in your browser')">📋 Copy link</button><button onclick="openHelp('key')">❓ More help</button></div>
+        <div class="row"><a class="primary" href="https://api.nasa.gov/index.html#browse-api" target="_blank" rel="noopener">↗ Get free key (1 min)</a><button onclick="copyText('https://api.nasa.gov/index.html#browse-api','Copied — open it in your browser')">📋 Copy link</button><button onclick="openApiKeyGuide()">▶ Guided steps</button></div>
       </div></div>
       <ul class="check-list"><li>✅ Generated code is <b>complete &amp; runnable</b> — not a snippet</li><li>✅ Includes install + run + config for your app</li><li>✅ Test prompts included — copy &amp; paste into your AI chat</li></ul>
     </div>
@@ -573,7 +676,7 @@ kbd{background:rgba(255,255,255,.08);border:1px solid var(--border);border-botto
       <label>API key <span style="color:var(--accent2);font-weight:700">— your free NASA ID (or DEMO_KEY for trying)</span></label>
       <input id="pgKey" value="DEMO_KEY" placeholder="Paste your key, or keep DEMO_KEY">
       <div class="param-hint">🆓 <code>DEMO_KEY</code> = shared demo, <b>30 requests/hour</b> per IP. ✅ Your own free key (api.nasa.gov, 1 min) = <b>1,000/hour</b>. Each ▶ Run = 1 request. <a href="https://api.nasa.gov/index.html#browse-api" target="_blank" rel="noopener" style="color:var(--accent2);font-weight:700">Get free key ↗</a></div>
-      <div class="btn-row"><button class="btn primary" id="pgRun" onclick="runPlayground()">▶ Run request</button><button class="btn small" onclick="copyPgUrl()">📋 Copy URL</button><button class="btn small" onclick="openHelp('key')">🔑 How to get a key?</button></div>
+      <div class="btn-row"><button class="btn primary" id="pgRun" onclick="runPlayground()">▶ Run request</button><button class="btn small" onclick="copyPgUrl()">📋 Copy URL</button><button class="btn small" onclick="openApiKeyGuide()">🔑 Guided key steps</button></div>
       <div id="pgStatus" style="font-size:12.5px;color:var(--muted);margin-top:10px"></div>
     </div>
     <div class="pg-panel"><h5>📥 Response <span style="float:right"><button class="btn small" onclick="copyPgResp()">📋 Copy</button> <button class="btn small" onclick="downloadPgResp()">⬇ JSON</button></span></h5>
@@ -588,6 +691,22 @@ kbd{background:rgba(255,255,255,.08);border:1px solid var(--border);border-botto
   <button class="close" onclick="closeAll()" style="float:right;background:rgba(255,255,255,.07);border:none;color:#fff;width:36px;height:36px;border-radius:10px;font-size:16px">✕</button>
   <h2>⚡ MCP Tools for this dataset</h2>
   <div id="mcpDetailBody" style="margin-top:16px"></div>
+</div></div>
+
+<!-- API KEY WIZARD MODAL -->
+<div class="modal" id="keyWizard" role="dialog" aria-label="Get your free API key — guided steps"><div class="modal-box" style="width:min(640px,100%)">
+  <button class="close" onclick="closeAll()" style="float:right;background:rgba(255,255,255,.07);border:none;color:#fff;width:36px;height:36px;border-radius:10px;font-size:16px">✕</button>
+  <div style="font-size:12px;font-weight:800;letter-spacing:.8px;color:var(--amber);text-transform:uppercase">🔑 Guided — 1 minute · free</div>
+  <h2 style="margin-top:4px">Get your free NASA API key</h2>
+  <p style="color:var(--muted);font-size:13.5px;margin-top:5px">Step <b id="wizStepNum" style="color:#fff">1 of 5</b> · <span id="wizStepTitle"></span></p>
+  <div class="wiz-steps" id="wizDots"></div>
+  <div class="wiz-body" id="wizBody"></div>
+  <label class="wiz-check" id="wizCheckWrap"><input type="checkbox" id="wizCheck" onchange="wizTick(this)"><span id="wizCheckLbl"></span></label>
+  <div class="wiz-nav">
+    <button class="btn" id="wizBack" onclick="wizStep(-1)">← Back</button>
+    <button class="btn primary" id="wizNext" onclick="wizStep(1)">Next →</button>
+  </div>
+  <div style="margin-top:14px;font-size:12.5px;color:var(--muted)">Stuck? Email missing → check Spam, wait 2 min, re-submit one email per key. <a href="https://api.nasa.gov/index.html#browse-api" target="_blank" rel="noopener" style="color:var(--accent2);font-weight:700">Open api.nasa.gov ↗</a> — this wizard never sees your key.</div>
 </div></div>
 
 <!-- HELP MODAL -->
@@ -742,6 +861,34 @@ function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show')
 function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function copyText(txt,msg){navigator.clipboard.writeText(txt).then(()=>toast(msg||'📋 Copied'));}
 
+/* ================= API KEY WIZARD ================= */
+let wizIdx=0, wizDone=JSON.parse(localStorage.getItem('orbitdb_wiz')||'[]');
+const WIZ=[
+ {t:'Open api.nasa.gov',h:'<p>Go to NASA’s key page and find the <b>Generate API Key</b> / <b>Sign Up</b> form near the top.</p><ol><li>Open <code>api.nasa.gov/index.html#browse-api</code></li><li>Scroll to the form — you’ll see <b>Email Address</b> + <b>What is this for?</b></li></ol><div class="btn-row" style="margin-top:12px"><a class="btn small primary" href="https://api.nasa.gov/index.html#browse-api" target="_blank" rel="noopener" style="text-align:center">↗ Open now (new tab)</a><button class="btn small" onclick="copyText(\'https://api.nasa.gov/index.html#browse-api\',\'Copied link\')">📋 Copy link</button></div>',check:'I can see the Generate API Key form'},
+ {t:'Enter email + purpose',h:'<p>Fill the two boxes and submit. <b>No password, no card</b> — just an email NASA can send the key to.</p><ol><li>Email: any address you can open</li><li>Purpose: e.g. <code>OrbitDB MCP experiments</code></li><li>Click <b>Submit</b></li></ol><p>💡 One key per email. Use a real inbox you can check.</p>',check:'I submitted the form'},
+ {t:'Check your inbox (~1 minute)',h:'<p>NASA emails your key. It usually arrives in <b>30–60 seconds</b>.</p><ol><li>Open your inbox — look for a subject mentioning <b>api.nasa.gov</b> / <b>API Key</b></li><li>Nothing? Check <b>Spam / Junk / Promotions</b></li><li>Still nothing after 2 min? Re-submit (same email is fine — you’ll get a fresh key)</li></ol>',check:'I found the email (or I checked Spam)'},
+ {t:'Copy the key',h:'<p>The email contains a long string like <code>aBc123XyZ…</code>. That’s your key.</p><ol><li>Select the <b>whole</b> string (no spaces)</li><li>Copy it (<code>Ctrl+C</code> / <code>⌘C</code>)</li><li>Save it in your password manager / notes — you’ll reuse it for months</li></ol><p>It’s <b>not a password</b> — only rate-limits data requests. Safe to put in MCP config; keep out of public git.</p>',check:'I copied my key to notes'},
+ {t:'Paste into OrbitDB 🎉',h:'<p>Two places — takes 10 seconds:</p><ol><li><b>▶ API Playground</b>: replace <code>DEMO_KEY</code> with your key → Run</li><li><b>⚡ MCP Builder → Step 5</b>: paste the same key → Download. Your server + config now carry <code>1,000/hr</code></li></ol><p>Try a test question in your AI app — if you get real data, you’re done. Hit <code>429</code> later? That’s a rate limit (wait 1 min) — not a bug.</p><div class="btn-row" style="margin-top:12px"><button class="btn small primary" onclick="closeAll();document.getElementById(\'builder\').scrollIntoView({behavior:\'smooth\'})">⚡ Go to Builder Step 5</button><button class="btn small" onclick="closeAll();openPlayground()">▶ Open Playground</button></div>',check:'I pasted my key (or I’ll use DEMO_KEY for now)'},
+];
+function openApiKeyGuide(){wizIdx=0;renderWiz();$('keyWizard').classList.add('open');}
+function renderWiz(){
+  const s=WIZ[wizIdx];
+  $('wizStepNum').textContent=(wizIdx+1)+' of '+WIZ.length;
+  $('wizStepTitle').textContent=s.t;
+  $('wizBody').innerHTML='<h3>'+esc(s.t)+'</h3>'+s.h;
+  $('wizDots').innerHTML=WIZ.map((_,i)=>`<button class="${i<wizIdx?'done':i===wizIdx?'now':''}" aria-label="Step ${i+1}" onclick="wizIdx=${i};renderWiz()"></button>`).join('');
+  $('wizBack').disabled=wizIdx===0; $('wizBack').style.opacity=wizIdx===0?.45:1;
+  $('wizNext').textContent=wizIdx===WIZ.length-1?'Done ✓':'Next →';
+  $('wizCheckLbl').textContent=s.check;
+  $('wizCheck').checked=wizDone.includes(wizIdx);
+}
+function wizStep(d){
+  if(d===1&&wizIdx<WIZ.length-1){wizIdx++;renderWiz();return;}
+  if(d===1){markJourney('key');if(!$('wizCheck').checked){wizDone.push(wizIdx);localStorage.setItem('orbitdb_wiz',JSON.stringify([...new Set(wizDone)]));}$('wizCheck').checked=true;toast('🔑 Key step done — paste it in Builder Step 5!');closeAll();return;}
+  if(d===-1&&wizIdx>0){wizIdx--;renderWiz();}
+}
+function wizTick(cb){if(cb.checked&&!wizDone.includes(wizIdx)){wizDone.push(wizIdx);localStorage.setItem('orbitdb_wiz',JSON.stringify([...new Set(wizDone)]));}$('wizCheck').checked=true;if(wizDone.length>=WIZ.length)markJourney('key');}
+
 /* ================= INTUITIVE-UX HELPERS ================= */
 const BEST_FOR={
  'nasa-neows':'Best for: live asteroid tracking & planetary defense',
@@ -763,7 +910,7 @@ function toggleMenu(){const m=$('mobileMenu');m.classList.toggle('open');documen
 function scrollToQuick(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth'});}
 function dismissWelcome(){$('welcome').style.display='none';localStorage.setItem('orbitdb_welcome','off');}
 function clearSearch(){$('q').value='';state.q='';$('suggest').classList.remove('open');$('clearQ').classList.remove('show');render();}
-function openHelp(topic){$('helpModal').classList.add('open');if(topic==='key'){$('helpKey').textContent='🔑 Get your free NASA API key';setTimeout(()=>{$('helpKey').scrollIntoView({block:'center'});},80);}}
+function openHelp(topic){if(topic==='key'){openApiKeyGuide();return;}$('helpModal').classList.add('open');}
 function markJourney(step){if(journey[step])return;journey[step]=true;localStorage.setItem('orbitdb_journey',JSON.stringify(journey));renderJourney();toast('✅ Step done — nice!');}
 function renderJourney(){
   const steps=['search','try','key','build','connect','test'];
@@ -981,7 +1128,7 @@ function nextDataset(){if(!current)return;const idx=DATA.findIndex(d=>d.id===cur
 function downloadDCAT(id){const d=DATA.find(x=>x.id===id);const rec={'@type':'dcat:Dataset',title:d.title,description:d.description,publisher:d.publisher,theme:d.theme,keyword:d.keywords,license:d.license,issued:d.created,modified:d.updated,distribution:[{accessURL:d.api.endpoint,mediaType:'application/json'}]};download(d.id+'.dcat.json',JSON.stringify(rec,null,2),'application/json');toast('DCAT record downloaded')}
 function addToolToBuilder(id){mcp.selected.add(id);buildMcpPick();markJourney('build');toast('✅ Added — see Builder below')}
 function download(name,content,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([content],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)}
-function closeAll(){$('drawer').classList.remove('open');$('overlay').classList.remove('open');$('pgModal').classList.remove('open');$('mcpModal').classList.remove('open');$('helpModal').classList.remove('open')}
+function closeAll(){$('drawer')?.classList.remove('open');$('overlay')?.classList.remove('open');$('pgModal')?.classList.remove('open');$('mcpModal')?.classList.remove('open');$('helpModal')?.classList.remove('open');$('keyWizard')?.classList.remove('open');}
 
 /* ================= PLAYGROUND ================= */
 function openPlayground(id){

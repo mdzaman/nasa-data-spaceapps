@@ -62,6 +62,8 @@ Think of it as a **USB cable between your AI app and NASA data**.
 
 ## STEP 4 — Get your free NASA API key (1 minute) — read this first
 
+> **In-app guided version:** Open OrbitDB → click **🔑 API Keys** in the top nav → **▶ Start guided wizard (5 steps)**. It walks you through each click with Next/Back + checklist. The reference table there also covers ESA, JAXA, ISRO, CSA accounts. This section is the same content as text.
+
 ### What is an API key? (plain English)
 
 Every time your MCP server asks NASA for data, it must send a **key** — like a library card that says “this is me”. NASA lets you make **1,000 requests/hour** with your own key.
