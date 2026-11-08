@@ -1260,7 +1260,7 @@ function generatePython(datasets,key,transport){
         import httpx
         url = "${d.api.endpoint}"
         params = {}`+((d.api.params||[]).slice(0,3).map(p=>`\n        if ${p.n}: params["${p.n}"] = ${p.n}`).join(''))+`
-        ${url.includes('nasa.gov')?`params.setdefault("api_key", "${key||'DEMO_KEY'}")`:''}
+        ${(d.api.endpoint||'').includes('nasa.gov')?`params.setdefault("api_key", "${key||'DEMO_KEY'}")`:''}
         try:
             r = httpx.get(url, params=params, timeout=20)
             return r.text[:8000]
