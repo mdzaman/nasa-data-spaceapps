@@ -1,0 +1,16 @@
+{
+  "name": "orbitdb-space-mcp",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "OrbitDB MCP Server — NASA & space agency data (Node.js)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "start:http": "node server.js --http"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "zod": "^3.23.0"
+  },
+  "engines": { "node": ">=18" }
+}

@@ -1,0 +1,10 @@
+{
+  "mcp": {
+    "orbitdb-space-data": {
+      "type": "local",
+      "command": ["python", "/Users/yourname/Documents/space-mcp/space_mcp.py"],
+      "enabled": true,
+      "environment": { "NASA_API_KEY": "YOUR_KEY_HERE" }
+    }
+  }
+}

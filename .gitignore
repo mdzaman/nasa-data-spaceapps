@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+node_modules/
+.DS_Store
+*.log
+.env
+.env.*
+!examples/*.json
+orbitdb-full-bundle.txt
+orbitdb-mcp.*

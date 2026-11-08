@@ -1,0 +1,9 @@
+{
+  "servers": {
+    "orbitdb-space-data": {
+      "command": "python",
+      "args": ["/Users/yourname/Documents/space-mcp/space_mcp.py"],
+      "env": { "NASA_API_KEY": "YOUR_KEY_HERE" }
+    }
+  }
+}

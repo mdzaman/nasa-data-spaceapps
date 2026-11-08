@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OrbitDB — Semantic Space Data Portal | NASA · ESA · JAXA · ISRO + 12 Agencies</title>
+<meta name="description" content="Semantic searchable NASA & global space agency data. One-click MCP servers for any AI app.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#05070f;--bg2:#0a0e1e;--card:#0f1428;--card2:#141b36;--border:#1e2a4a;--text:#e8ecf8;--muted:#8b96b8;--accent:#6c5ce7;--accent2:#00d2ff;--green:#00d68f;--amber:#ffb020;--red:#ff5470;--radius:14px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;line-height:1.5;overflow-x:hidden}
+a{color:var(--accent2);text-decoration:none}
+button{font-family:inherit;cursor:pointer}
+::-webkit-scrollbar{width:9px;height:9px}::-webkit-scrollbar-thumb{background:#25325a;border-radius:99px}::-webkit-scrollbar-track{background:transparent}
+/* NAV */
+nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;gap:16px;padding:12px 28px;background:rgba(5,7,15,.88);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:11px;font-family:'Space Grotesk';font-weight:700;font-size:19px;letter-spacing:-.3px}
+.logo-icon{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 4px 20px rgba(108,92,231,.45)}
+.logo small{font-size:11px;color:var(--muted);display:block;font-family:Inter;font-weight:500;letter-spacing:.5px;line-height:1.2}
+.nav-links{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+.nav-links a,.nav-links button{color:var(--muted);font-size:14px;font-weight:500;padding:8px 14px;border-radius:9px;background:none;border:none}
+.nav-links a:hover,.nav-links button:hover{color:#fff;background:rgba(255,255,255,.06)}
+.nav-links .cta{background:var(--accent);color:#fff!important;font-weight:600}
+.nav-links .cta:hover{background:#7d6ff0}
+@media(max-width:900px){.nav-links{display:none}}
+/* HERO */
+.hero{position:relative;padding:64px 28px 36px;text-align:center;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(108,92,231,.22),transparent 70%),radial-gradient(ellipse 45% 35% at 80% 20%,rgba(0,210,255,.12),transparent 70%);pointer-events:none}
+.hero h1{font-family:'Space Grotesk';font-size:clamp(32px,5.5vw,56px);line-height:1.05;letter-spacing:-1.5px;position:relative}
+.hero h1 span{background:linear-gradient(90deg,var(--accent2),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{color:var(--muted);max-width:640px;margin:14px auto 0;font-size:16px;position:relative}
+/* SEARCH */
+.search-wrap{max-width:820px;margin:30px auto 0;position:relative;z-index:20}
+.search-box{display:flex;gap:0;background:var(--card);border:2px solid var(--border);border-radius:16px;overflow:hidden;transition:.2s}
+.search-box:focus-within{border-color:var(--accent);box-shadow:0 0 0 4px rgba(108,92,231,.18)}
+.search-box input{flex:1;background:none;border:none;outline:none;color:#fff;font-size:17px;padding:16px 18px;font-family:inherit}
+.search-box input::placeholder{color:#5a6790}
+.search-box select{background:transparent;border:none;border-left:1px solid var(--border);color:var(--muted);padding:0 14px;font-size:14px;outline:none;cursor:pointer}
+.search-box select option{background:var(--card)}
+.search-btn{background:linear-gradient(135deg,var(--accent),#5146c8);border:none;color:#fff;padding:0 28px;font-weight:700;font-size:15px}
+.search-btn:hover{filter:brightness(1.15)}
+.suggest{position:absolute;top:calc(100% + 8px);left:0;right:0;background:var(--card2);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.55);text-align:left;display:none}
+.suggest.open{display:block}
+.suggest-item{padding:12px 16px;cursor:pointer;display:flex;gap:10px;align-items:center;font-size:14px}
+.suggest-item:hover{background:rgba(255,255,255,.05)}
+.suggest-item .tag{font-size:11px;background:rgba(0,210,255,.14);color:var(--accent2);padding:2px 8px;border-radius:99px;font-weight:600}
+.quick{margin-top:14px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1}
+.quick button{background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:99px;font-size:13px}
+.quick button:hover{color:#fff;border-color:var(--accent)}
+.sem-note{margin-top:10px;font-size:12.5px;color:#5a6790;position:relative;z-index:1}
+.sem-note b{color:var(--accent2)}
+/* STATS */
+.stats{max-width:1240px;margin:34px auto 0;padding:0 24px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media(max-width:800px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;text-align:left}
+.stat .num{font-size:30px;font-weight:800;font-family:'Space Grotesk';letter-spacing:-1px}
+.stat .lbl{color:var(--muted);font-size:13px;margin-top:2px}
+.stat .sub{font-size:12px;margin-top:8px;color:var(--green);font-weight:600}
+/* LAYOUT */
+.layout{max-width:1240px;margin:22px auto 0;padding:0 24px;display:grid;grid-template-columns:260px 1fr;gap:22px;align-items:start}
+@media(max-width:900px){.layout{grid-template-columns:1fr}}
+/* SIDEBAR */
+.sidebar{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;position:sticky;top:74px;max-height:calc(100vh - 90px);overflow-y:auto}
+.sidebar h3{font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:16px 0 9px}
+.sidebar h3:first-child{margin-top:0}
+.fitem{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:8px;font-size:13.5px;cursor:pointer;color:var(--muted)}
+.fitem:hover{background:rgba(255,255,255,.04);color:#fff}
+.fitem input{accent-color:var(--accent)}
+.fitem .c{margin-left:auto;font-size:11px;background:rgba(255,255,255,.07);padding:1px 7px;border-radius:99px;color:var(--muted)}
+.fitem.active{color:#fff;background:rgba(108,92,231,.15)}
+.side-btn{width:100%;padding:10px;border-radius:10px;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--text);font-weight:600;font-size:13.5px;margin-top:8px}
+.side-btn:hover{border-color:var(--accent)}
+.side-btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+/* TOOLBAR */
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.toolbar .count{font-size:14px;color:var(--muted)}
+.toolbar .count b{color:#fff}
+.toolbar select,.toolbar input[type=date]{background:var(--card);border:1px solid var(--border);color:var(--text);padding:9px 12px;border-radius:10px;font-size:13.5px;outline:none}
+.view-toggle{margin-left:auto;display:flex;background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.view-toggle button{padding:8px 14px;background:none;border:none;color:var(--muted);font-size:13px;font-weight:600}
+.view-toggle button.on{background:var(--accent);color:#fff}
+.export-btn{background:var(--card);border:1px solid var(--border);color:var(--text);padding:9px 14px;border-radius:10px;font-size:13px;font-weight:600}
+/* AGENCY STRIP */
+.agency-strip{display:flex;gap:8px;overflow-x:auto;padding:4px 0 12px;scrollbar-width:thin}
+.ag-chip{flex-shrink:0;display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);padding:9px 15px;border-radius:99px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;color:var(--muted)}
+.ag-chip:hover{color:#fff;border-color:var(--accent)}
+.ag-chip.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.ag-chip .dot{width:8px;height:8px;border-radius:50%}
+/* CARDS */
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media(max-width:640px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;cursor:pointer;transition:.18s;position:relative}
+.card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 12px 30px rgba(0,0,0,.35)}
+.card .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.card h3{font-size:15.5px;line-height:1.35;letter-spacing:-.2px}
+.card .agency{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;margin-bottom:8px}
+.card p{color:var(--muted);font-size:13.5px;margin-top:8px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.card .meta{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:#5a6790}
+.card .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.pill{font-size:11.5px;padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.06);color:var(--muted);font-weight:500}
+.pill.accent{background:rgba(0,210,255,.13);color:var(--accent2)}
+.pill.green{background:rgba(0,214,143,.13);color:var(--green)}
+.score{font-size:12px;font-weight:700;padding:4px 10px;border-radius:99px;white-space:nowrap}
+.score.high{background:rgba(0,214,143,.16);color:var(--green)}
+.score.med{background:rgba(255,176,32,.16);color:var(--amber)}
+.fav{position:absolute;top:14px;right:14px;background:none;border:none;font-size:17px;opacity:.45}
+.fav.on{opacity:1}
+.why{margin-top:12px;background:rgba(108,92,231,.09);border:1px dashed rgba(108,92,231,.4);border-radius:10px;padding:10px 12px;font-size:12.5px;color:#b8b3ff}
+.why b{color:#fff}
+/* DRAWER */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;display:none;backdrop-filter:blur(3px)}
+.overlay.open{display:block}
+.drawer{position:fixed;top:0;right:0;height:100vh;width:min(680px,96vw);background:var(--bg2);z-index:210;transform:translateX(100%);transition:.3s cubic-bezier(.2,.8,.2,1);overflow-y:auto;padding:28px;border-left:1px solid var(--border)}
+.drawer.open{transform:translateX(0)}
+.drawer h2{font-family:'Space Grotesk';font-size:24px;letter-spacing:-.5px;line-height:1.2;margin:8px 0}
+.drawer .close{float:right;background:rgba(255,255,255,.07);border:none;color:#fff;width:36px;height:36px;border-radius:10px;font-size:16px}
+.sec{margin-top:22px}
+.sec h4{font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--accent2);margin-bottom:10px}
+.kv{display:grid;grid-template-columns:140px 1fr;gap:7px 14px;font-size:13.5px}
+.kv dt{color:var(--muted)}.kv dd{color:var(--text)}
+.res-row{display:flex;gap:10px;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:11px;padding:12px;margin-bottom:8px}
+.res-row .fmt{font-size:11px;font-weight:700;padding:3px 9px;border-radius:7px;background:rgba(0,210,255,.14);color:var(--accent2)}
+.res-row .fmt.api{background:rgba(0,214,143,.14);color:var(--green)}
+.res-row .fmt.file{background:rgba(255,176,32,.14);color:var(--amber)}
+.res-row a{color:var(--text);font-weight:600;font-size:14px;word-break:break-all}
+.res-row .dl{margin-left:auto;background:var(--accent);color:#fff;padding:7px 13px;border-radius:8px;font-size:12.5px;font-weight:700;flex-shrink:0}
+pre.code{background:#070b18;border:1px solid var(--border);border-radius:12px;padding:16px;font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.6;overflow-x:auto;color:#c4cdf0;white-space:pre-wrap;word-break:break-all}
+.btn-row{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+.btn{padding:11px 18px;border-radius:11px;font-weight:700;font-size:13.5px;border:1px solid var(--border);background:var(--card);color:var(--text)}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.green{background:var(--green);border-color:var(--green);color:#04150c}
+.btn.small{padding:8px 13px;font-size:12.5px}
+/* MODAL */
+.modal{position:fixed;inset:0;z-index:220;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.65);backdrop-filter:blur(4px)}
+.modal.open{display:flex}
+.modal-box{background:var(--bg2);border:1px solid var(--border);border-radius:18px;width:min(920px,100%);max-height:88vh;overflow-y:auto;padding:26px}
+.modal-box h2{font-family:'Space Grotesk';font-size:22px}
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin:18px 0 16px;overflow-x:auto}
+.tab{padding:10px 16px;font-size:13.5px;font-weight:600;color:var(--muted);background:none;border:none;border-bottom:2px solid transparent;white-space:nowrap}
+.tab.on{color:#fff;border-bottom-color:var(--accent)}
+.tab-panel{display:none}.tab-panel.on{display:block}
+/* PLAYGROUND */
+.pg-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:760px){.pg-grid{grid-template-columns:1fr}}
+.pg-panel{background:#070b18;border:1px solid var(--border);border-radius:12px;padding:16px}
+.pg-panel h5{font-size:12px;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.pg-panel label{font-size:12px;color:var(--muted);display:block;margin:10px 0 5px}
+.pg-panel input,.pg-panel select,.pg-panel textarea{width:100%;background:var(--card);border:1px solid var(--border);color:#fff;border-radius:9px;padding:10px;font-size:13.5px;font-family:inherit}
+.url-bar{display:flex;gap:8px;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:8px 12px;font-family:'JetBrains Mono',monospace;font-size:12px;word-break:break-all;margin:12px 0}
+.method{font-weight:800;padding:4px 9px;border-radius:7px;font-size:12px;flex-shrink:0}
+.method.get{background:rgba(0,214,143,.18);color:var(--green)}.method.post{background:rgba(255,176,32,.18);color:var(--amber)}
+/* MCP BUILDER */
+.builder{max-width:1240px;margin:56px auto 0;padding:0 24px}
+.builder-head{text-align:center;margin-bottom:28px}
+.builder-head h2{font-family:'Space Grotesk';font-size:clamp(26px,4vw,38px);letter-spacing:-1px}
+.builder-head p{color:var(--muted);max-width:640px;margin:10px auto 0}
+.builder-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:24px;display:grid;grid-template-columns:380px 1fr;gap:24px}
+@media(max-width:900px){.builder-card{grid-template-columns:1fr}}
+.bgroup{margin-bottom:18px}
+.bgroup>label{font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:9px}
+.opt-grid{display:flex;flex-wrap:wrap;gap:7px}
+.opt{padding:8px 13px;border-radius:9px;border:1px solid var(--border);background:rgba(255,255,255,.03);color:var(--muted);font-size:12.5px;font-weight:600}
+.opt.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.opt:hover{color:#fff}
+.mcp-out{background:#070b18;border:1px solid var(--border);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.mcp-code{padding:18px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.65;overflow:auto;max-height:460px;white-space:pre;color:#c4cdf0;flex:1}
+.mcp-actions{display:flex;gap:8px;padding:12px;border-top:1px solid var(--border);flex-wrap:wrap}
+.mcp-actions .btn{flex:1;min-width:110px;text-align:center}
+.check-list{font-size:13px;color:var(--muted);margin-top:12px}
+.check-list li{margin:5px 0 5px 18px}
+/* GUIDE */
+.guide{max-width:1240px;margin:56px auto 0;padding:0 24px}
+.guide-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px}
+@media(max-width:900px){.guide-grid{grid-template-columns:1fr}}
+.gstep{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px}
+.gstep .n{width:36px;height:36px;border-radius:11px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;margin-bottom:13px}
+.gstep h3{font-size:16px;margin-bottom:8px}
+.gstep p,.gstep li{color:var(--muted);font-size:13.5px}
+.gstep ol,.gstep ul{padding-left:18px;margin-top:8px}
+.gstep li{margin:6px 0}
+.gstep code{background:rgba(0,210,255,.12);color:var(--accent2);padding:2px 7px;border-radius:6px;font-size:12px;font-family:'JetBrains Mono',monospace}
+.sample-io{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+@media(max-width:760px){.sample-io{grid-template-columns:1fr}}
+/* CHARTS */
+.charts{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:22px auto 0;max-width:1240px;padding:0 24px}
+@media(max-width:800px){.charts{grid-template-columns:1fr}}
+.chart-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px}
+.chart-card h4{font-size:13px;font-weight:700;margin-bottom:14px}
+.bar-row{display:flex;align-items:center;gap:10px;margin:8px 0;font-size:12.5px}
+.bar-row .name{width:130px;color:var(--muted);flex-shrink:0;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-row .bar{flex:1;height:22px;background:rgba(255,255,255,.05);border-radius:7px;overflow:hidden}
+.bar-row .fill{height:100%;border-radius:7px;transition:.5s}
+.bar-row .val{width:32px;font-weight:700;font-size:12.5px}
+/* TOAST */
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(80px);background:#141b36;border:1px solid var(--accent);color:#fff;padding:13px 22px;border-radius:12px;font-size:14px;font-weight:600;z-index:500;transition:.3s;box-shadow:0 16px 40px rgba(0,0,0,.5)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.empty{text-align:center;padding:60px 20px;color:var(--muted)}
+.empty .big{font-size:48px;margin-bottom:12px}
+footer{border-top:1px solid var(--border);margin-top:70px;padding:36px 28px;text-align:center;color:var(--muted);font-size:13px}
+kbd{background:rgba(255,255,255,.08);border:1px solid var(--border);border-bottom-width:2px;padding:2px 8px;border-radius:6px;font-size:12px;font-family:'JetBrains Mono',monospace;color:#fff}
+.section-head{max-width:1240px;margin:56px auto 0;padding:0 24px}
+.section-head h2{font-family:'Space Grotesk';font-size:clamp(24px,3.5vw,34px);letter-spacing:-.8px}
+.section-head p{color:var(--muted);margin-top:8px;max-width:700px}
+
+/* ============ INTUITIVE-UI PASS: onboarding, journey, help ============ */
+:focus-visible{outline:2px solid var(--accent2);outline-offset:2px;border-radius:6px}
+.skip{position:absolute;left:-9999px;top:0;background:var(--accent);color:#fff;padding:10px 16px;z-index:999;border-radius:0 0 10px 0;font-weight:700}
+.skip:focus{left:0}
+/* mobile menu */
+.hamburger{display:none;margin-left:auto;background:var(--card);border:1px solid var(--border);color:#fff;width:40px;height:40px;border-radius:10px;font-size:20px}
+.mobile-menu{display:none;position:sticky;top:61px;z-index:99;background:var(--bg2);border-bottom:1px solid var(--border);padding:10px 16px}
+.mobile-menu.open{display:block}
+.mobile-menu a,.mobile-menu button{display:block;width:100%;text-align:left;padding:12px 14px;border-radius:10px;color:var(--text);font-weight:600;background:none;border:none;font-size:15px}
+.mobile-menu a:hover,.mobile-menu button:hover{background:rgba(255,255,255,.06)}
+@media(max-width:900px){.hamburger{display:block}}
+/* welcome banner */
+.welcome{max-width:820px;margin:18px auto 0;background:linear-gradient(135deg,rgba(108,92,231,.14),rgba(0,210,255,.08));border:1px solid rgba(108,92,231,.45);border-radius:16px;padding:18px 20px;text-align:left;position:relative;z-index:2}
+.welcome h2{font-size:17px;font-family:'Space Grotesk'}
+.welcome p{color:var(--muted);font-size:13.5px;margin-top:5px}
+.welcome .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+.welcome .dismiss{position:absolute;top:10px;right:10px;background:rgba(255,255,255,.07);border:none;color:#fff;width:30px;height:30px;border-radius:8px;font-size:14px}
+/* journey stepper */
+.journey{max-width:1240px;margin:26px auto 0;padding:0 24px}
+.journey-bar{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px 18px}
+.journey-bar .head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:13px}
+.journey-bar .head b{font-size:14px}
+.journey-bar .head .pct{font-size:12.5px;color:var(--muted)}
+.journey-bar .head .reset{margin-left:auto;background:none;border:none;color:var(--muted);font-size:12.5px;text-decoration:underline}
+.journey-steps{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;position:relative}
+@media(max-width:800px){.journey-steps{grid-template-columns:repeat(3,1fr)}}
+.jstep{background:none;border:none;color:var(--muted);text-align:center;padding:10px 6px;border-radius:12px;position:relative;font-size:12px;font-weight:600}
+.jstep .dot{width:34px;height:34px;margin:0 auto 7px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:15px;background:var(--bg2);transition:.2s}
+.jstep:hover{background:rgba(255,255,255,.04);color:#fff}
+.jstep.done{color:var(--green)} .jstep.done .dot{border-color:var(--green);background:rgba(0,214,143,.12)}
+.jstep.current .dot{border-color:var(--accent);background:rgba(108,92,231,.18);box-shadow:0 0 0 4px rgba(108,92,231,.15)}
+.jstep .lbl{display:block;line-height:1.3}
+.jstep .hint{display:block;font-size:11px;color:#5a6790;font-weight:500;margin-top:2px}
+/* how it works strip */
+.how{max-width:820px;margin:20px auto 0;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media(max-width:640px){.how{grid-template-columns:1fr}}
+.how .hcell{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:13px;padding:13px 15px;text-align:left;font-size:13px}
+.how .hcell b{display:block;font-size:13.5px;margin-bottom:3px}
+.how .hcell span{color:var(--muted);font-size:12.5px}
+.how .arrow{text-align:center;color:var(--muted);font-size:18px;align-self:center;display:none}
+/* search improvements */
+.search-clear{display:none;background:none;border:none;color:var(--muted);font-size:18px;padding:0 8px}
+.search-clear.show{display:block}
+.mode-help{font-size:11.5px;color:#5a6790;text-align:center;margin-top:8px}
+.recent{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-top:10px}
+.recent button{background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--muted);padding:5px 12px;border-radius:99px;font-size:12.5px}
+.recent button:hover{color:#fff;border-color:var(--accent)}
+/* filter pills */
+.pills{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 14px}
+.pills:empty{display:none}
+.fpill{display:inline-flex;align-items:center;gap:7px;background:rgba(108,92,231,.16);border:1px solid rgba(108,92,231,.5);color:#d6d2ff;padding:6px 7px 6px 13px;border-radius:99px;font-size:12.5px;font-weight:600}
+.fpill button{background:rgba(255,255,255,.12);border:none;color:#fff;width:20px;height:20px;border-radius:50%;font-size:12px;line-height:1}
+.fpill.clear-all{background:rgba(255,84,112,.12);border-color:rgba(255,84,112,.4);color:#ffb3c1;cursor:pointer}
+.toolbar .date-wrap{display:flex;gap:6px;align-items:center}
+@media(max-width:640px){.toolbar .date-wrap{display:none}}
+/* cards: best-for + start here */
+.bestfor{font-size:12.5px;color:var(--accent2);margin-top:8px;font-weight:600}
+.start-here{position:absolute;top:-9px;left:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:11px;font-weight:800;padding:4px 11px;border-radius:99px;letter-spacing:.4px;z-index:2}
+.card{padding-top:22px}
+.card .cta-row{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.card .cta-row .btn{flex:1;min-width:96px;text-align:center;padding:9px 10px;font-size:12.5px}
+/* drawer steps + sticky actions */
+.drawer .steps{display:flex;gap:6px;margin:14px 0 4px}
+.drawer .steps span{font-size:11.5px;font-weight:700;padding:5px 10px;border-radius:99px;background:rgba(255,255,255,.06);color:var(--muted)}
+.drawer .steps span.on{background:var(--accent);color:#fff}
+.drawer-actions{position:sticky;bottom:-28px;margin:22px -28px -28px;padding:14px 28px;background:linear-gradient(transparent,var(--bg2) 30%);display:flex;gap:8px;flex-wrap:wrap}
+/* playground hints */
+.param-hint{font-size:11.5px;color:#5a6790;margin-top:4px}
+.explain{margin-top:8px;font-size:12.5px;color:var(--muted)}
+.explain details{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 13px}
+.explain summary{cursor:pointer;font-weight:700;color:var(--text);font-size:12.5px}
+/* builder: progress, hints, summary, validation, presets */
+.builder-progress{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.builder-progress .track{flex:1;height:8px;background:rgba(255,255,255,.07);border-radius:99px;overflow:hidden}
+.builder-progress .fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:.5s;border-radius:99px}
+.builder-progress b{font-size:13px;white-space:nowrap}
+.hint{font-size:12px;color:#5a6790;margin-top:7px;line-height:1.5}
+.hint b{color:var(--muted)}
+.summary{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+.summary .sum{background:rgba(0,214,143,.1);border:1px solid rgba(0,214,143,.3);color:var(--green);font-size:12.5px;font-weight:700;padding:7px 13px;border-radius:99px}
+.summary .sum.warn{background:rgba(255,176,32,.1);border-color:rgba(255,176,32,.35);color:var(--amber)}
+.presets{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:6px}
+.presets button{background:rgba(255,255,255,.05);border:1px dashed var(--border);color:var(--muted);padding:7px 13px;border-radius:99px;font-size:12.5px;font-weight:600}
+.presets button:hover{color:#fff;border-color:var(--accent)}
+.nontech{display:flex;align-items:center;gap:9px;background:rgba(0,210,255,.07);border:1px solid rgba(0,210,255,.3);border-radius:12px;padding:11px 14px;margin-bottom:16px;font-size:13px;cursor:pointer}
+.nontech input{accent-color:var(--accent2);width:18px;height:18px}
+.nontech small{color:var(--muted);display:block;font-size:12px}
+.mcp-code.nontech-hide{display:none}
+.mcp-empty{padding:26px;text-align:center;color:var(--muted)}
+/* guide checklist */
+.gstep .check{display:flex;gap:9px;align-items:flex-start;margin-top:12px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-size:13px;color:var(--muted)}
+.gstep .check.done{border-color:rgba(0,214,143,.4);color:var(--text)}
+.gstep .check input{accent-color:var(--green);width:18px;height:18px;flex-shrink:0;margin-top:1px}
+.gstep .copybtn{margin-left:auto;background:var(--card);border:1px solid var(--border);color:var(--text);font-size:11.5px;font-weight:700;padding:5px 10px;border-radius:8px;flex-shrink:0}
+/* help modal */
+.help-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+@media(max-width:700px){.help-grid{grid-template-columns:1fr}}
+.help-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:15px}
+.help-card h4{font-size:13.5px;margin-bottom:6px}
+.help-card p{color:var(--muted);font-size:13px}
+/* responsive tightening */
+@media(max-width:800px){.hero{padding:34px 16px 26px}.layout{padding:0 14px}.stats,.charts,.journey,.builder,.guide{padding:0 14px}.builder-card{padding:16px}}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#catalog">Skip to catalog</a>
+<nav aria-label="Main">
+  <div class="logo"><div class="logo-icon">☄️</div><div>OrbitDB<small>SEMANTIC SPACE DATA</small></div></div>
+  <div class="nav-links">
+    <a href="#catalog">🔍 Catalog</a>
+    <a href="#builder">⚡ MCP Builder</a>
+    <a href="#guide">📘 Guide</a>
+    <a href="#samples">🔬 Samples</a>
+    <button onclick="openPlayground()">▶ API Playground</button>
+    <button onclick="openHelp()" aria-label="Help">❓ Help</button>
+    <a class="cta" href="#builder">Create MCP Server →</a>
+  </div>
+  <button class="hamburger" aria-label="Menu" aria-expanded="false" onclick="toggleMenu()">☰</button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#catalog">🔍 Catalog — search datasets</a>
+  <a href="#builder">⚡ MCP Builder — create server</a>
+  <a href="#guide">📘 Guide — step by step</a>
+  <a href="#samples">🔬 Samples — input → output</a>
+  <button onclick="openPlayground();toggleMenu()">▶ API Playground — try live data</button>
+  <button onclick="openHelp();toggleMenu()">❓ Help — what is this?</button>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <h1>Every space dataset.<br><span>One semantic search.</span></h1>
+  <p>Search <b style="color:#fff">NASA, ESA, JAXA, ISRO, CSA</b> + 12 more agencies in plain English. Get live APIs, downloads, and a ready-to-paste MCP server for Claude, Cursor, ChatGPT &amp; any AI app — no code needed.</p>
+  <div class="how">
+    <div class="hcell"><b>🔍 1 · Search</b><span>Plain English — “asteroids near Earth”</span></div>
+    <div class="hcell"><b>▶ 2 · Try it</b><span>Hit <b>Try API</b> on any card — see live data</span></div>
+    <div class="hcell"><b>⚡ 3 · Use in AI</b><span>Builder gives you a plug-in for your AI app</span></div>
+  </div>
+  <div class="search-wrap">
+    <div class="search-box">
+      <span style="padding-left:14px;color:var(--muted);font-size:18px" aria-hidden="true">🔍</span>
+      <input id="q" type="text" aria-label="Search datasets in plain English" placeholder="Try: &quot;Mars rover photos&quot; · &quot;asteroids near Earth&quot; · &quot;climate from space&quot;…" autocomplete="off" oninput="onSearchInput()" onkeydown="if(event.key==='Enter')doSearch();if(event.key==='ArrowDown')focusSuggest(0)">
+      <button class="search-clear" id="clearQ" aria-label="Clear search" onclick="clearSearch()">✕</button>
+      <select id="modeSel" title="Semantic = understands meaning. Keyword = exact words. Exact = whole-phrase match."><option value="semantic">🧠 Semantic · meaning</option><option value="keyword">🔤 Keyword · words</option><option value="exact">🎯 Exact · phrase</option></select>
+      <button class="search-btn" onclick="doSearch()">Search</button>
+    </div>
+    <div class="suggest" id="suggest" role="listbox" aria-label="Search suggestions"></div>
+    <div class="mode-help">Semantic (recommended) understands <b>meaning</b> — “red planet” → Mars. Keyword matches <b>words</b>. Exact matches the <b>whole phrase</b>.</div>
+    <div class="quick" aria-label="Example searches">
+      <button onclick="quickSearch('Mars')">🪐 Mars <small style="color:#5a6790">rover photos</small></button><button onclick="quickSearch('asteroid')">☄️ Asteroids <small style="color:#5a6790">near Earth</small></button>
+      <button onclick="quickSearch('climate')">🌍 Climate <small style="color:#5a6790">from space</small></button><button onclick="quickSearch('sun solar flare')">☀️ Sun <small style="color:#5a6790">flares</small></button>
+      <button onclick="quickSearch('exoplanet')">🪐 Exoplanets</button><button onclick="quickSearch('Artemis Moon')">🌙 Artemis <small style="color:#5a6790">Moon</small></button>
+      <button onclick="quickSearch('earth observation satellite')">🛰️ Earth Observation</button>
+    </div>
+    <div class="recent" id="recentRow" aria-label="Recent searches"></div>
+    <div class="sem-note">🧠 <b>Semantic engine</b> understands meaning — “rover on red planet” finds Mars Photos even without exact words. Synonyms · concepts · agency graph · ranking explained in every card.</div>
+  </div>
+  <div class="welcome" id="welcome">
+    <button class="dismiss" aria-label="Dismiss welcome" onclick="dismissWelcome()">✕</button>
+    <h2>👋 New here? Start here — 2 minutes</h2>
+    <p>No sign-up. Try a search, hit <b>▶ Try API</b>, then build your AI plug-in. Your progress is tracked below.</p>
+    <div class="actions">
+      <button class="btn primary small" onclick="quickSearch('asteroid')">🔍 Try “asteroids near Earth”</button>
+      <button class="btn small" onclick="document.getElementById('samples').scrollIntoView({behavior:'smooth'})">🔬 See a real example</button>
+      <button class="btn small" onclick="document.getElementById('guide').scrollIntoView({behavior:'smooth'})">📘 Jump to guide</button>
+    </div>
+  </div>
+</section>
+
+<!-- JOURNEY STEPPER -->
+<div class="journey" aria-label="Getting started progress">
+  <div class="journey-bar">
+    <div class="head"><b>🗺️ Your journey</b><span class="pct" id="journeyPct">0 of 6 done</span><button class="reset" onclick="resetJourney()">Reset progress</button></div>
+    <div class="journey-steps" id="journeySteps">
+      <button class="jstep" data-step="search" onclick="scrollToQuick('catalog')"><span class="dot">🔍</span><span class="lbl">1 · Search</span><span class="hint">plain English</span></button>
+      <button class="jstep" data-step="try" onclick="openPlayground('nasa-neows')"><span class="dot">▶</span><span class="lbl">2 · Try API</span><span class="hint">see live data</span></button>
+      <button class="jstep" data-step="key" onclick="openHelp('key')"><span class="dot">🔑</span><span class="lbl">3 · Get free key</span><span class="hint">1 minute</span></button>
+      <button class="jstep" data-step="build" onclick="document.getElementById('builder').scrollIntoView({behavior:'smooth'})"><span class="dot">⚡</span><span class="lbl">4 · Build MCP</span><span class="hint">1-click</span></button>
+      <button class="jstep" data-step="connect" onclick="document.getElementById('builder').scrollIntoView({behavior:'smooth'})"><span class="dot">🔌</span><span class="lbl">5 · Connect app</span><span class="hint">paste config</span></button>
+      <button class="jstep" data-step="test" onclick="scrollToQuick('samples')"><span class="dot">🎉</span><span class="lbl">6 · Test it</span><span class="hint">ask your AI</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat"><div class="num" id="st-total">—</div><div class="lbl">Datasets catalogued</div><div class="sub">▲ across 16 agencies</div></div>
+  <div class="stat"><div class="num" id="st-agencies">—</div><div class="lbl">Space agencies</div><div class="sub">NASA · ESA · JAXA · ISRO …</div></div>
+  <div class="stat"><div class="num" id="st-apis">—</div><div class="lbl">Live APIs</div><div class="sub">Free · keyless options included</div></div>
+  <div class="stat"><div class="num" id="st-mcp">—</div><div class="lbl">MCP tools generated</div><div class="sub">For any AI app · 1-click</div></div>
+</div>
+
+<!-- CHARTS -->
+<div class="charts">
+  <div class="chart-card"><h4>📊 Datasets by agency</h4><div id="chartAgency"></div></div>
+  <div class="chart-card"><h4>🗂️ Datasets by theme</h4><div id="chartTheme"></div></div>
+</div>
+
+<!-- CATALOG -->
+<div id="catalog" class="layout">
+  <aside class="sidebar">
+    <h3>🏛️ Agency</h3><div id="fAgencies"></div>
+    <h3>🗂️ Theme</h3><div id="fThemes"></div>
+    <h3>📦 Format / Access</h3><div id="fFormats"></div>
+    <h3>⚙️</h3>
+    <button class="side-btn" onclick="clearFilters()">↺ Clear all filters</button>
+    <button class="side-btn" onclick="showFavs()">⭐ Favorites only <span id="favCount" style="float:right;background:rgba(255,176,32,.2);color:var(--amber);padding:1px 8px;border-radius:99px;font-size:11px">0</span></button>
+    <button class="side-btn primary" onclick="document.getElementById('builder').scrollIntoView({behavior:'smooth'})">⚡ Build MCP Server →</button>
+    <div style="margin-top:16px;font-size:12px;color:#5a6790;line-height:1.6">
+      <b style="color:var(--muted)">Keyboard:</b><br><kbd>/</kbd> search · <kbd>Esc</kbd> close · <kbd>↑↓</kbd> suggest
+    </div>
+  </aside>
+
+  <main>
+    <div class="agency-strip" id="agencyStrip" aria-label="Quick agency filter"></div>
+    <div class="pills" id="filterPills" aria-label="Active filters"></div>
+    <div class="toolbar">
+      <span class="count"><b id="resCount">0</b> results <span id="searchEcho"></span></span>
+      <select id="sortSel" onchange="render();markJourney('search')" aria-label="Sort results"><option value="relevance">Sort: Relevance</option><option value="popular">Sort: Popularity</option><option value="newest">Sort: Newest</option><option value="az">Sort: A–Z</option><option value="rating">Sort: Rating</option></select>
+      <span class="date-wrap" id="dateFromWrap"><input type="date" id="dateFrom" onchange="render()" title="From date"><span>→</span><input type="date" id="dateTo" onchange="render()" title="To date"></span>
+      <div class="view-toggle" role="group" aria-label="View"><button id="vGrid" class="on" onclick="setView('grid')">▦ Grid</button><button id="vList" onclick="setView('list')">☰ List</button></div>
+      <button class="export-btn" onclick="exportJSON()" title="Download current results as JSON">⤓ JSON</button>
+      <button class="export-btn" onclick="exportCSV()" title="Download current results as CSV">⤓ CSV</button>
+    </div>
+
+    <!-- semantic explainer -->
+    <div id="semExplain" style="display:none;background:rgba(108,92,231,.09);border:1px solid rgba(108,92,231,.35);border-radius:12px;padding:13px 16px;margin-bottom:16px;font-size:13px;color:#c9c4ff"></div>
+
+    <div class="grid" id="results"></div>
+    <div class="empty" id="empty" style="display:none"><div class="big">🛸</div><h3>No datasets found</h3><p style="margin-top:8px">Try broader words — “sun”, “ocean”, “Mars” — or clear filters.</p><div class="btn-row" style="justify-content:center"><button class="btn primary" onclick="clearFilters()">Clear filters</button><button class="btn" onclick="quickSearch('Mars')">Try “Mars”</button><button class="btn" onclick="quickSearch('climate')">Try “climate”</button></div></div>
+  </main>
+</div>
+
+<!-- MCP BUILDER -->
+<section id="builder" class="builder">
+  <div class="builder-head">
+    <h2>⚡ One-Click MCP Server Builder</h2>
+    <p>Pick datasets → get a complete MCP server for <b>Claude Desktop, Cursor, VS Code, OpenCode, ChatGPT, n8n</b> or any MCP-compatible app. Works with Python or Node. Copy, paste, done.</p>
+  </div>
+  <div class="builder-progress" aria-label="Builder progress"><b>Step by step</b><div class="track"><div class="fill" id="builderFill" style="width:20%"></div></div><span style="font-size:12.5px;color:var(--muted)" id="builderStepLbl">Step 1 of 5 · pick data</span></div>
+  <label class="nontech"><input type="checkbox" id="nonTechCb" onchange="toggleNonTech(this.checked)"><span><b>🧑‍🎓 Non-tech mode</b> <small>Hide code details — show only Config, Install & Test (the 3 things you’ll actually use)</small></span></label>
+  <div class="summary" id="builderSummary"></div>
+  <div class="builder-card">
+    <div>
+      <div class="presets" aria-label="Presets"><span style="font-size:12px;color:var(--muted);align-self:center">Quick presets:</span><button onclick="applyPreset('beginner')">🌱 Beginner · 3 tools</button><button onclick="applyPreset('earth')">🌍 Earth Watcher</button><button onclick="applyPreset('deep')">🚀 Deep Space</button><button onclick="applyPreset('search')">🔍 My search results</button></div>
+      <div class="bgroup"><label>1 · Choose datasets / tools <span style="text-transform:none;font-weight:400">(click to toggle — purple = in your server)</span></label><div class="opt-grid" id="mcpPick"></div><div class="hint">New currency? Start with <b>🌱 Beginner</b> above — you can add more later.</div></div>
+      <div class="bgroup"><label>2 · Language</label><div class="opt-grid" id="mcpLang"><button class="opt on" data-v="python" onclick="setMcp('lang','python',this)">🐍 Python</button><button class="opt" data-v="node" onclick="setMcp('lang','node',this)">🟨 Node.js</button></div><div class="hint"><b>Python</b> = easiest for beginners. <b>Node</b> = if you already use JavaScript.</div></div>
+      <div class="bgroup"><label>3 · How it connects</label><div class="opt-grid"><button class="opt on" data-v="stdio" onclick="setMcp('transport','stdio',this)">📟 On this computer <span style="font-weight:400">stdio</span></button><button class="opt" data-v="http" onclick="setMcp('transport','http',this)">🌐 Web address <span style="font-weight:400">HTTP</span></button></div><div class="hint"><b>On this computer</b> (most people): your AI app is on the same PC. <b>Web address</b>: for cloud tools like ChatGPT/n8n.</div></div>
+      <div class="bgroup"><label>4 · Your AI app</label><div class="opt-grid"><button class="opt on" data-v="claude" onclick="setMcp('client','claude',this)">Claude Desktop</button><button class="opt" data-v="cursor" onclick="setMcp('client','cursor',this)">Cursor</button><button class="opt" data-v="vscode" onclick="setMcp('client','vscode',this)">VS Code</button><button class="opt" data-v="opencode" onclick="setMcp('client','opencode',this)">OpenCode</button><button class="opt" data-v="generic" onclick="setMcp('client','generic',this)">Generic MCP</button></div><div class="hint">We generate the <b>exact config file</b> for the app you pick — open the <b>⚙️ App config</b> tab on the right.</div></div>
+      <div class="bgroup"><label>5 · API key <span style="text-transform:none;font-weight:400">— optional, DEMO_KEY works for trying</span></label><input id="apiKey" type="text" placeholder="Paste your NASA API key (or leave blank)" style="width:100%;background:#070b18;border:1px solid var(--border);color:#fff;border-radius:10px;padding:11px;font-size:13px;font-family:inherit" oninput="buildMcp()" aria-label="NASA API key"><div class="hint">Free at <code>api.nasa.gov</code> · 1,000 req/hr vs 30/hr demo. No key? Leave blank — we use DEMO_KEY.</div></div>
+      <ul class="check-list"><li>✅ Generated code is <b>complete &amp; runnable</b> — not a snippet</li><li>✅ Includes install + run + config for your app</li><li>✅ Test prompts included — copy &amp; paste into your AI chat</li></ul>
+    </div>
+    <div class="mcp-out">
+      <div class="tabs" style="margin:0;border-bottom:1px solid var(--border)">
+        <button class="tab on" onclick="mcpTab(this,'code')">💻 Server code</button>
+        <button class="tab" onclick="mcpTab(this,'config')">⚙️ App config</button>
+        <button class="tab" onclick="mcpTab(this,'install')">📦 Install &amp; run</button>
+        <button class="tab" onclick="mcpTab(this,'test')">🧪 Test prompts</button>
+      </div>
+      <div class="mcp-code" id="mcpCode">Pick datasets on the left →</div>
+      <div class="mcp-actions">
+        <button class="btn" onclick="copyMcp()">📋 Copy</button>
+        <button class="btn primary" onclick="downloadMcp()">⬇ Download file</button>
+        <button class="btn" onclick="downloadAll()">⬇ Download full bundle (.zip-style txt)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SAMPLE INPUT/OUTPUT -->
+  <div id="samples" class="section-head" style="padding:0;margin-top:40px"><h2>🔬 Sample Input → Output</h2><p>Exactly what to type into your AI app after setup, and what you get back.</p></div>
+  <div class="sample-io" style="max-width:1240px;margin:20px auto 0">
+    <div class="pg-panel"><h5>⬆ You type (in Claude / Cursor / ChatGPT…)</h5><pre class="code" id="sampleIn">Use the space_data tools:
+"Find asteroids passing near Earth this week
+ and show the closest 5 with size and velocity."</pre></div>
+    <div class="pg-panel"><h5>⬇ MCP server returns (JSON → AI formats it)</h5><pre class="code" id="sampleOut">{
+  "count": 5,
+  "asteroids": [
+    {"name": "2024 XA12", "date": "2026-11-10",
+     "diameter_m": 84, "velocity_kms": 12.4,
+     "miss_distance_km": 1_240_000,
+     "hazardous": false},
+    {"name": "2024 YK3", ...}
+  ]
+}</pre></div>
+  </div>
+</section>
+
+<!-- GUIDE -->
+<section id="guide" class="guide">
+  <div class="section-head" style="padding:0"><h2>📘 Step-by-Step Guide — For Non-Tech Professionals</h2><p>You need zero coding experience. Follow the numbers. Everything takes ~10 minutes.</p></div>
+  <div class="guide-grid">
+    <div class="gstep"><div class="n">1</div><h3>Pick what you need</h3><p>Search OrbitDB in plain English. Example: type <code>Mars rover photos</code> → click Search. Open any card, hit <b>▶ Try API</b> to see live data. No sign-up needed.</p><div class="check"><input type="checkbox" data-g="g1" onchange="toggleGuide(this)"><span>I searched and opened a dataset</span><button class="copybtn" onclick="copyText('Mars rover photos','Copied — paste into search')">📋 Copy example</button></div></div>
+    <div class="gstep"><div class="n">2</div><h3>Get your free API key</h3><p>Go to <code>api.nasa.gov</code> and click <b>Generate API Key</b>. It's free &amp; instant (Demo: <code>DEMO_KEY</code> also works for trying). Save it somewhere safe.</p><div class="check"><input type="checkbox" data-g="g2" onchange="toggleGuide(this)"><span>I have my key (or will use DEMO_KEY)</span><button class="copybtn" onclick="copyText('api.nasa.gov','Copied')">📋 Copy link</button></div></div>
+    <div class="gstep"><div class="n">3</div><h3>Install Python <span style="font-size:12px;color:#5a6790">(one time)</span></h3><p>Go to python.org → Download → Install. Tick <b>“Add to PATH”</b>. Then open Terminal and run: <code>pip install mcp httpx</code></p><div class="check"><input type="checkbox" data-g="g3" onchange="toggleGuide(this)"><span>Python installed + pip ran</span><button class="copybtn" onclick="copyText('pip install mcp httpx','Copied — paste into Terminal')">📋 Copy command</button></div></div>
+    <div class="gstep"><div class="n">4</div><h3>Create your MCP server</h3><p>Scroll to <b>⚡ MCP Builder</b> above. Pick datasets, choose <b>Python</b> + your app. Click <b>⬇ Download file</b> → save as <code>space_mcp.py</code>. Paste your API key in the box.</p><div class="check"><input type="checkbox" data-g="g4" onchange="toggleGuide(this)"><span>I downloaded my server file</span><button class="copybtn" onclick="document.getElementById('builder').scrollIntoView({behavior:'smooth'})">↑ Go to Builder</button></div></div>
+    <div class="gstep"><div class="n">5</div><h3>Connect your AI app</h3><p>In the Builder, open the <b>⚙️ App config</b> tab → Copy. Open your app (Claude/Cursor/VS Code) → Settings → MCP / Servers → Paste. Restart the app.</p><div class="check"><input type="checkbox" data-g="g5" onchange="toggleGuide(this)"><span>I pasted config + restarted app</span><button class="copybtn" onclick="copyText('space_mcp.py','Remember your file path — you need it in the config')">📋 Path tip</button></div></div>
+    <div class="gstep"><div class="n">6</div><h3>Test it 🎉</h3><p>Ask your AI: <i>“List the 5 NASA Mars photos from Sol 1000”</i>. If you see structured data, you're done! See <b>Test prompts</b> tab for copy-paste examples.</p><div class="check"><input type="checkbox" data-g="g6" onchange="toggleGuide(this)"><span>My AI returned real data ✓</span><button class="copybtn" onclick="copyText('Use get_mars_photos to show Curiosity photos from sol 1000 — camera, URL, Earth date.','Copied — paste into your AI chat')">📋 Copy test prompt</button></div></div>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;margin-top:14px;flex-wrap:wrap"><div style="flex:1;min-width:200px;height:8px;background:rgba(255,255,255,.07);border-radius:99px;overflow:hidden"><div id="guideFill" style="height:100%;width:0%;background:linear-gradient(90deg,var(--green),var(--accent2));transition:.5s"></div></div><b style="font-size:13px" id="guidePct">0 of 6 steps done</b><button class="btn small" onclick="resetGuide()">Reset checklist</button></div>
+  <div class="gstep" style="margin-top:16px">
+    <h3>🗓️ Worked example — full journey (5 minutes)</h3>
+    <ol>
+      <li>Search <code>asteroids near Earth</code> → open <b>Near Earth Object Web Service</b> card → notice <b>endpoint</b> + <b>sample request</b>.</li>
+      <li>Hit <b>▶ Try API</b> → click <b>Run ▶</b> → watch live JSON come back. Change <code>start_date</code> → Run again. You just used a real NASA API.</li>
+      <li>Go to <b>MCP Builder</b> → select <b>Near Earth Objects</b> + <b>APOD</b> + <b>Mars Photos</b> → client = <b>Claude Desktop</b> → <b>⬇ Download</b>.</li>
+      <li>Paste config into Claude Desktop → restart → ask: <i>“Any asteroids this week?”</i> → grounded, live answer with real data.</li>
+    </ol>
+    <p style="margin-top:10px"><b style="color:#fff">Troubleshooting:</b> API key wrong → re-paste. Server not found → check file path is absolute. 429 error → free key rate limit (30/hr) — wait 1 min or get your own key. Still stuck? Download the <b>full bundle</b> and follow <code>README.md</code>.</p>
+  </div>
+</section>
+
+<footer>
+  <b>OrbitDB</b> — Semantic Space Data Portal · Data: NASA Open Data · ESA Open Data · JAXA · ISRO · CSA · CNSA · +11 agencies · For prototypes &amp; education. Always verify live data at source.
+  <br><small style="color:#5a6790">Built as a single-file app — open <code>index.html</code> in any browser. No server needed.</small>
+</footer>
+
+<!-- DRAWER -->
+<div class="overlay" id="overlay" onclick="closeAll()"></div>
+<aside class="drawer" id="drawer"></aside>
+
+<!-- PLAYGROUND MODAL -->
+<div class="modal" id="pgModal" role="dialog" aria-label="API Playground"><div class="modal-box">
+  <button class="close" onclick="closeAll()" style="float:right;background:rgba(255,255,255,.07);border:none;color:#fff;width:36px;height:36px;border-radius:10px;font-size:16px">✕</button>
+  <h2>▶ API Playground</h2><p style="color:var(--muted);font-size:13.5px;margin-top:6px">Run a real API request with your key. Responses are real — format may vary slightly by endpoint. <b>Blue hints</b> show what each field means.</p>
+  <div class="explain"><details><summary>🤔 What am I seeing?</summary><p style="margin-top:8px">Left = the <b>request</b> (what you ask NASA for). Right = the <b>response</b> (JSON data NASA sends back). Your AI app will do this automatically via MCP — here you do it by hand to see how it works.</p></details></div>
+  <div class="pg-grid" style="margin-top:18px">
+    <div class="pg-panel"><h5>⚙️ Request</h5>
+      <label>Dataset / endpoint</label><select id="pgEndpoint" onchange="onPgChange()"></select>
+      <div class="url-bar"><span class="method get" id="pgMethod">GET</span><span id="pgUrl"></span></div>
+      <div id="pgParams"></div>
+      <label>API key</label><input id="pgKey" value="DEMO_KEY" placeholder="DEMO_KEY">
+      <div class="btn-row"><button class="btn primary" id="pgRun" onclick="runPlayground()">▶ Run request</button><button class="btn small" onclick="copyPgUrl()">📋 Copy URL</button></div>
+      <div id="pgStatus" style="font-size:12.5px;color:var(--muted);margin-top:10px"></div>
+    </div>
+    <div class="pg-panel"><h5>📥 Response <span style="float:right"><button class="btn small" onclick="copyPgResp()">📋 Copy</button> <button class="btn small" onclick="downloadPgResp()">⬇ JSON</button></span></h5>
+      <pre class="code" id="pgResp" style="max-height:420px;overflow:auto">// Click ▶ Run request
+// to fetch live data…</pre>
+    </div>
+  </div>
+</div></div>
+
+<!-- MCP DETAIL MODAL -->
+<div class="modal" id="mcpModal"><div class="modal-box">
+  <button class="close" onclick="closeAll()" style="float:right;background:rgba(255,255,255,.07);border:none;color:#fff;width:36px;height:36px;border-radius:10px;font-size:16px">✕</button>
+  <h2>⚡ MCP Tools for this dataset</h2>
+  <div id="mcpDetailBody" style="margin-top:16px"></div>
+</div></div>
+
+<!-- HELP MODAL -->
+<div class="modal" id="helpModal" role="dialog" aria-label="Help"><div class="modal-box">
+  <button class="close" onclick="closeAll()" style="float:right;background:rgba(255,255,255,.07);border:none;color:#fff;width:36px;height:36px;border-radius:10px;font-size:16px">✕</button>
+  <h2>❓ Help — what is this, in plain English?</h2>
+  <p style="color:var(--muted);font-size:13.5px;margin-top:6px">OrbitDB = a search engine for space data + a plug-in builder for AI apps. No account, no code required to browse.</p>
+  <div class="help-grid">
+    <div class="help-card"><h4>🔍 What is a “dataset”?</h4><p>One topic NASA/ESA tracks — e.g. Mars rover photos, asteroid orbits. Each has a live API + downloads.</p></div>
+    <div class="help-card"><h4>🔑 <span id="helpKey">What is an API key?</span></h4><p>Your free ID for NASA (api.nasa.gov). More requests than the demo. Paste it in Playground + Builder.</p></div>
+    <div class="help-card"><h4>🔌 What is an MCP server?</h4><p>A tiny “cable” between your AI app and NASA data. Your AI asks it for live data instead of guessing.</p></div>
+    <div class="help-card"><h4>📟 stdio vs 🌐 HTTP</h4><p><b>stdio</b> = AI app on same computer (most people). <b>HTTP</b> = server on a web address (ChatGPT, cloud tools).</p></div>
+    <div class="help-card"><h4>⌨️ Shortcuts</h4><p><kbd>/</kbd> search · <kbd>Enter</kbd> run search · <kbd>Esc</kbd> close panels · <kbd>↑↓</kbd> move in suggestions</p></div>
+    <div class="help-card"><h4>🆘 Stuck?</h4><p>429 error → use your own key. “Server not found” → fix the file path to absolute. No tools → fully restart your AI app.</p></div>
+  </div>
+  <div class="btn-row"><button class="btn primary" onclick="closeAll();document.getElementById('guide').scrollIntoView({behavior:'smooth'})">📘 Open full guide</button><button class="btn" onclick="closeAll();quickSearch('asteroid')">🔍 Try a search now</button></div>
+</div></div>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* ================= DATA ================= */
+const AGENCIES=[
+ {code:'NASA',name:'NASA',country:'USA',color:'#fc3d21',desc:'National Aeronautics & Space Administration'},
+ {code:'ESA',name:'ESA',country:'Europe',color:'#003399',desc:'European Space Agency'},
+ {code:'JAXA',name:'JAXA',country:'Japan',color:'#00b0f0',desc:'Japan Aerospace Exploration Agency'},
+ {code:'ISRO',name:'ISRO',country:'India',color:'#ff9933',desc:'Indian Space Research Organisation'},
+ {code:'CSA',name:'CSA',country:'Canada',color:'#ff0000',desc:'Canadian Space Agency'},
+ {code:'CNSA',name:'CNSA',country:'China',color:'#de2910',desc:'China National Space Administration'},
+ {code:'ROSCOSMOS',name:'Roscosmos',country:'Russia',color:'#0039A6',desc:'State Space Corporation Roscosmos'},
+ {code:'ASI',name:'ASI',country:'Italy',color:'#009246',desc:'Italian Space Agency'},
+ {code:'DLR',name:'DLR',country:'Germany',color:'#000000',desc:'German Aerospace Center'},
+ {code:'UKSA',name:'UKSA',country:'UK',color:'#012169',desc:'UK Space Agency'},
+ {code:'KARI',name:'KARI',country:'S. Korea',color:'#cd2e3a',desc:'Korea Aerospace Research Institute'},
+ {code:'EUMETSAT',name:'EUMETSAT',country:'Europe',color:'#0072BC',desc:'European weather satellites'},
+ {code:'SA',name:'SANSA',country:'S. Africa',color:'#007749',desc:'South African National Space Agency'},
+ {code:'AEB',name:'AEB',country:'Brazil',color:'#009b3a',desc:'Brazilian Space Agency'},
+ {code:'UAE',name:'UAE SA',country:'UAE',color:'#00732F',desc:'UAE Space Agency'},
+ {code:'SUPARCO',name:'SUPARCO',country:'Pakistan',color:'#01411C',desc:'Pakistan Space & Upper Atmosphere Research'},
+];
+const THEMES=['Earth Science','Planetary Science','Astrophysics','Space Weather','Human Spaceflight','Earth Observation','Astronomy','Climate','Mars','Moon','Sun & Heliophysics','Asteroids & Comets','Exoplanets','Images & Media','Research & Tech','Satellites'];
+const D=(id,title,agency,theme,desc,keywords,concepts,apiEndpoint,apiParams,sampleReq,sampleResp,tools,extra={})=>Object.assign({
+ id,title,agency,theme,description:desc,keywords:Array.isArray(keywords)?keywords:String(keywords||'').split(/\s+/).filter(Boolean),concepts:Array.isArray(concepts)?concepts:(concepts?[String(concepts)]:[]),
+ api:{endpoint:apiEndpoint,method:'GET',params:apiParams||[],sampleRequest:sampleReq||'',sampleResponse:sampleResp||''},
+ mcpTools:tools,formats:['JSON','API'],access:'Public',license:'Public Domain (US Gov)',updated:'2026-10-15',created:'2015-01-01',
+ publisher:agency,res:[]},extra);
+
+const DATA=[
+D('nasa-apod','Astronomy Picture of the Day','NASA',['Astronomy','Images & Media','Astrophysics'],'A new astronomical image or photograph every day, with explanation by a professional astronomer. Running since 1995 — the most-loved NASA service.','apod astronomy picture day photo daily nebula galaxy','astronomy picture of the day daily image nebula galaxy space photo','https://api.nasa.gov/planetary/apod',[{n:'date',t:'YYYY-MM-DD',d:'Date (default today)',req:0},{n:'count',t:'int',d:'Count of random images',req:0}],'GET /planetary/apod?date=2026-11-01&api_key=DEMO_KEY','{\n  "date": "2026-11-01",\n  "title": "Andromeda Over the Alps",\n  "explanation": "A bright spiral galaxy…",\n  "media_type": "image",\n  "url": "https://apod.nasa.gov/…jpg",\n  "service_version": "v1"\n}',['get_apod','search_apod_archive'],{rating:4.9,downloads:284000,updated:'2026-11-06',long:'The Astronomy Picture of the Day (APOD) by NASA & MTU. Daily image + scientist-written explanation. API supports single date, date range (start_date/end_date), count, or thumbs.'}),
+D('nasa-neows','Near Earth Object Web Service (NeoWs)','NASA',['Asteroids & Comets','Planetary Science'],'Track every asteroid passing near Earth. Feed of close approaches with size, velocity, miss distance & hazard flag. Critical for planetary defense.','asteroid near earth comet close approach orbit hazard space debris','asteroid near earth objects planetary defense orbit close approach','https://api.nasa.gov/neo/rest/v1/feed',[{n:'start_date',t:'YYYY-MM-DD',d:'Range start',req:1},{n:'end_date',t:'YYYY-MM-DD',d:'Range end',req:1}],'GET /neo/rest/v1/feed?start_date=2026-11-08&end_date=2026-11-14&api_key=DEMO_KEY','{\n  "element_count": 3,\n  "near_earth_objects": {\n    "2026-11-08": [{\n      "name": "(2024 XA12)",\n      "estimated_diameter": {"meters": {"estimated_diameter_min": 68, "estimated_diameter_max": 105}},\n      "close_approach_data": [{\n        "close_approach_date": "2026-11-08",\n        "relative_velocity": {"kilometers_per_second": "12.4"},\n        "miss_distance": {"kilometers": "1240000"}\n      }],\n      "is_potentially_hazardous_asteroid": false\n    }]\n  }\n}',['get_asteroids_this_week','find_closest_asteroids','check_asteroid_hazard'],{rating:5,downloads:198000,long:'NeoWs feeds NASA JPL Center for Near-Earth Object Studies (CNEOS). Includes asteroid lookup by ID, browse & close-approach feed. Hazard flag = potentially hazardous asteroid (PHA).'}),
+D('nasa-mars-photos','Mars Rover Photos','NASA',['Mars','Images & Media','Planetary Science'],'Searchable photos from Curiosity, Perseverance, Spirit & Opportunity rovers. Filter by sol, camera, Earth date & rover.','mars rover curiosity perseverance photo sol camera red planet','mars rover photos sol camera curiosity perseverance','https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos',[{n:'sol',t:'int',d:'Martian sol',req:0},{n:'earth_date',t:'YYYY-MM-DD',d:'Earth date',req:0},{n:'camera',t:'enum',d:'FHAZ/RHAZ/MAST/CHEMCAM…',req:0}],'GET /mars-photos/api/v1/rovers/curiosity/photos?sol=1000&api_key=DEMO_KEY','{\n  "photos": [{\n    "id": 154, "sol": 1000,\n    "camera": {"id": 20, "name": "FHAZ", "full_name": "Front Hazard Avoidance Camera A"},\n    "img_src": "http://mars.jpl.nasa.gov/…jpg",\n    "earth_date": "2015-05-30",\n    "rover": {"name": "Curiosity", "status": "active"}\n  }]\n}',['get_mars_photos','get_mars_photo_count'],{rating:4.9,downloads:231000,long:'Mars Photo API for all NASA rovers. Also rovers manifest endpoint gives landing date, status & photo counts per sol.'}),
+D('nasa-epic','Earth Polychromatic Imaging Camera (EPIC)','NASA',['Earth Science','Earth Observation','Images & Media'],'Full-disc Earth imagery from DSCOVR at L1, roughly 1.5M km away — the “pale blue dot” in near-real-time.','earth epic dscovr full disc globe images sunlight','earth polychromatic imaging camera dscovr full disc','https://api.nasa.gov/EPIC/api/natural',[{n:'date',t:'YYYY-MM-DD',d:'Image date',req:0}],'GET /EPIC/api/natural?api_key=DEMO_KEY','[\n  {\n    "identifier": "20261106",\n    "caption": "spacecraft selfie…",\n    "image": "epic_1b_20261106…",\n    "date": "2026-11-06 00:34:00",\n    "centroid_coordinates": {"lat": 5.2, "lon": 21.5}\n  }\n]',['get_epic_images','get_epic_for_date'],{rating:4.7,downloads:87000,long:'EPIC on NOAA/NASA DSCOVR — 10-band camera imaging the sunlit side of Earth ~1.5 million km away. Archive back to 2015.'}),
+D('nasa-exoplanet','NASA Exoplanet Archive','NASA',['Exoplanets','Astrophysics'],'Over 5,000+ confirmed planets beyond our solar system. Search by distance, size, period, temperature, host star. Tap-synced SQL API.','exoplanet alien planet habitable zone distance star discovery','exoplanet archive confirmed planets habitable zone','https://exoplanetarchive.ipac.caltech.edu/TAP/sync?query=select+*+from+ps+where+…',[{n:'query',t:'ADQL',d:'TAP query (select * from ps where…)',req:1}],'SELECT pl_name, pl_eqt, pl_orbsdep, pl_rade FROM ps WHERE pl_rade > 1 ORDER BY pl_orbsdep DESC','{\n  "pl_name": "K2-18 b",\n  "pl_eqt": 265,\n  "pl_rade": 2.61,\n  "pl_orbsdep": 33\n}\n… 5,000+ rows', ['query_exoplanets','find_habitable_exoplanets'],{rating:4.8,downloads:156000,long:'Caltech/IPAC archive for NASA. TAP/ADQL + REST. Includes confirmed planets, TOIs (Kepler/TESS candidates), spectra, light curves.'}),
+D('nasa-images','NASA Image & Video Library','NASA',['Images & Media','Research & Tech'],'Hundreds of thousands of NASA photos, videos & audio across missions. Full metadata, collections API, CC-BY.','images video library photos archive missions collection','nasa images video library archive media','https://images-api.nasa.gov/search?q=',[{n:'q',t:'string',d:'Search term',req:1},{n:'media_type',t:'enum',d:'image/video/audio',req:0},{n:'year_start/year_end',t:'int',d:'Year filter',req:0}],'GET /search?q=Artemis&media_type=image&page_size=5','{\n  "collection": {\n    "metadata": {"total_hits": 2843},\n    "items": [{"data": [{\n      "title": "Artemis II crew",\n      "nasa_id": "KSC-2024",\n      "date_created": "2024-…",\n      "description": "…"\n    }]}]\n  }\n}',['search_nasa_media','get_media_details'],{rating:4.8,downloads:312000,long:'images.nasa.gov — powerful search API with collections, assets, captions. Powers NASA Image of the Day, mission galleries & Wikipedia.'}),
+D('nasa-firms','Fire Information for Resource Management System','NASA',['Earth Science','Climate','Earth Observation'],'Near-real-time global fire detection & thermal anomalies from MODIS/VIIRS. Used for wildfires, deforestation, air quality.','fire wildfire forest burn thermal hotspots viirs modis','fire information resource management thermal anomaly','https://firms.modaps.eosdis.nasa.gov/api',[{n:'source',t:'VIIRS_SNPP_NRT',d:'Source',req:1},{n:'bbox',t:'minx,miny,maxx,maxy',d:'Bounding box',req:1},{n:'day_range',t:'1-10',d:'Days back',req:0}],'GET /api/area/csv/MAP_KEY/VIIRS_SNPP_NRT/world/1','country_code,latitude,longitude,brightness,scan,track,acq_time,satellite,confidence,version,bright_ti4,nominal,date,jday\nUS,38.2,-97.1,312.5,1.2,1.1,0130,NPP,78,6.1,320.5,1,2026-11-06,310', ['get_active_fires','query_fire_hotspots'],{rating:4.6,downloads:94000,long:'FIRMS — LANCE/EOSDIS. CSV/JSON/SHAPEFILE. ~375m–1km resolution, near-real-time (<3h). Essential for disaster & climate apps.'}),
+D('nasa-donki','Space Weather Database (DONKI)','NASA',['Space Weather','Sun & Heliophysics'],'Coronal mass ejections, solar flares, geomagnetic storms, SEP & shock data from CCMC. Forecast & historical.','space weather solar flare coronal mass ejection geomagnetic storm donki cme','space weather donki coronal mass ejection solar flare','https://api.nasa.gov/DONKI/FLR',[{n:'startDate',t:'YYYY-MM-DD',d:'Start',req:1},{n:'endDate',t:'YYYY-MM-DD',d:'End',req:1}],'GET /DONKI/FLR?startDate=2026-11-01&endDate=2026-11-07&api_key=DEMO_KEY','[\n  {\n    "flrID": "2026-11-03T…",\n    "beginTime": "2026-11-03T02:12:00Z",\n    "peakTime": "2026-11-03T02:34:00Z",\n    "classType": "M4.2",\n    "sourceLocation": "S12E40",\n    "activeRegionNum": 14910,\n    "linkedEvents": []\n  }\n]',['get_solar_flares','get_cmes','get_geomagnetic_storms'],{rating:4.7,downloads:76000,long:'DONKI = Database Of Notifications, Knowledge and Information. Flare, CME, ISS, SEP, IMAP, notifications, HST, RPG, RBE endpoints.'}),
+D('nasa-artemis','Artemis Program Data','NASA',['Moon','Human Spaceflight'],'Artemis I/II/III mission data: trajectories, Orion, lunar Gateway, suits, ground systems & science.','artemis orion moon lunar gateway mission trajectory','artemis program orion lunar gateway moon','https://images-api.nasa.gov/search?q=Artemis',[{n:'q',t:'artemis',d:'Mission phase',req:0}],'GET /search?q=Artemis II Orion crew&page_size=3','{\n  "collection": {"items": [{\n    "data": [{"title": "Artemis II crew", "nasa_id": "…"}]\n  }]}', ['search_artemis'],{rating:4.8,downloads:67000,long:'Artemis is NASA\'s lunar return program. Portal links mission pages, trajectory maps, EVA data (via PDS), & NTRS reports.'}),
+D('nasa-landsat','Landsat Science','NASA',['Earth Observation','Earth Science','Climate'],'50+ years of 30m multispectral Earth imagery (Landsat 1–9). Agriculture, land cover, climate change.','landsat earth observation land cover agriculture imagery','landsat science earth observation multispectral','https://landsat.gsfc.nasa.gov/',[{n:'sensor',t:'Landsat 8/9 OLI',d:'Sensor',req:0}],'GET landsat.gsfc.nasa.gov — browse by path/row/date','exports: GeoTIFF, browse JPG, scene metadata', ['search_landsat_scenes'],{rating:4.6,downloads:112000,long:'USGS/NASA Landsat — longest-running Earth-observation (1972→). Open data via USGS EROS / EarthExplorer.'}),
+D('nasa-exoplanet-watch','Exoplanet Watch & TESS','NASA',['Exoplanets','Astronomy'],'TESS & Kepler transit candidates, TOIs, and citizen-science follow-up observations.','tess kepler transit candidate toi exoplanet','tess kepler transit candidates','https://exoplanetarchive.ipac.caltech.edu/',[],'', '',['get_tess_candidates'],{rating:4.5,downloads:41000}),
+D('nasa-planetary','Planetary Data System (PDS)','NASA',['Planetary Science','Research & Tech'],'Archival data for all NASA planetary missions — geometry, labels, bundles, NASA PDS Atlas.','planetary data system pds archive orbits spectroscopy','planetary data system archive mission','https://naif.jpl.nasa.gov/',[{n:'bundle',t:'string',d:'Bundle label',req:0}],'GET pds.nasa.gov — search by mission / instrument / target','{\n  "bundle": "…",\n  "target": "Mars",\n  "instruments": […]\n}', ['search_pds'],{rating:4.4,downloads:29000,long:'PDS is the NASA archive standard (since 1989). Data volumes, SPICE kernels, raw + calibrated products.'}),
+D('nasa-gesdisc','GES DISC Earth Science Data','NASA',['Earth Science','Climate'],'Atmosphere, hydrology, cryosphere, ocean color, precipitation & more. OPeNDAP + subsets (AURA, MERRA, TRMM/GPM).','earth data ges disc atmosphere ocean precipitation climate','ges disc earth science atmosphere ocean','https://disc.gsfc.nasa.gov/',[{n:'dataset',t:'string',d:'Dataset short name',req:1}],'GET disc.gsfc.nasa.gov — OPeNDAP / subsetting','subset: variable, region, time → NetCDF / CSV', ['subset_earth_data'],{rating:4.5,downloads:38000,long:'Goddard Earth Sciences Data & Information Services Center. Huge NetCDF/HDF archives with OPeNDAP access.'}),
+D('nasa-ntrs','NASA Technical Reports Server (NTRS)','NASA',['Research & Tech'],'NASA research papers, reports, patents & presentations. Full-text search, STI Repository.','ntrs research papers reports patents technical','ntrs technical reports research','https://ntrs.nasa.gov/api/citations/search',[{n:'q',t:'string',d:'Search term',req:1}],'POST /api/citations/search { "q": "propulsion" }','{\n  "docs": [{"id": "…", "title": "…propulsion…", "downloadCount": 42}]\n}',['search_ntrs_papers'],{rating:4.6,downloads:53000,long:'NTRS — NASA STI Repository. 400k+ docs, citation + download counts, filters by center/year/subject.'}),
+D('nasa-climate','NASA Climate Data & Portal','NASA',['Climate','Earth Science'],'Climate indicators, GISTEMP, sea level, carbon cycle & visualizations.','climate sea level gistemp indicators earth','climate data gistemp sea level','https://climate.nasa.gov/',[{n:'indicator',t:'enum',d:'temperature/sea level/CO2',req:0}],'GET climate.nasa.gov — Vital Signs feeds','{\n  "indicator": "global_sea_level",\n  "series": […]\n}',['get_climate_indicator'],{rating:4.7,downloads:88000,long:'NASA Scientific Visualization Studio (SVS) + Goddard Institute. Global climate indicators updated monthly.'}),
+D('nasa-ephemeris','JPL Horizons & Small-Body Database','NASA',['Asteroids & Comets','Planetary Science','Astrophysics'],'Precise ephemeris for planets, asteroids, comets & spacecraft. SPICE kernels.','ephemeris orbit jpl horizons small body database comet asteroid position','jpl horizons ephemeris small body','https://ssd.jpl.nasa.gov/api/sbdb.api',[{n:'sstr',t:'string',d:'Object (name/designation)',req:1}],'GET /api/sbdb.api?sstr=433&sb-kind=a','{\n  "object": {"fullname": "433 Eros", "des": "433"},\n  "orbit": {"i": 10.8, "e": 0.22, "a": 1.45},\n  "approach_data": []\n}',['lookup_small_body','get_ephemeris'],{rating:4.9,downloads:143000,long:'JPL Small-Body Database + Horizons — gold standard for asteroid/comet orbits, close approaches & ephemeris.'}),
+D('esa-hubble','Hubble Space Telescope Archive','ESA',['Astrophysics','Astronomy','Images & Media'],'Hubble science & public imagery (ESA/Hubble), Mikulski Archive (MAST) — spectra, images, light curves.','hubble telescope archive mast spectra galaxy','hubble space telescope archive mast','https://mast.stsci.edu/',[{n:'target',t:'string',d:'Target name',req:0}],'GET mast.stsci.edu — search by target/coordinates','{\n  "obs": [{"target": "Carina Nebula", "type": "science"}]\n}',['search_hubble_archive'],{rating:4.8,downloads:91000,long:'ESA/Hubble + STScI MAST. Public data after proprietary period. HSTView, browse images.'}),
+D('esa-gaia','Gaia Mission — Star Catalog','ESA',['Astrophysics','Astronomy'],'Billion-star catalog: positions, parallaxes, proper motions, photometry. 1.8B+ sources (DR3).','gaia stars catalog parallax astrometry billion','gaia mission star catalog parallax','https://gea.esac.esa.int/archive/',[{n:'query',t:'ADQL',d:'ADQL query',req:1}],'SELECT TOP 10 source_id, ra, dec, parallax FROM gaiadr3.gaia_source','source_id,ra,dec,parallax\n…', ['query_gaia_stars'],{rating:4.9,downloads:124000,long:'ESA Gaia — precise 3D map of the Milky Way. ADQL/TAP + CSV/VOTable. DR3/DR4 releases.'}),
+D('esa-copernicus','Copernicus Earth Observation (Sentinels)','ESA',['Earth Observation','Earth Science','Climate'],'Sentinel-1/2/3/5P open Earth data: land, ocean, atmosphere, emergencies (EMS). 10m Sentinel-2.','copernicus sentinel earth observation open data land ocean','copernicus sentinel earth observation','https://scihub.copernicus.eu/',[{n:'bbox',t:'WKT',d:'Region',req:0},{n:'sensor',t:'S2',d:'Sentinel sensor',req:0}],'GET scihub.copernicus.eu — OpenSearch / OData','{\n  "feed": {"entry": [{"title": "S2A_…", "summary": "…"}]}\n}',['search_copernicus_scenes'],{rating:4.7,downloads:167000,long:'EU Copernicus — free & open Earth data. SciHub + Copernicus Data Space Ecosystem (CDSE) API.'}),
+D('esa-webb','James Webb Space Telescope (JWST)','ESA',['Astrophysics','Astronomy','Images & Media'],'Webb public imagery, science data via MAST, STScI. Infrared deep-field data.','webb jwst deep field infrared telescope','webb space telescope jwst infrared deep field','https://webbtelescope.org/',[{n:'target',t:'string',d:'Target',req:0}],'GET webbtelescope.org + MAST','{\n  "title": "Deep Field",\n  "image": "…jpg",\n  "description": "…"\n}',['search_webb_archive'],{rating:4.9,downloads:201000,long:'ESA/NASA/CSA Webb. Science data public after 12-month proprietary (MAST). Public images immediate.'}),
+D('esa-euclid','Euclid Dark Universe Survey','ESA',['Astrophysics','Exoplanets'],'Euclid wide-field visible/NIR survey — dark matter, dark energy, galaxy morphology.','euclid dark matter dark energy galaxy survey','euclid dark universe survey','https://euclid.esac.esa.int/',[{n:'survey',t:'Q1/Q2',d:'Release',req:0}],'GET euclid.esac.esa.int — archive releases','{\n  "release": "Q1",\n  "galaxies": 4.2e6,\n  "lensing": 17e6\n}',['search_euclid_data'],{rating:4.6,downloads:33000,long:'ESA Euclid (2023→). Public releases include images, spectra, catalogs.'}),
+D('jaxa-earth','JAXA Earth Observation (EORC/G-Portal)','JAXA',['Earth Observation','Earth Science','Climate'],'ALOS, GCOM, Himawari, GOSAT, Earth-observation open data & quicklooks.','jaxa earth observation alos gcom himawari gosat','jaxa earth observation alos gcom','https://www.eorc.jaxa.jp/',[{n:'sensor',t:'ALOS-2',d:'Sensor',req:0}],'GET eorc.jaxa.jp — search by region/date','{\n  "scene": "ALOS2_…",\n  "quicklook": "…jpg"\n}',['search_jaxa_scenes'],{rating:4.5,downloads:29000,long:'JAXA Earth Observation Research Center (EORC). G-Portal + JAXA Earth data portal.'}),
+D('jaxa-himawari','Himawari-8/9 Weather Imagery','JAXA',['Earth Observation','Space Weather'],'High-cadence full-disc Asia-Pacific weather imagery (2.5-min RAPID sector).','himawari weather satellite asia pacific full disc','himawari weather imagery','https://himawari.as.csiro.au/',[{n:'band',t:'B03/B13…',d:'Band',req:0}],'GET himawari.as.csiro.au — browse by time/band','image: full-disc PNG/JPEG\n+ Himawari User\'s Guide', ['get_himawari_image'],{rating:4.6,downloads:67000,long:'JMA/JAXA Himawari — geostationary weather satellite over Asia-Pacific. Himawari Standard Data.'}),
+D('isro-bhuvan','Bhuvan — ISRO Geoportal','ISRO',['Earth Observation','Earth Science'],'ISRO Bhuvan — Indian remote-sensing geoportal: Bhuvan, Bhoosat, thematic maps, APIs.','bhuvan isro india remote sensing geoportal maps','bhuvan isro geoportal','https://bhuvan.nrsc.gov.in/',[{n:'layer',t:'string',d:'Layer',req:0}],'GET bhuvan.nrsc.gov.in — WMS/WFS + REST','{\n  "layers": […]\n}',['search_bhuvan_layers'],{rating:4.3,downloads:21000,long:'Bhuvan (NRSC) — India\'s geoportal, 10m–50m imagery, 3D views, thematic maps.'}),
+D('isro-mosdac','MOSDAC — ISRO Weather & Ocean','ISRO',['Earth Observation','Climate','Earth Science'],'INSAT-3D/3DR weather, OCEANSAT ocean color, scatterometer wind, CYGNSS.','mosdac insat weather oceansat ocean color','mosdac insat oceansat weather','https://www.mosdac.gov.in/',[{n:'satellite',t:'INSAT-3DR/OCEANSAT-3',d:'Satellite',req:0}],'GET mosdac.gov.in — product catalog','{\n  "product": "INSAT-3DR_IMAGERY",\n  "date": "2026-11-06"\n}',['search_mosdac_products'],{rating:4.4,downloads:17000,long:'Meteorological & Oceanic Satellite Data Archival Centre — INSAT/OCEANSAT products.'}),
+D('csa-radarsat','RADARSAT & Canadian Space Data','CSA',['Earth Observation','Earth Science'],'RADARSAT-2/RCM SAR data, satellite imagery, Arctic & maritime monitoring.','radarsat sar canada radar maritime arctic','radarsat canadian space radar','https://www.asc-csa.gc.ca/',[{n:'satellite',t:'RADARSAT-2/RCM',d:'Satellite',req:0}],'GET asc-csa.gc.ca — EO data portal','{\n  "scene": "RS2_…",\n  "polarization": "HH"\n}',['search_radarsat'],{rating:4.4,downloads:12000,long:'Canadian Space Agency — RADARSAT Constellation Mission (RCM) — SAR for Arctic, oceans & disaster.'}),
+D('cnsa-data','CNSA Open Data (China)','CNSA',['Earth Observation','Planetary Science'],'GF, HJ, ZY Earth satellites, Chang\'e lunar, Tianwen Mars — limited public catalogs.','china cnsa chang e tianwen lunar mars gaofen','cnsa china lunar mars chang e','https://www.cnsa.gov.cn/',[{n:'mission',t:'Chang\'e/Tianwen/GF',d:'Mission',req:0}],'GET cnsa.gov.cn — mission data portals','{\n  "mission": "Chang\'e-5",\n  "samples_returned": true\n}',['search_cnsa_data'],{rating:4.1,downloads:9000,long:'CNSA public data policy is selective; Chang\'e lunar science & GF Earth data via CEDA/China GEOSS.'}),
+D('asi-cosmo','ASI COSMO-SkyMed & Italian Data','ASI',['Earth Observation','Earth Science'],'COSMO-SkyMed SAR, PRISMA hyperspectral, AGILE gamma-ray.','asi cosmo skymed sar prisma hyperspectral','asi cosmo skymed prisma','https://www.asi.it/',[{n:'satellite',t:'COSMO-SkyMed/PRISMA',d:'Satellite',req:0}],'GET asi.it — open data / e-Geos','{\n  "product": "CSK_…"\n}',['search_asi_data'],{rating:4.4,downloads:11000,long:'Italian Space Agency (ASI) + e-Geos (ASI/Telespazio) — COSMO-SkyMed SAR open data.'}),
+D('dlr-tdm','DLR TanDEM-X & TerraSAR-X','DLR',['Earth Observation','Earth Science'],'TanDEM-X global DEM (12m), TerraSAR-X SAR, ENMAP hyperspectral, DLR Earth data.','dlr tandem x terrasar sar dem germany','dlr tandem x terrasar','https://www.dlr.de/',[{n:'product',t:'TanDEM-X DEM',d:'Product',req:0}],'GET dlr.de — EOC geodata portal','{\n  "product": "TanDEM-X 90m DEM",\n  "mosaic": "…"\n}',['search_dlr_data'],{rating:4.6,downloads:23000,long:'German Aerospace Center (DLR) Earth Observation Center — open DEM & SAR since 2015.'}),
+D('eumetsat','EUMETSAT Weather Satellites','EUMETSAT',['Earth Observation','Space Weather'],'Meteosat, Metop, Sentinel-3/4/5/6 weather & climate data, EUMETSAT Data Centre.','eumetsat meteosat metop weather climate','eumetsat meteosat metop','https://www.eumetsat.int/',[{n:'satellite',t:'Meteosat/Metop',d:'Satellite',req:0}],'GET eumetsat.int — Data Centre','{\n  "product": "MSG_SEVIRI",\n  "level": "L1.5"\n}',['search_eumetsat'],{rating:4.6,downloads:31000,long:'European weather satellite organisation — MSG/MTG, Metop, Sentinel synergy.'}),
+D('kari','KARI — Korea Aerospace Data','KARI',['Earth Observation','Planetary Science'],'KOMPSAT, DANURI lunar orbiter, KPLO, KARI open data.','kari kompsat danuri lunar korea','kari kompsat danuri','https://www.kari.re.kr/',[{n:'satellite',t:'KOMPSAT/DANURI',d:'Satellite',req:0}],'GET kari.re.kr — data portal','{\n  "satellite": "KOMPSAT-3",\n  "resolution": "0.5m"\n}',['search_kari_data'],{rating:4.3,downloads:8000,long:'Korea Aerospace Research Institute — KOMPSAT geoportal + DANURI lunar science (from 2023).'}),
+D('nasa-spice','SPICE Kernels & Navigation','NASA',['Research & Tech','Planetary Science'],'SPICE ephemeris, SCLK, FK, leapseconds — spacecraft & planet positions.','spice kernels ephemeris navigation spacecraft','spice kernels navigation ephemeris','https://naif.jpl.nasa.gov/pub/naif/',[{n:'kernel',t:'SPK/CK/FK',d:'Kernel type',req:0}],'GET naif.jpl.nasa.gov/pub/naif/ — NAIF archives','{\n  "kernel": "de440.bsp",\n  "bodies": ["399","301"]\n}',['list_spice_kernels'],{rating:4.7,downloads:45000,long:'NAIF SPICE — planetary & spacecraft ephemeris files (bsp, bc). CSPICE/CSPICE tools.'}),
+D('nasa-sdo','Solar Dynamics Observatory (SDO)','NASA',['Sun & Heliophysics','Space Weather'],'SDO/AIA solar imagery in 10 wavelengths — daily sun movies, flare watching.','sdo solar dynamics observatory sun aia flare','sdo solar dynamics observatory','https://sdo.gsfc.nasa.gov/',[{n:'channel',t:'AIA 171/193/304',d:'Channel',req:0}],'GET sdo.gsfc.nasa.gov — browse / AIA viewer','{\n  "channel": "AIA 193",\n  "date": "2026-11-06",\n  "image": "…jpg"\n}',['get_sdo_image','get_sdo_movie'],{rating:4.7,downloads:58000,long:'SDO (2010→) — ultra-high cadence solar imaging. SDO Data Portal + JSOC.'}),
+D('nasa-iss','ISS Telemetry & Tracking','NASA',['Human Spaceflight','Research & Tech','Earth Observation'],'ISS position, crew, experiments, HDEV earth video, spot-the-station passes.','iss international space station tracking telemetry crew','iss international space station','https://api.wheretheiss.at/v1/satellites/25544',[{n:'units',t:'km',d:'Units',req:0}],'GET /v1/satellites/25544','{\n  "name": "ISS (ZARYA)",\n  "latitude": 12.4,\n  "longitude": -84.2,\n  "altitude": 412.5,\n  "velocity": 7.66\n}',['get_iss_position','get_iss_passes'],{rating:4.8,downloads:176000,long:'ISS live position (Whence the ISS at / JPL), crew manifest (HowDidiDo), HDEV video, SpotTheStation predictions.'}),
+D('nasa-moon','Lunar Reconnaissance Orbiter (LRO)','NASA',['Moon','Planetary Science'],'LRO global lunar maps: LOLA topography, LROC mosaics, Diviner temps. PDS Geosciences Node.','lunar reconnaissance orbiter lro moon topography map','lunar reconnaissance orbiter moon map','https://lroc.sese.asu.edu/',[{n:'instrument',t:'LROC/LOLA/Diviner',d:'Instrument',req:0}],'GET lroc.sese.asu.edu — LROC QuickMap','{\n  "mosaic": "LRO WAC global",\n  "resolution": "100m"\n}',['search_lro_data'],{rating:4.5,downloads:26000,long:'LRO (2009→) — high-res Moon atlas via ASU (LROC) & PDS. Lunar QuickMap.'}),
+D('nasa-wind','Ocean Color & Sea Surface (MODIS)','NASA',['Earth Science','Climate','Earth Observation'],'Ocean color (chlorophyll), SST, PAR, winds — SeaWiFS/MODIS/VIIRS ocean products.','ocean color chlorophyll sea surface temperature modis','ocean color sea surface temperature','https://oceancolor.gsfc.nasa.gov/',[{n:'variable',t:'chlorophyll/SST',d:'Variable',req:0}],'GET oceancolor.gsfc.nasa.gov — OPeNDAP','{\n  "variable": "chlorophyll_a",\n  "resolution": "4km"\n}',['get_ocean_color'],{rating:4.5,downloads:34000,long:'Ocean Biology Processing Group (OBPG) — ocean color since 1997. Crucial for climate & fisheries.'}),
+D('nasa-icesat','ICESat-2 Ice & Elevation','NASA',['Earth Science','Climate','Earth Observation'],'Laser altimetry: ice sheets, sea ice, forest heights, topography. ATL06/08 products.','icesat 2 ice altimetry laser elevation glacier','icesat 2 ice elevation altimetry','https://icesat-2.gsfc.nasa.gov/',[{n:'product',t:'ATL06/ATL08',d:'Product',req:0}],'GET icesat-2.gsfc.nasa.gov — NSIDC DAAC','{\n  "track": "…",\n  "elevation_m": 3204.5,\n  "slope": 0.02\n}',['get_icesat_elevation'],{rating:4.6,downloads:27000,long:'ICESat-2 (2018→) — photon-counting lidar. NSIDC/ORNL DAAC. Ice-sheet mass balance.'}),
+D('nasa-grace','GRACE-FO Gravity & Water','NASA',['Earth Science','Climate'],'Gravity field changes → groundwater, ocean mass, ice melt. GRACE-FO monthly solutions.','grace gravity groundwater ocean mass water climate','grace gravity water mass','https://grace.jpl.nasa.gov/',[{n:'solution',t:'RL06',d:'Release',req:0}],'GET grace.jpl.nasa.gov — GRACEDaVis','{\n  "field": "c20",\n  "trend_mm_yr": -12.5\n}',['get_grace_gravity'],{rating:4.6,downloads:19000,long:'GRACE/GRACE-FO (2002→) — twin-satellite gravimetry. NASA JPL + GFZ Potsdam.'}),
+D('nasa-sentinel','NASA Earthdata — All Earth Science','NASA',['Earth Science','Earth Observation','Climate'],'Single gateway to 30+ Earth-science DAACs: MODIS, ASTER, OCO-2, GPM, SMAP, SWOT…','earthdata earth science modis aster gpm smap swot','earthdata earth science gateway','https://earthdata.nasa.gov/',[{n:'dataset',t:'MODIS/GPM/SMAP…',d:'Dataset',req:0}],'GET earthdata.nasa.gov — CMR API','{\n  "granules": […],\n  "format": "HDF5/NetCDF"\n}',['search_earthdata'],{rating:4.7,downloads:220000,long:'Earthdata (EOSDIS) — CMR concept API + Harmony + LAADS. 2B+ granules. Login required for downloads (free).'}),
+D('nasa-air-quality','NASA Air Quality & TEMPO','NASA',['Earth Science','Climate','Earth Observation'],'TEMPO (North America), TROPOMI air quality, NO2, O3, aerosols, fire smoke.','air quality tempo tropomi no2 ozone aerosol air pollution','air quality tempo tropomi','https://tempo.gsfc.nasa.gov/',[{n:'pollutant',t:'NO2/O3/HCHO',d:'Pollutant',req:0}],'GET tempo.gsfc.nasa.gov — TEMPO data','{\n  "pollutant": "NO2",\n  "column_ppb": 1.2e15\n}',['get_air_quality'],{rating:4.5,downloads:15000,long:'TEMPO + OCO-2/3 CO2. Air-quality forecasts & hourly maps.'}),
+D('nasa-biological','NASA Biological & Physical Sciences','NASA',['Research & Tech','Human Spaceflight'],'Life & physical sciences experiments on ISS — gene expression, plants, materials.','biology space iss gene expression plants','biological physical sciences iss','https://science.nasa.gov/biological-physical/',[{n:'experiment',t:'string',d:'Experiment',req:0}],'GET science.nasa.gov/biological-physical/','{\n  "experiment": "…",\n  "organism": "Arabidopsis"\n}',['search_bio_experiments'],{rating:4.3,downloads:12000,long:'Space Biology & Physical Sciences portfolio. Data via NASA Open Science Data Repository (OSDR).'}),
+D('esa-planck','Planck CMB — Cosmic Microwave Background','ESA',['Astrophysics','Astronomy'],'All-sky CMB temperature & polarization maps (Planck 2018 legacy).','planck cmb cosmic microwave background all sky','planck cosmic microwave background','https://www.esa.int/Science_Exploration/Space_Science/Planck',[{n:'release',t:'PR4',d:'Release',req:0}],'GET esa.int/Planck — ESOC archive','{\n  "map": "TT",\n  "resolution": "5 arcmin"\n}',['search_planck_maps'],{rating:4.7,downloads:25000,long:'ESA Planck (2009–2013). Legacy maps in ESOC archive. Cosmology gold mine.'}),
+D('nasa-parker','Parker Solar Probe','NASA',['Sun & Heliophysics','Space Weather'],'Closest approach to the Sun — corona, solar wind, magnetic fields. FIELDS, WISPR, SWEAP.','parker solar probe corona solar wind magnetic','parker solar probe sun','https://parker.gsfc.nasa.gov/',[{n:'instrument',t:'WISPR/FIELDS',d:'Instrument',req:0}],'GET parker.gsfc.nasa.gov — science data','{\n  "encounter": 12,\n  "distance_solar_radii": 8.86\n}',['get_parker_data'],{rating:4.8,downloads:18000,long:'Parker (2018→) — 24 encounters. Solar Orbiter complementary (ESA).'}),
+D('nasa-messenger','MESSENGER Mercury Atlas','NASA',['Planetary Science'],'Mercury global maps: MDIS, MASCS, topography. PDS Geosciences.','messenger mercury planet atlas maps','messenger mercury atlas','https://messenger.jhuapl.edu/',[{n:'instrument',t:'MDIS/MASCS',d:'Instrument',req:0}],'GET messenger.jhuapl.edu — PDS atlas','{\n  "map": "MDIS global mosaic",\n  "resolution": "250m"\n}',['search_messenger_data'],{rating:4.5,downloads:9000,long:'MESSENGER (2004–2015) Mercury global survey. JHUAPL/PDS.'}),
+D('nasa-juno','Juno Jupiter Science','NASA',['Planetary Science'],'Jupiter gravity, magnetosphere, aurora, microwave sounding. PDS/PDS4 + MAST?','juno jupiter gravity magnetosphere aurora','juno jupiter science','https://www.missionjuno.swri.edu/',[{n:'instrument',t:'JIRAM/JADE',d:'Instrument',req:0}],'GET missionjuno.swri.edu — PDS','{\n  "orbit": 45,\n  "gravity_harmonic": "J6"\n}',['search_juno_data'],{rating:4.6,downloads:14000,long:'Juno (2011→) polar orbits of Jupiter. SwRI PI.'}),
+D('nasa-cassini','Cassini Saturn System','NASA',['Planetary Science'],'Saturn, rings, Titan, Enceladus — images, spectra, magnetosphere. PDS Small Bodies/Outer Planets.','cassini saturn rings titan enceladus','cassini saturn rings','https://science.nasa.gov/mission/cassini/',[{n:'target',t:'Saturn/Titan/Enceladus',d:'Target',req:0}],'GET science.nasa.gov/mission/cassini/','{\n  "target": "Titan",\n  "images": 32000\n}',['search_cassini_data'],{rating:4.6,downloads:15000,long:'Cassini-Huygens (1997–2017) — 13-year Saturn tour. Legacy archive.'}),
+D('nasa-newhorizons','New Horizons Pluto & KBO','NASA',['Planetary Science'],'Pluto flyby + Kuiper Belt objects (Arrokoth). LORRI, Ralph, Alice.','new horizons pluto kuiper arrokoth','new horizons pluto','https://www.nasa.gov/image-article/new-horizons',[{n:'target',t:'Pluto/Arrokoth',d:'Target',req:0}],'GET nasa.gov — New Horizons archive','{\n  "target": "Arrokoth",\n  "images": 1300\n}',['search_newhorizons'],{rating:4.7,downloads:11000,long:'New Horizons (2006→) — Pluto 2015, Arrokoth 2019, ongoing KBO flybys.'}),
+D('nasa-osiris','OSIRIS-REx Asteroid Bennu','NASA',['Asteroids & Comets','Planetary Science'],'Bennu asteroid sample return, maps, spectroscopy, OTES. PDS Small Bodies Node.','osiris rex bennu asteroid sample return','osiris rex bennu asteroid','https://www.asteroidmission.org/',[{n:'instrument',t:'OTES/OVIRS',d:'Instrument',req:0}],'GET asteroidmission.org — PDS','{\n  "sample_mass_g": 121.6,\n  "target": "Bennu"\n}',['search_osiris'],{rating:4.7,downloads:13000,long:'OSIRIS-REx (2016–2023) — Bennu samples returned Sep 2023, now curated at JSC.'}),
+D('nasa-psyche','Psyche Metal Asteroid','NASA',['Asteroids & Comets','Planetary Science'],'Metal asteroid Psyche core investigation — multispectral imager, GRF, magnetometer.','psyche metal asteroid core','psyche metal asteroid','https://psyche.asu.edu/',[{n:'instrument',t:'Multispectral Imager',d:'Instrument',req:0}],'GET psyche.asu.edu — mission data','{\n  "target": "16 Psyche",\n  "arrival": "2029"\n}',['search_psyche'],{rating:4.4,downloads:6000,long:'Psyche (2023→) — first metal world visit. ASU PI.'}),
+D('nasa-lucy','Lucy Trojan Asteroids','NASA',['Asteroids & Comets','Planetary Science'],'Jupiter Trojan asteroids — 8 targets, L’TES, LORRI, E-THERM.','lucy trojan asteroids jupiter','lucy trojan asteroids','https://lucy.swri.edu/',[{n:'target',t:'Eurybates/Polymele…',d:'Target',req:0}],'GET lucy.swri.edu — PDS','{\n  "target": "Polymele",\n  "flyby": "2024-09"\n}',['search_lucy'],{rating:4.5,downloads:7000,long:'Lucy (2021→) — first Trojan mission. SwRI PI.'}),
+D('nasa-dart','DART Planetary Defense','NASA',['Asteroids & Comets','Planetary Science'],'Dimorphos kinetic impact — orbit change, ejecta, LICCIACube images.','dart planetary defense dimorphos impact','dart dimorphos impact','https://www.nasa.gov/image-article/dart',[{n:'epoch',t:'impact',d:'Epoch',req:0}],'GET nasa.gov — DART archive','{\n  "orbit_period_change_min": -32\n}',['search_dart'],{rating:4.7,downloads:15000,long:'DART (2021–2022) — first asteroid deflection. Heliophysics? Planetary Defense.'}),
+D('nasa-europa','Europa Clipper','NASA',['Planetary Science','Moon'],'Europa ocean world — EIS, REASON, MASPEX. Launch 2024, arrival 2030.','europa clipper ocean icy moon jupiter','europa clipper','https://europa.nasa.gov/',[{n:'instrument',t:'EIS/REASON',d:'Instrument',req:0}],'GET europa.nasa.gov','{\n  "target": "Europa",\n  "arrival": "2030"\n}',['search_europa'],{rating:4.6,downloads:8000,long:'Europa Clipper (2024→) — JPL. 49 flybys.'}),
+D('nasa-horizons-api','Horizons API (JPL)','NASA',['Research & Tech','Astrophysics'],'Machine-readable ephemeris for any body/spacecraft — vectors, elements, small-body.','horizons api ephemeris vectors elements','horizons api ephemeris','https://ssd.jpl.nasa.gov/api/horizons.api',[{n:'COMMAND',t:'DEQ/SPK',d:'Command',req:1},{n:'TARGET',t:'499/301…',d:'Target',req:1}],'GET /api/horizons.api?COMMAND=DEQ&TARGET=499&EPHEM_TYPE=OBSERVER&START_TIME=...','{\n  "result": "…ephemeris…",\n  "target": "Mars"\n}',['get_horizons_ephemeris'],{rating:4.8,downloads:98000,long:'Horizons — scriptable JPL ephemeris. Browser + API. Essential for mission design.'}),
+D('esa-solar-orbiter','Solar Orbiter (ESA/NASA)','ESA',['Sun & Heliophysics','Space Weather'],'Close Sun views, polar views, in-situ + remote sensing. EUI, SoloHI, in-situ suite.','solar orbiter sun polar eui','solar orbiter','https://www.esa.int/Science_Exploration/Space_Science/Solar_Orbiter',[{n:'instrument',t:'EUI/SoloHI',d:'Instrument',req:0}],'GET esa.int/Solar_Orbiter — archive','{\n  "distance_au": 0.5,\n  "latitude": 33\n}',['search_solar_orbiter'],{rating:4.6,downloads:12000,long:'Solar Orbiter (2020→) — ESA PI, NASA contribution.'}),
+D('nasa-swot','SWOT Ocean & Water (NASA/CNES)','NASA',['Earth Science','Earth Observation','Climate'],'KaRIn radar — sea-surface height, rivers, lakes, inland water.','swot ocean sea surface height rivers lakes karin','swot ka rin ocean','https://swot.jpl.nasa.gov/',[{n:'variable',t:'SSH/water level',d:'Variable',req:0}],'GET swot.jpl.nasa.gov — PO.DAAC','{\n  "ssh_m": 0.42,\n  "river_width_m": 120\n}',['get_swot_data'],{rating:4.6,downloads:9000,long:'SWOT (2022→) — NASA/CNES. First 2D water topography. PO.DAAC + CNES.'}),
+D('nasa-gpm','Global Precipitation Mission (GPM)','NASA',['Earth Science','Climate','Earth Observation'],'Rain, snow, cyclones — DPR/GMI merged products, IMERG.','global precipitation gpm rain snow imerg','global precipitation mission gpm','https://gpm.nasa.gov/',[{n:'product',t:'IMERG',d:'Product',req:0}],'GET gpm.nasa.gov — PPS API','{\n  "rain_mm_hr": 12.5,\n  "product": "IMERG"\n}',['get_precipitation'],{rating:4.6,downloads:21000,long:'GPM (2014→) — NASA/JAXA. IMERG global 30-min precipitation.'}),
+D('nasa-smap','Soil Moisture Active Passive (SMAP)','NASA',['Earth Science','Climate'],'Global soil moisture, freeze/thaw. L-band radiometer/radar.','smap soil moisture freeze thaw','smap soil moisture','https://smap.jpl.nasa.gov/',[{n:'variable',t:'soil moisture',d:'Variable',req:0}],'GET smap.jpl.nasa.gov — NSIDC','{\n  "soil_moisture_m3_m3": 0.28\n}',['get_soil_moisture'],{rating:4.5,downloads:16000,long:'SMAP (2015→) — 9km soil moisture, 3-day revisit. NSIDC DAAC.'}),
+D('nasa-ocean','Ocean Data View / PO.DAAC','NASA',['Earth Science','Earth Observation'],'Sea-surface height, currents, winds, SST — PO.DAAC merged products.','po daac ocean sea surface height currents','po daac ocean','https://podaac.jpl.nasa.gov/',[{n:'dataset',t:'OSTM/Jason/SWOT',d:'Dataset',req:0}],'GET podaac.jpl.nasa.gov — PO.DAAC API','{\n  "ssh_m": 0.35\n}',['search_podaac'],{rating:4.6,downloads:28000,long:'Physical Oceanography DAAC — altimetry, scatterometry, SAR.'}),
+D('nasa-cubesats','NASA CubeSat & SmallSat Data','NASA',['Research & Tech'],'CubeSat science returns, rideshare, technology demos.','cubesat smallsat technology rideshare','cubesat smallsat','https://www.nasa.gov/smallsat-institute/',[{n:'mission',t:'string',d:'Mission',req:0}],'GET nasa.gov/smallsat-institute/','{\n  "mission": "…",\n  "status": "operational"\n}',['search_cubesat'],{rating:4.2,downloads:5000,long:'SmallSat Institute + SMD CubeSats.'}),
+D('nasa-missions','NASA Missions & Spacecraft','NASA',['Research & Tech','Human Spaceflight'],'Mission pages, spacecraft status, trajectories, media — unified mission graph.','missions spacecraft status trajectory','nasa missions spacecraft','https://science.nasa.gov/missions/',[{n:'mission',t:'string',d:'Mission',req:0}],'GET science.nasa.gov/missions/','{\n  "mission": "…",\n  "spacecraft": "…",\n  "status": "…"\n}',['search_missions'],{rating:4.7,downloads:84000,long:'science.nasa.gov — mission finder, spacecraft pages, latest news.'}),
+D('nasa-people','Astronauts & People in Space','NASA',['Human Spaceflight'],'Crew rosters, EVAs, astronaut bios, historical missions.','astronauts crew eva people space','astronauts crew eva','https://www.nasa.gov/astronauts/',[{n:'name',t:'string',d:'Name',req:0}],'GET nasa.gov/astronauts/','{\n  "name": "…",\n  "missions": […]\n}',['search_astronauts'],{rating:4.5,downloads:47000,long:'NASA Astronaut Office + ESA/Roscosmos crew data exchanges (WhereNow).'}),
+D('esa-cluster','Cluster & Magnetosphere (ESA)','ESA',['Space Weather','Sun & Heliophysics'],'Four-spacecraft magnetospheric constellation.','cluster magnetosphere spacecraft constellation','cluster magnetosphere','https://www.esa.int/Science_Exploration/Space_Science/Cluster',[{n:'spacecraft',t:'SC1-4',d:'Spacecraft',req:0}],'GET esa.int/Cluster — CDAWeb','{\n  "spacecraft": "SC2",\n  "b_field_nt": 42\n}',['search_cluster_data'],{rating:4.3,downloads:7000,long:'Cluster II (2000–2024) — tetrahedron magnetospheric. CDAWeb/NASA.'}),
+];
+
+const SYNONYMS={mars:['mars','red planet','rover','perseverance','curiosity','sol'],asteroid:['asteroid','near earth','comet','meteor','space rock','bennu','psyche'],sun:['sun','solar','flare','corona','sdo','parker'],climate:['climate','global warming','sea level','co2','carbon','temperature','gistemp'],earth:['earth','soil','ocean','atmosphere','precipitation','fire','wildfire','air quality'],moon:['moon','lunar','lro','artemis','orion'],exoplanet:['exoplanet','alien planet','habitable','tess','kepler'],image:['image','photo','picture','video','media'],weather:['weather','space weather','storm','flare','cme','geomagnetic'],satellite:['satellite','earth observation','landsat','sentinel','himawari','copernicus']};
+let CONCEPT_GRAPH={}; DATA.forEach(d=>{d.concepts.forEach(c=>{CONCEPT_GRAPH[c]=(CONCEPT_GRAPH[c]||0)+1})});
+
+function expandQuery(q){
+  q=q.toLowerCase().trim(); const terms=q.split(/\s+/).filter(Boolean); const exp=new Set(terms);
+  Object.entries(SYNONYMS).forEach(([k,v])=>{ if(terms.some(t=>k.includes(t)||v.includes(t)||t.includes(k))) v.forEach(x=>exp.add(x)); });
+  return [...exp];
+}
+function scoreDataset(d,q,mode){
+  if(!q) return 1;
+  const terms=expandQuery(q);
+  const hayT=(d.title+' '+d.keywords.join(' ')).toLowerCase(), hayC=d.concepts.join(' ').toLowerCase(), hayD=d.description.toLowerCase();
+  let s=0, reasons=[];
+  terms.forEach(t=>{
+    if(hayT.includes(t)){s+=3;reasons.push(t);} else if(hayC.includes(t)){s+=2.5;reasons.push(t);} else if(hayD.includes(t)){s+=1.5;reasons.push(t);}
+  });
+  // semantic boost: concept overlap
+  let conceptHits=0; d.concepts.forEach(c=>{ if(terms.some(t=>c.includes(t)||t.includes(c.split(' ')[0]))) conceptHits++; });
+  s+=conceptHits*1.2; if(conceptHits) reasons.push(conceptHits+' concept'+(conceptHits>1?'s':''));
+  // phrase boost
+  if(hayT.includes(q)||hayC.includes(q)) s+=4;
+  if(mode==='keyword') s = hayT.includes(q)||hayD.includes(q)? (hayT.includes(q)?8:5) : 0;
+  if(mode==='exact') s = (hayT+' '+hayD).includes(q)?10:0;
+  s += (d.rating/5)*2 + Math.log10((d.downloads||1000)+1)*0.6; // popularity prior
+  return {score:s, reasons:[...new Set(reasons)].slice(0,5)};
+}
+
+/* ================= STATE ================= */
+let state={q:'',mode:'semantic',agencies:new Set(),themes:new Set(),formats:new Set(),view:'grid',sort:'relevance',favOnly:false,favs:new Set(JSON.parse(localStorage.getItem('orbitdb_favs')||'[]')),history:JSON.parse(localStorage.getItem('orbitdb_hist')||'[]')};
+let mcp={selected:new Set(['nasa-neows','nasa-apod','nasa-mars-photos','nasa-exoplanet','nasa-epic','nasa-firms']),lang:'python',transport:'stdio',client:'claude',tab:'code',key:''};
+let current=null, filtered=[], pgDataset=DATA[0], pgLastResp='';
+let journey=JSON.parse(localStorage.getItem('orbitdb_journey')||'{}');
+if(!Object.keys(journey).length) journey={search:false,try:false,key:false,build:false,connect:false,test:false};
+let guideChecks=JSON.parse(localStorage.getItem('orbitdb_guide')||'{}');
+
+const $=id=>document.getElementById(id);
+const agByCode=c=>AGENCIES.find(a=>a.code===c)||{name:c,color:'#6c5ce7'};
+function saveFavs(){localStorage.setItem('orbitdb_favs',JSON.stringify([...state.favs]))}
+function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
+function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function copyText(txt,msg){navigator.clipboard.writeText(txt).then(()=>toast(msg||'📋 Copied'));}
+
+/* ================= INTUITIVE-UX HELPERS ================= */
+const BEST_FOR={
+ 'nasa-neows':'Best for: live asteroid tracking & planetary defense',
+ 'nasa-mars-photos':'Best for: Mars rover browsing & science blogs',
+ 'nasa-apod':'Best for: daily space inspiration & classrooms',
+ 'nasa-exoplanet':'Best for: finding habitable planets',
+ 'nasa-epic':'Best for: full-Earth photos & weather',
+ 'nasa-firms':'Best for: wildfire & deforestation maps',
+ 'nasa-donki':'Best for: space-weather & solar-storm alerts',
+ 'nasa-images':'Best for: mission photos, videos & presentations',
+ 'nasa-iss':'Best for: where-is-the-ISS & pass predictions',
+ 'esa-gaia':'Best for: billion-star maps & astronomy research',
+ 'esa-copernicus':'Best for: free Earth images (Sentinel)',
+ 'nasa-climate':'Best for: climate indicators & sea level',
+ 'nasa-earthdata':'Best for: all Earth-science data in one place',
+};
+const STAR_IDS=new Set(['nasa-neows','nasa-mars-photos','nasa-apod','nasa-exoplanet','nasa-images','nasa-epic']);
+function toggleMenu(){const m=$('mobileMenu');m.classList.toggle('open');document.querySelector('.hamburger')?.setAttribute('aria-expanded',m.classList.contains('open'));}
+function scrollToQuick(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth'});}
+function dismissWelcome(){$('welcome').style.display='none';localStorage.setItem('orbitdb_welcome','off');}
+function clearSearch(){$('q').value='';state.q='';$('suggest').classList.remove('open');$('clearQ').classList.remove('show');render();}
+function openHelp(topic){$('helpModal').classList.add('open');if(topic==='key'){$('helpKey').textContent='🔑 Get your free NASA API key';setTimeout(()=>{$('helpKey').scrollIntoView({block:'center'});},80);}}
+function markJourney(step){if(journey[step])return;journey[step]=true;localStorage.setItem('orbitdb_journey',JSON.stringify(journey));renderJourney();toast('✅ Step done — nice!');}
+function renderJourney(){
+  const steps=['search','try','key','build','connect','test'];
+  const done=steps.filter(s=>journey[s]).length;
+  $('journeyPct').textContent=done+' of 6 done'+(done===6?' · 🎉 You finished the journey!':'');
+  const icons={search:'🔍',try:'▶',key:'🔑',build:'⚡',connect:'🔌',test:'🎉'};
+  document.querySelectorAll('.jstep').forEach(el=>{
+    const s=el.dataset.step; el.classList.toggle('done',!!journey[s]);
+    el.classList.toggle('current',!journey[s]&&done===steps.indexOf(s));
+    const dot=el.querySelector('.dot'); if(dot) dot.textContent=journey[s]?'✓':icons[s];
+  });
+}
+function resetJourney(){journey={search:false,try:false,key:false,build:false,connect:false,test:false};localStorage.setItem('orbitdb_journey',JSON.stringify(journey));renderJourney();toast('Progress reset');}
+function toggleGuide(cb){guideChecks[cb.dataset.g]=cb.checked;localStorage.setItem('orbitdb_guide',JSON.stringify(guideChecks));cb.closest('.check').classList.toggle('done',cb.checked);renderGuidePct();if(cb.checked)markJourney(cb.dataset.g==='g1'?'search':cb.dataset.g==='g6'?'test':'build');}
+function renderGuidePct(){const n=Object.values(guideChecks).filter(Boolean).length;$('guideFill').style.width=(n/6*100)+'%';$('guidePct').textContent=n+' of 6 steps done'+(n===6?' 🎉 All done!':'');}
+function resetGuide(){guideChecks={};localStorage.setItem('orbitdb_guide',JSON.stringify(guideChecks));document.querySelectorAll('[data-g]').forEach(cb=>{cb.checked=false;cb.closest('.check')?.classList.remove('done')});renderGuidePct();}
+function renderRecent(){const row=$('recentRow');if(!row)return;row.innerHTML=state.history.length?`<span style="font-size:12px;color:#5a6790;align-self:center">Recent:</span>`+state.history.slice(0,4).map(h=>`<button onclick="quickSearch('${esc(h).replace(/'/g,"\\'")}')">${esc(h)}</button>`).join(''):'';}
+function renderPills(){
+  const pills=[];
+  state.agencies.forEach(a=>pills.push({k:'agency:'+a,label:'🏛️ '+agByCode(a).name,fn:`state.agencies.delete('${a}');buildFilters();render()`}));
+  state.themes.forEach(t=>pills.push({k:'theme:'+t,label:'🗂️ '+t,fn:`state.themes.delete('${t}');buildFilters();render()`}));
+  state.formats.forEach(f=>pills.push({k:'fmt:'+f,label:'📦 '+f,fn:`state.formats.delete('${f}');buildFilters();render()`}));
+  if(state.favOnly) pills.push({k:'fav',label:'⭐ Favorites',fn:`state.favOnly=false;render()`});
+  if(state.q) pills.push({k:'q',label:'🔍 “'+state.q+'”',fn:`clearSearch()`});
+  const f=$('dateFrom').value,t=$('dateTo').value;
+  if(f||t) pills.push({k:'date',label:'📅 '+(f||'…')+' → '+(t||'…'),fn:`$('dateFrom').value='';$('dateTo').value='';render()`});
+  $('filterPills').innerHTML=pills.length? pills.map(p=>`<span class="fpill">${esc(p.label)}<button aria-label="Remove filter" onclick="${p.fn}">✕</button></span>`).join('')+`<button class="fpill clear-all" onclick="clearFilters()">Clear all</button>`:'';
+}
+function applyPreset(name){
+  const P={
+    beginner:['nasa-apod','nasa-mars-photos','nasa-neows'],
+    earth:['nasa-epic','nasa-climate','nasa-firms','nasa-landsat','nasa-icesat'],
+    deep:['nasa-exoplanet','esa-gaia','esa-webb','nasa-donki','esa-planck'],
+    search:filtered.slice(0,6).map(x=>x.d.id),
+  };
+  if(!P[name]?.length){toast('Search first, then use this preset');return;}
+  mcp.selected=new Set(P[name]);buildMcpPick();markJourney('build');toast('⚡ Preset applied — '+P[name].length+' datasets');
+}
+function toggleNonTech(on){
+  $('mcpCode').classList.toggle('nontech-hide',!!on);
+  const tabs=document.querySelectorAll('.mcp-out .tab');
+  if(on){const idx=[1,2,3].includes(['code','config','install','test'].indexOf(mcp.tab))?['code','config','install','test'].indexOf(mcp.tab):1;tabs[idx]?.click();}
+  else tabs[0]?.click();
+}
+function updateBuilderMeta(){
+  const ds=selectedDatasets(), tools=ds.reduce((s,d)=>s+(d.mcpTools?.length||0),0);
+  const sum=$('builderSummary');
+  let html=`<span class="sum">✓ ${ds.length} dataset${ds.length!==1?'s':''}</span><span class="sum">✓ ${tools} tool${tools!==1?'s':''}</span>`;
+  if(!ds.length) html+=`<span class="sum warn">⚠️ Pick at least one dataset above</span>`;
+  if(!($('apiKey')?.value||'').trim()) html+=`<span class="sum warn">ℹ️ Using DEMO_KEY — get a free key for 1,000 req/hr</span>`;
+  else html+=`<span class="sum">✓ Custom API key</span>`;
+  sum.innerHTML=html;
+  const step= ds.length? ( ($('apiKey')?.value||'').trim() ? 5 : 4) :1;
+  $('builderFill').style.width=(step/5*100)+'%';
+  $('builderStepLbl').textContent='Step '+step+' of 5 · '+(step===1?'pick data':step===4?'almost ready — add a key (optional)':step+"/"+5+' ready ✓');
+}
+
+/* ================= RENDER: SIDEBAR / CHARTS ================= */
+function buildFilters(){
+  const agCount={}; DATA.forEach(d=>agCount[d.agency]=(agCount[d.agency]||0)+1);
+  $('fAgencies').innerHTML=Object.entries(agCount).sort((a,b)=>b[1]-a[1]).map(([c,n])=>`<label class="fitem ${state.agencies.has(c)?'active':''}"><input type="checkbox" ${state.agencies.has(c)?'checked':''} onchange="toggleSet(state.agencies,'${c}')"> <span>${esc(agByCode(c).name)}</span><span class="c">${n}</span></label>`).join('');
+  const thCount={}; DATA.forEach(d=>d.theme.forEach(t=>thCount[t]=(thCount[t]||0)+1));
+  $('fThemes').innerHTML=Object.entries(thCount).sort((a,b)=>b[1]-a[1]).map(([t,n])=>`<label class="fitem ${state.themes.has(t)?'active':''}"><input type="checkbox" ${state.themes.has(t)?'checked':''} onchange="toggleSet(state.themes,'${t.replace(/'/g,"\\'")}')"> <span>${esc(t)}</span><span class="c">${n}</span></label>`).join('');
+  const fmtCount={}; DATA.forEach(d=>d.formats.forEach(f=>fmtCount[f]=(fmtCount[f]||0)+1));
+  $('fFormats').innerHTML=Object.entries(fmtCount).map(([f,n])=>`<label class="fitem"><input type="checkbox" ${state.formats.has(f)?'checked':''} onchange="toggleSet(state.formats,'${f}')"> <span>${esc(f)}</span><span class="c">${n}</span></label>`).join('');
+  $('agencyStrip').innerHTML=[`<button class="ag-chip ${state.agencies.size===0?'on':''}" onclick="state.agencies.clear();buildFilters();render()">🌐 All agencies</button>`].concat(AGENCIES.filter(a=>agCount[a.code]).map(a=>`<button class="ag-chip ${state.agencies.has(a.code)?'on':''}" onclick="toggleSet(state.agencies,'${a.code}');buildFilters();render()"><span class="dot" style="background:${a.color}"></span>${esc(a.name)} <span style="opacity:.7">${agCount[a.code]||0}</span></button>`)).join('');
+  $('favCount').textContent=state.favs.size;
+}
+function toggleSet(set,val){set.has(val)?set.delete(val):set.add(val);buildFilters();render()}
+function clearFilters(){state.agencies.clear();state.themes.clear();state.formats.clear();state.favOnly=false;$('q').value='';state.q='';$('dateFrom').value='';$('dateTo').value='';buildFilters();render();toast('Filters cleared')}
+function showFavs(){state.favOnly=!state.favOnly;render();toast(state.favOnly?'Showing favorites':'Showing all')}
+
+function buildCharts(){
+  const agCount={};DATA.forEach(d=>agCount[d.agency]=(agCount[d.agency]||0)+1);
+  const maxAg=Math.max(...Object.values(agCount));
+  $('chartAgency').innerHTML=Object.entries(agCount).sort((a,b)=>b[1]-a[1]).map(([c,n])=>`<div class="bar-row"><span class="name">${esc(agByCode(c).name)}</span><div class="bar"><div class="fill" style="width:${n/maxAg*100}%;background:${agByCode(c).color}"></div></div><span class="val">${n}</span></div>`).join('');
+  const thCount={};DATA.forEach(d=>d.theme.forEach(t=>thCount[t]=(thCount[t]||0)+1));
+  const maxTh=Math.max(...Object.values(thCount));
+  const thColors=['#6c5ce7','#00d2ff','#00d68f','#ffb020','#ff5470','#7c3aed','#06b6d4','#f59e0b'];
+  $('chartTheme').innerHTML=Object.entries(thCount).sort((a,b)=>b[1]-a[1]).slice(0,9).map(([t,n],i)=>`<div class="bar-row"><span class="name">${esc(t)}</span><div class="bar"><div class="fill" style="width:${n/maxTh*100}%;background:${thColors[i%thColors.length]}"></div></div><span class="val">${n}</span></div>`).join('');
+  $('st-total').textContent=DATA.length;$('st-agencies').textContent=AGENCIES.length;
+  $('st-apis').textContent=DATA.filter(d=>d.api?.endpoint).length;$('st-mcp').textContent=DATA.reduce((s,d)=>s+(d.mcpTools?.length||0),0);
+}
+
+/* ================= RENDER: RESULTS ================= */
+function applyFilters(){
+  let list=DATA.map(d=>({d,sc:scoreDataset(d,state.q,state.mode)}));
+  if(state.q) list=list.filter(x=>x.sc.score>4);
+  list=list.filter(x=>!state.agencies.size||state.agencies.has(x.d.agency));
+  list=list.filter(x=>!state.themes.size||x.d.theme.some(t=>state.themes.has(t)));
+  list=list.filter(x=>!state.formats.size||x.d.formats.some(f=>state.formats.has(f)));
+  if(state.favOnly) list=list.filter(x=>state.favs.has(x.d.id));
+  const f=$('dateFrom').value,t=$('dateTo').value;
+  if(f) list=list.filter(x=>x.d.updated>=f); if(t) list=list.filter(x=>x.d.updated<=t);
+  if(state.sort==='relevance') list.sort((a,b)=>b.sc.score-a.sc.score);
+  else if(state.sort==='popular') list.sort((a,b)=>b.d.downloads-a.d.downloads);
+  else if(state.sort==='newest') list.sort((a,b)=>b.d.updated.localeCompare(a.d.updated));
+  else if(state.sort==='az') list.sort((a,b)=>a.d.title.localeCompare(b.d.title));
+  else if(state.sort==='rating') list.sort((a,b)=>b.d.rating-a.d.rating);
+  return list;
+}
+function setView(v){state.view=v;$('vGrid').classList.toggle('on',v==='grid');$('vList').classList.toggle('on',v==='list');render()}
+function render(){
+  filtered=applyFilters();
+  $('resCount').textContent=filtered.length;
+  $('searchEcho').innerHTML= state.q? `for “<b style="color:#fff">${esc(state.q)}</b>” <span style="color:#5a6790">(${state.mode})</span>` : '';
+  $('empty').style.display=filtered.length?'none':'block';
+  $('results').className= state.view==='grid'?'grid':'grid';
+  if(state.view==='list') $('results').style.gridTemplateColumns='1fr'; else $('results').style.gridTemplateColumns='';
+  renderPills();
+  // semantic explainer
+  if(state.q){
+    const exp=expandQuery(state.q);
+    const top=filtered.slice(0,3).map(x=>x.d.title).join(' · ');
+    $('semExplain').style.display='block';
+    $('semExplain').innerHTML=`🧠 <b>Semantic expansion:</b> “${esc(state.q)}” → ${exp.slice(0,10).map(t=>`<code style="background:rgba(255,255,255,.08);padding:1px 7px;border-radius:99px">${esc(t)}</code>`).join(' ')} — top matches: <b>${esc(top)}</b> · Each card explains <i>why</i> it matched.`;
+  } else $('semExplain').style.display='none';
+
+  $('results').innerHTML=filtered.map(({d,sc},idx)=>{
+    const ag=agByCode(d.agency); const fav=state.favs.has(d.id);
+    const scorePct=Math.min(100,Math.round(sc.score/14*100));
+    const why= state.q&&sc.reasons?.length? `<div class="why">🧠 <b>Why this matched:</b> ${sc.reasons.map(r=>esc(r)).join(' · ')} — matched by meaning, not just keywords.</div>`:'';
+    const star= STAR_IDS.has(d.id)&&!state.q ? `<span class="start-here">✨ Start here</span>`:'';
+    const best= BEST_FOR[d.id]||('Best for: '+d.theme.join(', ').toLowerCase()+' data');
+    return `<article class="card" onclick="openDetail('${d.id}')" tabindex="0" onkeydown="if(event.key==='Enter')openDetail('${d.id}')">
+      ${star}
+      <button class="fav ${fav?'on':''}" onclick="event.stopPropagation();toggleFav('${d.id}')" title="${fav?'Remove favorite':'Save to favorites (survives refresh)'}" aria-label="Favorite">${fav?'⭐':'☆'}</button>
+      <div class="agency"><span style="width:9px;height:9px;border-radius:50%;background:${ag.color};display:inline-block"></span>${esc(ag.name)} <span style="color:#5a6790">· ${esc(d.theme[0]||'')}</span> <span style="margin-left:auto" class="score ${scorePct>=60?'high':'med'}">${state.q?scorePct+'% match':'★ '+d.rating}</span></div>
+      <h3>${esc(d.title)}</h3><p>${esc(d.description)}</p>
+      <div class="bestfor">${esc(best)}</div>
+      <div class="tags"><span class="pill accent">${esc(d.formats[0]||'API')}</span><span class="pill">${esc(d.access)}</span>${d.theme.slice(1,3).map(t=>`<span class="pill">${esc(t)}</span>`).join('')}</div>
+      <div class="meta"><span>🔄 ${d.updated}</span><span>⬇ ${d.downloads.toLocaleString()}</span><span>★ ${d.rating}</span><span>🧩 ${d.mcpTools?.length||0} MCP tools</span></div>
+      ${why}
+      <div class="cta-row"><button class="btn small" onclick="event.stopPropagation();openDetail('${d.id}')">📋 Details</button><button class="btn small primary" onclick="event.stopPropagation();openPlayground('${d.id}')">▶ Try API</button><button class="btn small" onclick="event.stopPropagation();openMcpFor('${d.id}')">⚡ Use in AI</button></div>
+    </article>`;
+  }).join('');
+}
+function toggleFav(id){state.favs.has(id)?state.favs.delete(id):state.favs.add(id);saveFavs();buildFilters();render();toast(state.favs.has(id)?'⭐ Added to favorites':'Removed from favorites')}
+function exportJSON(){download('orbitdb-results.json',JSON.stringify(filtered.map(x=>({id:x.d.id,title:x.d.title,agency:x.d.agency,theme:x.d.theme,description:x.d.description,api:x.d.api.endpoint,score:Math.round(x.sc.score*10)/10})),null,2),'application/json');toast('JSON exported')}
+function exportCSV(){const rows=[['id','title','agency','themes','updated','rating','downloads','api_endpoint']];filtered.forEach(x=>rows.push([x.d.id,`"${x.d.title}"`,x.d.agency,`"${x.d.theme.join('|')}"`,x.d.updated,x.d.rating,x.d.downloads,x.d.api.endpoint||'']));download('orbitdb-results.csv',rows.map(r=>r.join(',')).join('\n'),'text/csv');toast('CSV exported')}
+
+/* ================= SEARCH + SUGGEST ================= */
+let sugIdx=0;
+function onSearchInput(){
+  const v=$('q').value.trim();
+  $('clearQ').classList.toggle('show',!!v);
+  if(!v){$('suggest').classList.remove('open');return}
+  const terms=expandQuery(v);
+  const ranked=DATA.map(d=>({d,sc:scoreDataset(d,v,'semantic')})).filter(x=>x.sc.score>4).sort((a,b)=>b.sc.score-a.sc.score).slice(0,6);
+  const html=ranked.map((x,i)=>`<div class="suggest-item" onclick="pickSuggest('${x.d.id}')"><span class="tag">${esc(agByCode(x.d.agency).name)}</span><span><b>${esc(x.d.title)}</b><br><small style="color:var(--muted)">${esc(x.d.description.slice(0,80))}…</small></span></div>`).join('')+
+   (terms.length>1?`<div class="suggest-item" style="border-top:1px solid var(--border)" onclick="doSearch()"><span class="tag">Semantic</span><span>Search all for “<b>${esc(v)}</b>” incl. synonyms → ${terms.slice(0,6).join(', ')}…</span></div>`:'')+
+   (state.history.length?`<div class="suggest-item" style="border-top:1px solid var(--border)"><span class="tag">History</span><span>${state.history.slice(0,3).map(h=>`<a href="#" onclick="event.preventDefault();quickSearch('${esc(h)}')">${esc(h)}</a>`).join(' · ')}</span></div>`:'');
+  $('suggest').innerHTML=html||'<div class="suggest-item">No suggestions — press Enter to search anyway</div>';
+  $('suggest').classList.add('open');sugIdx=0;
+}
+function focusSuggest(i){const items=document.querySelectorAll('.suggest-item');if(items[i])items[i].focus?.()}
+function pickSuggest(id){$('suggest').classList.remove('open');openDetail(id)}
+function doSearch(){state.q=$('q').value.trim();state.mode=$('modeSel').value;$('suggest').classList.remove('open');
+ if(state.q&&!state.history.includes(state.q)){state.history.unshift(state.q);state.history=state.history.slice(0,8);localStorage.setItem('orbitdb_hist',JSON.stringify(state.history));renderRecent();}
+ render();if(state.q)markJourney('search');document.getElementById('catalog').scrollIntoView({behavior:'smooth',block:'start'})}
+function quickSearch(q){$('q').value=q;doSearch()}
+$('modeSel').addEventListener('change',()=>{state.mode=$('modeSel').value;render()});
+$('sortSel').addEventListener('change',e=>{state.sort=e.target.value;render()});
+document.addEventListener('click',e=>{if(!e.target.closest('.search-wrap'))$('suggest').classList.remove('open')});
+document.addEventListener('keydown',e=>{
+  if(e.key==='/'&&document.activeElement.tagName!=='INPUT'){e.preventDefault();$('q').focus()}
+  if(e.key==='Escape')closeAll();
+});
+
+/* ================= DETAIL DRAWER ================= */
+function openDetail(id){
+  const d=DATA.find(x=>x.id===id); if(!d)return; current=d;
+  const ag=agByCode(d.agency);
+  const related=DATA.filter(x=>x.id!==d.id&&x.theme.some(t=>d.theme.includes(t))).slice(0,4);
+  $('drawer').innerHTML=`
+  <button class="close" onclick="closeAll()">✕</button>
+  <div class="agency" style="display:flex;gap:8px;align-items:center;font-size:12.5px;font-weight:600"><span style="width:10px;height:10px;border-radius:50%;background:${ag.color}"></span>${esc(ag.name)} · ${ag.country} · ${esc(d.theme.join(' · '))}</div>
+  <h2>${esc(d.title)}</h2>
+  <p style="color:var(--muted);font-size:14.5px">${esc(d.long||d.description)}</p>
+  <div class="steps"><span class="on">1 · What it is</span><span>2 · Try it</span><span>3 · Use in AI</span></div>
+  <div class="bestfor">${esc(BEST_FOR[d.id]||('Best for: '+d.theme.join(', ').toLowerCase()+' data'))}</div>
+  <div class="btn-row">
+    <button class="btn primary" onclick="openPlayground('${d.id}')">▶ Try live API</button>
+    <button class="btn" onclick="openMcpFor('${d.id}')">⚡ Use in my AI app</button>
+    <button class="btn" onclick="toggleFav('${d.id}');openDetail('${d.id}')">${state.favs.has(d.id)?'⭐ Favorited':'☆ Favorite'}</button>
+    <button class="btn small" onclick="copyTitle('${d.id}')">📋 Copy name</button>
+  </div>
+  <div class="hint">👉 <b>Recommended next step:</b> hit <b>Try API</b> and click Run — you’ll see real data in 5 seconds. Everything else is optional.</div>
+  <div class="sec"><h4>📋 Metadata (DCAT)</h4><dl class="kv">
+   <dt>Publisher</dt><dd>${esc(d.publisher)} — ${esc(ag.desc||'')}</dd>
+   <dt>Access</dt><dd>${esc(d.access)} · License: ${esc(d.license||'Open')}</dd>
+   <dt>Formats</dt><dd>${d.formats.map(f=>`<span class="pill accent" style="margin-right:5px">${esc(f)}</span>`).join('')}</dd>
+   <dt>Updated</dt><dd>${esc(d.updated)} · Created ${esc(d.created)}</dd>
+   <dt>Concepts</dt><dd>${d.concepts.map(c=>`<span class="pill" style="margin:2px">${esc(c)}</span>`).join('')}</dd>
+   <dt>Keywords</dt><dd>${esc(d.keywords.join(', '))}</dd>
+   <dt>Popularity</dt><dd>${d.downloads.toLocaleString()} downloads · ★ ${d.rating}/5</dd>
+  </dl></div>
+  <div class="sec"><h4>🔗 Resources</h4>
+   <div class="res-row"><span class="fmt api">API</span><div><a href="${esc(d.api.endpoint||'#')}" target="_blank" rel="noopener">${esc(d.api.endpoint||'—')}</a><div style="font-size:12px;color:var(--muted);margin-top:3px">Live endpoint — use ▶ Try API or your API key</div></div><a class="dl" href="${esc(d.api.endpoint||'#')}" target="_blank" rel="noopener">Open ↗</a></div>
+   ${(d.res||[]).map(r=>`<div class="res-row"><span class="fmt file">${esc(r.fmt)}</span><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.name)}</a></div>`).join('')}
+   <div class="res-row"><span class="fmt file">CSV</span><div><b>Download metadata</b><div style="font-size:12px;color:var(--muted)">Catalog record (DCAT-JSON)</div></div><button class="dl" onclick="downloadDCAT('${d.id}')">⬇ DCAT</button></div>
+  </div>
+  <div class="sec"><h4>⚙️ API details</h4><dl class="kv"><dt>Method</dt><dd><span class="method get">${esc(d.api.method||'GET')}</span></dd><dt>Parameters</dt><dd>${d.api.params?.length?d.api.params.map(p=>`<code style="background:rgba(255,255,255,.07);padding:2px 7px;border-radius:6px;font-size:12px">${esc(p.n)}</code> <small style="color:var(--muted)">${esc(p.t)}${p.req?' · required':''}</small>`).join('<br>'):'—'}</dd></dl>
+   <label style="font-size:12px;color:var(--muted);display:block;margin:14px 0 6px">Sample request</label><pre class="code">${esc(d.api.sampleRequest||'—')}</pre>
+   <label style="font-size:12px;color:var(--muted);display:block;margin:14px 0 6px">Sample response (truncated)</label><pre class="code">${esc(d.api.sampleResponse||'—')}</pre>
+  </div>
+  <div class="sec"><h4>🧩 MCP tools provided</h4>${(d.mcpTools||[]).map(t=>`<div class="res-row"><span class="fmt api">TOOL</span><code style="font-size:13px">${esc(t)}</code><button class="dl" style="background:var(--card);border:1px solid var(--border)" onclick="addToolToBuilder('${d.id}')">+ Add to builder</button></div>`).join('')||'<p style="color:var(--muted)">Generic search tools will be generated.</p>'}
+  <button class="btn primary" style="width:100%;margin-top:10px" onclick="addToolToBuilder('${d.id}');document.getElementById('builder').scrollIntoView({behavior:'smooth'})">⚡ Build MCP server with this dataset →</button></div>
+  <div class="sec"><h4>🔗 Related datasets</h4>${related.map(r=>`<div class="res-row" style="cursor:pointer" onclick="openDetail('${r.id}')"><span class="fmt">${esc(agByCode(r.agency).name)}</span><div><b style="font-size:13.5px">${esc(r.title)}</b><div style="font-size:12px;color:var(--muted)">${esc(r.theme.join(', '))}</div></div></div>`).join('')}</div>
+  <div class="drawer-actions"><button class="btn primary" onclick="openPlayground('${d.id}')">▶ Try API</button><button class="btn" onclick="openMcpFor('${d.id}')">⚡ Use in AI</button><button class="btn" onclick="nextDataset()">Next dataset →</button></div>`;
+  $('drawer').classList.add('open');$('overlay').classList.add('open');
+}
+function copyTitle(id){const d=DATA.find(x=>x.id===id);navigator.clipboard.writeText(d.title+' — '+d.api.endpoint);toast('📋 Copied dataset name + endpoint')}
+function nextDataset(){if(!current)return;const idx=DATA.findIndex(d=>d.id===current.id);openDetail(DATA[(idx+1)%DATA.length].id);$('drawer').scrollTo({top:0});}
+function downloadDCAT(id){const d=DATA.find(x=>x.id===id);const rec={'@type':'dcat:Dataset',title:d.title,description:d.description,publisher:d.publisher,theme:d.theme,keyword:d.keywords,license:d.license,issued:d.created,modified:d.updated,distribution:[{accessURL:d.api.endpoint,mediaType:'application/json'}]};download(d.id+'.dcat.json',JSON.stringify(rec,null,2),'application/json');toast('DCAT record downloaded')}
+function addToolToBuilder(id){mcp.selected.add(id);buildMcpPick();markJourney('build');toast('✅ Added — see Builder below')}
+function download(name,content,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([content],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)}
+function closeAll(){$('drawer').classList.remove('open');$('overlay').classList.remove('open');$('pgModal').classList.remove('open');$('mcpModal').classList.remove('open');$('helpModal').classList.remove('open')}
+
+/* ================= PLAYGROUND ================= */
+function openPlayground(id){
+  const sel=$('pgEndpoint');
+  sel.innerHTML=DATA.filter(d=>d.api?.endpoint).map(d=>`<option value="${d.id}">${esc(agByCode(d.agency).name)} — ${esc(d.title.slice(0,42))}</option>`).join('');
+  if(id) sel.value=id;
+  onPgChange();$('pgModal').classList.add('open');
+}
+function exampleForParam(d,p){
+  const n=p.n.toLowerCase(),t=(p.t||'').toLowerCase();
+  if(n.includes('date')||t.includes('yyyy')){const now=new Date(),y=now.getFullYear(),m=String(now.getMonth()+1).padStart(2,'0'),day=String(now.getDate()).padStart(2,'0');return y+'-'+m+'-'+day;}
+  if(n.includes('sol'))return'1000'; if(n.includes('q')||n.includes('query')||n.includes('search'))return'Artemis';
+  if(n.includes('rover'))return'curiosity'; if(n.includes('camera'))return'FHAZ'; if(n.includes('indicator'))return'global_sea_level';
+  if(n.includes('name')||n.includes('target')||n.includes('sstr'))return'Mars';
+  if(n.includes('country'))return'world'; if(n.includes('sensor'))return'S2'; if(n.includes('source'))return'VIIRS_SNPP_NRT';
+  if(t.includes('int')||t.includes('number'))return'1'; if(n.includes('page')||n.includes('count'))return'5';
+  return'';
+}
+function onPgChange(){
+  const d=DATA.find(x=>x.id===$('pgEndpoint').value); if(!d)return; pgDataset=d;
+  $('pgMethod').textContent=d.api.method||'GET';
+  $('pgParams').innerHTML=(d.api.params||[]).map(p=>{const ex=exampleForParam(d,p);return `<label style="margin-top:14px">${esc(p.n)} <span style="color:var(--accent2);font-weight:700">${p.req?'· required':'· optional'}</span> <span style="color:#5a6790">${esc(p.t)} — ${esc(p.d||'')}</span></label><input id="pgp_${esc(p.n)}" value="${esc(ex)}" placeholder="e.g. ${esc(ex||p.n)}" oninput="updatePgUrl()"><div class="param-hint">Example: <code>${esc(ex||p.n)}</code> · Format: ${esc(p.t)}</div>`;}).join('')||'<p style="font-size:13px;color:var(--muted)">No parameters — just click Run.</p>';
+  updatePgUrl();
+}
+function buildPgUrl(){
+  const d=pgDataset; const key=($('pgKey').value||'DEMO_KEY').trim()||'DEMO_KEY';
+  let url=d.api.endpoint;
+  // substitute template params from inputs
+  (d.api.params||[]).forEach(p=>{const v=($('pgp_'+p.n)?.value||'').trim(); if(v) url=url.replace(new RegExp('('+p.n+'=)[^&]*','i'),'$1'+encodeURIComponent(v)); });
+  // append untouched params
+  const qs=new URLSearchParams(); (d.api.params||[]).forEach(p=>{const v=($('pgp_'+p.n)?.value||'').trim(); if(v&&!url.includes(p.n+'=')) qs.append(p.n,v);});
+  if(!url.includes('api_key')&&url.includes('nasa.gov')) qs.append('api_key',key);
+  const qsStr=qs.toString(); if(qsStr) url+=(url.includes('?')?'&':'?')+qsStr;
+  return url;
+}
+function updatePgUrl(){$('pgUrl').textContent=buildPgUrl()}
+function copyPgUrl(){navigator.clipboard.writeText(buildPgUrl());toast('📋 URL copied')}
+async function runPlayground(){
+  markJourney('try');
+  const url=buildPgUrl(); $('pgRun').disabled=true; $('pgRun').textContent='⏳ Running…'; $('pgStatus').textContent='Fetching '+url.slice(0,90)+'…';
+  // live fetch for NASA APIs; fallback to curated sample for non-CORS endpoints
+  try{
+    const r=await fetch(url); const txt=await r.text();
+    let out=txt; try{out=JSON.stringify(JSON.parse(txt),null,2)}catch(e){out=txt.slice(0,8000)}
+    pgLastResp=out; $('pgResp').textContent=out.slice(0,12000);
+    $('pgStatus').textContent='✅ '+r.status+' '+r.statusText+(r.ok?'':' (server returned error — check params/key)')+' · '+new Date().toLocaleTimeString();
+  }catch(err){
+    // CORS / network fallback: show curated sample + note
+    const d=pgDataset;
+    pgLastResp=d.api.sampleResponse||'{}';
+    $('pgResp').textContent='// ⚠️ Direct browser fetch blocked (CORS) — showing curated sample.\n// Run via MCP server or curl for live data.\n//\n'+pgLastResp;
+    $('pgStatus').textContent='Sample shown — endpoint: '+url.slice(0,80)+'…  Tip: use MCP Builder (server-side, no CORS).';
+  }
+  $('pgRun').disabled=false;$('pgRun').textContent='▶ Run request';
+}
+function copyPgResp(){navigator.clipboard.writeText(pgLastResp||'');toast('📋 Response copied')}
+function downloadPgResp(){download('orbitdb-response.json',pgLastResp||'{}','application/json');toast('Response downloaded')}
+
+/* ================= MCP BUILDER ================= */
+function buildMcpPick(){
+  $('mcpPick').innerHTML=DATA.slice(0,24).map(d=>{
+    const on=mcp.selected.has(d.id);
+    return `<button class="opt ${on?'on':''}" onclick="toggleMcpPick('${d.id}',this)">${on?'✓ ':''}${esc(agByCode(d.agency).name)} · ${esc(d.title.split(' ').slice(0,3).join(' '))}</button>`;
+  }).join('')+`<span style="font-size:12px;color:var(--muted);width:100%">+ ${DATA.length-24} more in catalog — all searchable above. Selection keeps your picks.</span>`;
+  buildMcp();
+}
+function toggleMcpPick(id,el){mcp.selected.has(id)?mcp.selected.delete(id):mcp.selected.add(id);if(mcp.selected.size)markJourney('build');buildMcpPick()}
+function setMcp(k,v,el){mcp[k]=v; el.parentElement.querySelectorAll('.opt').forEach(b=>b.classList.remove('on')); el.classList.add('on'); buildMcp()}
+function mcpTab(el,tab){mcp.tab=tab;el.parentElement.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));el.classList.add('on');buildMcp()}
+function selectedDatasets(){return DATA.filter(d=>mcp.selected.has(d.id))}
+
+function generatePython(datasets,key,transport){
+  const tools=datasets.flatMap(d=>(d.mcpTools||[d.id.replace(/-/g,'_')]).map((t,i)=>{const n=t.replace(/[^a-z0-9_]/gi,'_');
+    return `    @mcp.tool()
+    def ${n}(${', '.join((d.api.params||[]).slice(0,3).map(p=>`${p.n}: str = "${p.t== 'int'?'1':''}"`)) || 'query: str = ""'}):
+        """${d.description}"""
+        import httpx
+        url = "${d.api.endpoint}"
+        params = {}`+((d.api.params||[]).slice(0,3).map(p=>`\n        if ${p.n}: params["${p.n}"] = ${p.n}`).join(''))+`
+        ${url.includes('nasa.gov')?`params.setdefault("api_key", "${key||'DEMO_KEY'}")`:''}
+        try:
+            r = httpx.get(url, params=params, timeout=20)
+            return r.text[:8000]
+        except Exception as e:
+            return f"Error: {e}"\n`;})).join('\n');
+  const httpBlock= transport==='http'?`
+# Streamable HTTP:
+#   pip install mcp[cli] uvicorn
+#   mcp.run(transport="streamable-http", host="0.0.0.0", port=8000)
+`:'';
+  return `"""
+OrbitDB MCP Server — generated in OrbitDB Builder
+Datasets: ${datasets.map(d=>d.title).join(' | ')||'none selected'}
+Run:  python space_mcp.py
+"""
+import os
+from mcp.server.fastmcp import FastMCP
+import httpx
+
+NASA_API_KEY = "${key||'DEMO_KEY'}"
+mcp = FastMCP("orbitdb-space-data")
+
+${tools}
+# ---- generic search ----
+@mcp.tool()
+def search_space_data(query: str):
+    """Semantic search across all bundled datasets."""
+    q = query.lower()
+    hits = []
+    for d, desc in CATALOG:
+        if q in d.lower() or q in desc.lower():
+            hits.append(f"{d}: {desc}")
+    return "\\n".join(hits[:10]) or "No matches — try: Mars, asteroid, sun, climate, exoplanet"
+
+CATALOG = [
+${datasets.map(d=>`    ("${d.id}", "${d.title} — ${d.title} — ${d.description.replace(/"/g,'\\"')}"),`).join('\n')}
+]
+
+if __name__ == "__main__":
+    ${transport==='http'?`mcp.run(transport="streamable-http", host="0.0.0.0", port=8000)`:`mcp.run(transport="stdio")`}
+`;
+}
+function generateNode(datasets,key,transport){
+  const tools=datasets.flatMap(d=>(d.mcpTools||['search_'+d.id.replace(/-/g,'_')]).map(t=>{
+    const n=t.replace(/[^a-z0-9_]/gi,'_');
+    return `  server.tool("${n}", "${d.description}", { ${ (d.api.params||[]).slice(0,3).map(p=>`${p.n}: z.string().optional()`).join(', ')||'query: z.string().optional()'} }, async (args) => {
+    const url = "${d.api.endpoint}";
+    const params = { ...args, api_key: "${key||'DEMO_KEY'}" };
+    const r = await fetch(url + "?" + new URLSearchParams(params));
+    const text = await r.text();
+    return { content: [{ type: "text", text: text.slice(0, 8000) }] };
+  });`;
+  })).join('\n');
+  return `// OrbitDB MCP Server (Node) — generated
+// Install: npm i @modelcontextprotocol/sdk zod
+// Run: node space_mcp.js
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
+import { z } from "zod";
+
+const server = new McpServer({ name: "orbitdb-space-data", version: "1.0.0" });
+
+${tools}
+
+const transport = "${transport==='http'?'streamable-http':'stdio'}";
+if (transport === "stdio") {
+  await server.connect(new StdioServerTransport());
+} else {
+  // Streamable HTTP on :8000/mcp
+  const http = await import("http");
+  http.createServer(async (req, res) => {
+    // Use StreamableHTTPServerTransport — see MCP docs
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ ok: true, note: "Use MCP client to /mcp" }));
+  }).listen(8000);
+}
+`;
+}
+function generateConfig(client){
+  const key=($('apiKey')?.value||'').trim()||'DEMO_KEY';
+  const mcpJson={mcpServers:{'orbitdb-space-data':{command:'python',args:['/ABSOLUTE/PATH/space_mcp.py'],env:{NASA_API_KEY:key}}}};
+  const nodeJson={mcpServers:{'orbitdb-space-data':{command:'node',args:['/ABSOLUTE/PATH/space_mcp.js'],env:{NASA_API_KEY:key}}}};
+  const base= mcp.lang==='python'?mcpJson:nodeJson;
+  if(client==='claude') return JSON.stringify(base,null,2)+`\n\n// File: claude_desktop_config.json\n// macOS:  ~/Library/Application Support/Claude/claude_desktop_config.json\n// Windows: %APPDATA%\\Claude\\claude_desktop_config.json\n// Replace /ABSOLUTE/PATH with the real path to your downloaded file.`;
+  if(client==='cursor') return JSON.stringify(base,null,2)+`\n\n// Cursor: Settings → MCP → Add new server → paste above\n// File: ~/.cursor/mcp.json`;
+  if(client==='vscode') return JSON.stringify({servers:{'orbitdb-space-data':base.mcpServers['orbitdb-space-data']}},null,2)+`\n\n// VS Code → .vscode/mcp.json → paste above → Start`;
+  if(client==='opencode') return JSON.stringify({mcp:{'orbitdb-space-data':{type:'local',command:['python','/ABSOLUTE/PATH/space_mcp.py'],enabled:true,environment:{NASA_API_KEY:key}}}},null,2)+`\n\n// OpenCode: opencode.json → paste the "mcp" block above`;
+  return JSON.stringify(base,null,2)+`\n\n// Generic MCP client: use the mcpServers JSON above.\n// For ChatGPT (Developer mode) / n8n / LangChain: expose via\n// Streamable HTTP transport and paste the /mcp URL.`;
+}
+function generateInstall(){
+  const cmds= mcp.lang==='python'
+   ? `python --version          # must be 3.10+\npip install mcp httpx\n\n# 1. Download the server file (space_mcp.py) from the Builder\n# 2. Save it somewhere permanent, e.g. ~/space-mcp/space_mcp.py\n# 3. Test it:\npython ~/space-mcp/space_mcp.py\n# (stdio mode waits for input — Ctrl+C to stop. No output = success.)`
+   : `node --version            # must be 18+\nnpm --version\n\n# 1. Download the server file (space_mcp.js)\n# 2. In the same folder:\nnpm init -y\nnpm i @modelcontextprotocol/sdk zod\n# 3. Test:\nnode space_mcp.js`;
+  return cmds+ (mcp.transport==='http'?`\n\n# HTTP mode: server listens on http://localhost:8000/mcp\n# Point your MCP client at that URL (Streamable HTTP).`:'');
+}
+function generateTest(){
+  const ds=selectedDatasets();
+  return `Copy-paste these into your AI chat (with the MCP server connected):
+
+${ds.slice(0,4).map(d=>{
+  const t=d.mcpTools?.[0]||'search_space_data';
+  return `• "${d.title}" → ask:  "Use ${t} to show me ${d.keywords.slice(0,3).join(', ')} — include 3 concrete examples with links."\n  Expected: structured JSON/list with real ${d.agency} data, no hallucinated IDs.`;}).join('\n\n')}
+• Cross-dataset: "Compare Mars rover photos vs Landsat Earth imagery for the same week — what do both tell us about water on Earth/Mars?"
+• Follow-up: "Now rewrite that as a 5-bullet brief for a non-expert, keep numbers exact."
+
+✅ If answers include live-looking numbers + source endpoints, your MCP server works.`;
+}
+function buildMcp(){
+  mcp.key=($('apiKey')?.value||'').trim();
+  const ds=selectedDatasets();
+  updateBuilderMeta();
+  let out='';
+  if(mcp.tab==='code') out= mcp.lang==='python'?generatePython(ds,mcp.key,mcp.transport):generateNode(ds,mcp.key,mcp.transport);
+  else if(mcp.tab==='config') out=generateConfig(mcp.client);
+  else if(mcp.tab==='install') out=generateInstall();
+  else out=generateTest();
+  $('mcpCode').textContent=out;
+  if(mcp.key) markJourney('key');
+}
+function copyMcp(){navigator.clipboard.writeText($('mcpCode').textContent);toast('📋 Copied — paste into your app / editor');if(mcp.tab==='config')markJourney('connect');if(mcp.tab==='test')markJourney('test');}
+function downloadMcp(){const ext=mcp.tab==='code'?(mcp.lang==='python'?'.py':'.js'):(mcp.tab==='config'?'.json':'.txt');download('orbitdb-mcp'+ext,$('mcpCode').textContent,'text/plain');markJourney('build');toast('⬇ Downloaded — next: paste the App config tab into your AI app')}
+function downloadAll(){const ds=selectedDatasets();const bundle=`ORBITDB MCP BUNDLE\n${'='.repeat(60)}\nDatasets: ${ds.map(d=>d.title).join('\n - ')}\n\n--- SERVER CODE ---\n${mcp.lang==='python'?generatePython(ds,mcp.key,mcp.transport):generateNode(ds,mcp.key,mcp.transport)}\n\n--- CONFIG (${mcp.client}) ---\n${generateConfig(mcp.client)}\n\n--- INSTALL ---\n${generateInstall()}\n\n--- TEST PROMPTS ---\n${generateTest()}\n\n--- DATASET CATALOG (JSON) ---\n${JSON.stringify(ds.map(d=>({id:d.id,title:d.title,agency:d.agency,api:d.api.endpoint,tools:d.mcpTools})),null,2)}\n`;download('orbitdb-full-bundle.txt',bundle,'text/plain');markJourney('build');toast('⬇ Full bundle downloaded — see Install + App config tabs next')}
+function openMcpFor(id){mcp.selected.add(id);buildMcpPick();closeAll();markJourney('build');document.getElementById('builder').scrollIntoView({behavior:'smooth'});toast('⚡ Dataset added — builder updated. Next: pick your AI app → Download.')}
+
+/* ================= INIT ================= */
+buildFilters();buildCharts();render();buildMcpPick();renderJourney();renderRecent();renderGuidePct();
+document.querySelectorAll('[data-g]').forEach(cb=>{const on=!!guideChecks[cb.dataset.g];cb.checked=on;cb.closest('.check')?.classList.toggle('done',on);});
+if(localStorage.getItem('orbitdb_welcome')==='off')$('welcome').style.display='none';
+$('q').addEventListener('input',()=>$('clearQ').classList.toggle('show',!!$('q').value));
+// deep link: #builder scroll, keyboard
+if(location.hash==='#builder') setTimeout(()=>document.getElementById('builder').scrollIntoView(),300);
+</script>
+
+<!-- ===== FULL DATA CATALOG (same data, for portability) ===== -->
+<script>
+/* Catalog is embedded above in DATA — see index.html source for all 50+ datasets with DCAT, APIs, MCP tools.
+   For a standalone JSON: use ⤓ JSON export in the toolbar, or the ⬇ DCAT button per dataset. */
+</script>
+</body>
+</html>

@@ -1,0 +1,2907 @@
+[
+  {
+    "id": "nasa-apod",
+    "title": "Astronomy Picture of the Day",
+    "agency": "NASA",
+    "theme": [
+      "Astronomy",
+      "Images & Media",
+      "Astrophysics"
+    ],
+    "description": "A new astronomical image or photograph every day, with explanation by a professional astronomer. Running since 1995 — the most-loved NASA service.",
+    "keywords": [
+      "apod",
+      "astronomy",
+      "picture",
+      "day",
+      "photo",
+      "daily",
+      "nebula",
+      "galaxy"
+    ],
+    "concepts": [
+      "astronomy picture of the day daily image nebula galaxy space photo"
+    ],
+    "endpoint": "https://api.nasa.gov/planetary/apod",
+    "params": [
+      {
+        "n": "date",
+        "t": "YYYY-MM-DD",
+        "d": "Date (default today)",
+        "req": 0
+      },
+      {
+        "n": "count",
+        "t": "int",
+        "d": "Count of random images",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET /planetary/apod?date=2026-11-01&api_key=DEMO_KEY",
+    "sampleResponse": "{\n  \"date\": \"2026-11-01\",\n  \"title\": \"Andromeda Over the Alps\",\n  \"explanation\": \"A bright spiral galaxy…\",\n  \"media_type\": \"image\",\n  \"url\": \"https://apod.nasa.gov/…jpg\",\n  \"service_version\": \"v1\"\n}",
+    "mcpTools": [
+      "get_apod",
+      "search_apod_archive"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-11-06",
+    "rating": 4.9,
+    "downloads": 284000,
+    "long": "The Astronomy Picture of the Day (APOD) by NASA & MTU. Daily image + scientist-written explanation. API supports single date, date range (start_date/end_date), count, or thumbs."
+  },
+  {
+    "id": "nasa-neows",
+    "title": "Near Earth Object Web Service (NeoWs)",
+    "agency": "NASA",
+    "theme": [
+      "Asteroids & Comets",
+      "Planetary Science"
+    ],
+    "description": "Track every asteroid passing near Earth. Feed of close approaches with size, velocity, miss distance & hazard flag. Critical for planetary defense.",
+    "keywords": [
+      "asteroid",
+      "near",
+      "earth",
+      "comet",
+      "close",
+      "approach",
+      "orbit",
+      "hazard",
+      "space",
+      "debris"
+    ],
+    "concepts": [
+      "asteroid near earth objects planetary defense orbit close approach"
+    ],
+    "endpoint": "https://api.nasa.gov/neo/rest/v1/feed",
+    "params": [
+      {
+        "n": "start_date",
+        "t": "YYYY-MM-DD",
+        "d": "Range start",
+        "req": 1
+      },
+      {
+        "n": "end_date",
+        "t": "YYYY-MM-DD",
+        "d": "Range end",
+        "req": 1
+      }
+    ],
+    "sampleRequest": "GET /neo/rest/v1/feed?start_date=2026-11-08&end_date=2026-11-14&api_key=DEMO_KEY",
+    "sampleResponse": "{\n  \"element_count\": 3,\n  \"near_earth_objects\": {\n    \"2026-11-08\": [{\n      \"name\": \"(2024 XA12)\",\n      \"estimated_diameter\": {\"meters\": {\"estimated_diameter_min\": 68, \"estimated_diameter_max\": 105}},\n      \"close_approach_data\": [{\n        \"close_approach_date\": \"2026-11-08\",\n        \"relative_velocity\": {\"kilometers_per_second\": \"12.4\"},\n        \"miss_distance\": {\"kilometers\": \"1240000\"}\n      }],\n      \"is_potentially_hazardous_asteroid\": false\n    }]\n  }\n}",
+    "mcpTools": [
+      "get_asteroids_this_week",
+      "find_closest_asteroids",
+      "check_asteroid_hazard"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 5,
+    "downloads": 198000,
+    "long": "NeoWs feeds NASA JPL Center for Near-Earth Object Studies (CNEOS). Includes asteroid lookup by ID, browse & close-approach feed. Hazard flag = potentially hazardous asteroid (PHA)."
+  },
+  {
+    "id": "nasa-mars-photos",
+    "title": "Mars Rover Photos",
+    "agency": "NASA",
+    "theme": [
+      "Mars",
+      "Images & Media",
+      "Planetary Science"
+    ],
+    "description": "Searchable photos from Curiosity, Perseverance, Spirit & Opportunity rovers. Filter by sol, camera, Earth date & rover.",
+    "keywords": [
+      "mars",
+      "rover",
+      "curiosity",
+      "perseverance",
+      "photo",
+      "sol",
+      "camera",
+      "red",
+      "planet"
+    ],
+    "concepts": [
+      "mars rover photos sol camera curiosity perseverance"
+    ],
+    "endpoint": "https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos",
+    "params": [
+      {
+        "n": "sol",
+        "t": "int",
+        "d": "Martian sol",
+        "req": 0
+      },
+      {
+        "n": "earth_date",
+        "t": "YYYY-MM-DD",
+        "d": "Earth date",
+        "req": 0
+      },
+      {
+        "n": "camera",
+        "t": "enum",
+        "d": "FHAZ/RHAZ/MAST/CHEMCAM…",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET /mars-photos/api/v1/rovers/curiosity/photos?sol=1000&api_key=DEMO_KEY",
+    "sampleResponse": "{\n  \"photos\": [{\n    \"id\": 154, \"sol\": 1000,\n    \"camera\": {\"id\": 20, \"name\": \"FHAZ\", \"full_name\": \"Front Hazard Avoidance Camera A\"},\n    \"img_src\": \"http://mars.jpl.nasa.gov/…jpg\",\n    \"earth_date\": \"2015-05-30\",\n    \"rover\": {\"name\": \"Curiosity\", \"status\": \"active\"}\n  }]\n}",
+    "mcpTools": [
+      "get_mars_photos",
+      "get_mars_photo_count"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.9,
+    "downloads": 231000,
+    "long": "Mars Photo API for all NASA rovers. Also rovers manifest endpoint gives landing date, status & photo counts per sol."
+  },
+  {
+    "id": "nasa-epic",
+    "title": "Earth Polychromatic Imaging Camera (EPIC)",
+    "agency": "NASA",
+    "theme": [
+      "Earth Science",
+      "Earth Observation",
+      "Images & Media"
+    ],
+    "description": "Full-disc Earth imagery from DSCOVR at L1, roughly 1.5M km away — the “pale blue dot” in near-real-time.",
+    "keywords": [
+      "earth",
+      "epic",
+      "dscovr",
+      "full",
+      "disc",
+      "globe",
+      "images",
+      "sunlight"
+    ],
+    "concepts": [
+      "earth polychromatic imaging camera dscovr full disc"
+    ],
+    "endpoint": "https://api.nasa.gov/EPIC/api/natural",
+    "params": [
+      {
+        "n": "date",
+        "t": "YYYY-MM-DD",
+        "d": "Image date",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET /EPIC/api/natural?api_key=DEMO_KEY",
+    "sampleResponse": "[\n  {\n    \"identifier\": \"20261106\",\n    \"caption\": \"spacecraft selfie…\",\n    \"image\": \"epic_1b_20261106…\",\n    \"date\": \"2026-11-06 00:34:00\",\n    \"centroid_coordinates\": {\"lat\": 5.2, \"lon\": 21.5}\n  }\n]",
+    "mcpTools": [
+      "get_epic_images",
+      "get_epic_for_date"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.7,
+    "downloads": 87000,
+    "long": "EPIC on NOAA/NASA DSCOVR — 10-band camera imaging the sunlit side of Earth ~1.5 million km away. Archive back to 2015."
+  },
+  {
+    "id": "nasa-exoplanet",
+    "title": "NASA Exoplanet Archive",
+    "agency": "NASA",
+    "theme": [
+      "Exoplanets",
+      "Astrophysics"
+    ],
+    "description": "Over 5,000+ confirmed planets beyond our solar system. Search by distance, size, period, temperature, host star. Tap-synced SQL API.",
+    "keywords": [
+      "exoplanet",
+      "alien",
+      "planet",
+      "habitable",
+      "zone",
+      "distance",
+      "star",
+      "discovery"
+    ],
+    "concepts": [
+      "exoplanet archive confirmed planets habitable zone"
+    ],
+    "endpoint": "https://exoplanetarchive.ipac.caltech.edu/TAP/sync?query=select+*+from+ps+where+…",
+    "params": [
+      {
+        "n": "query",
+        "t": "ADQL",
+        "d": "TAP query (select * from ps where…)",
+        "req": 1
+      }
+    ],
+    "sampleRequest": "SELECT pl_name, pl_eqt, pl_orbsdep, pl_rade FROM ps WHERE pl_rade > 1 ORDER BY pl_orbsdep DESC",
+    "sampleResponse": "{\n  \"pl_name\": \"K2-18 b\",\n  \"pl_eqt\": 265,\n  \"pl_rade\": 2.61,\n  \"pl_orbsdep\": 33\n}\n… 5,000+ rows",
+    "mcpTools": [
+      "query_exoplanets",
+      "find_habitable_exoplanets"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.8,
+    "downloads": 156000,
+    "long": "Caltech/IPAC archive for NASA. TAP/ADQL + REST. Includes confirmed planets, TOIs (Kepler/TESS candidates), spectra, light curves."
+  },
+  {
+    "id": "nasa-images",
+    "title": "NASA Image & Video Library",
+    "agency": "NASA",
+    "theme": [
+      "Images & Media",
+      "Research & Tech"
+    ],
+    "description": "Hundreds of thousands of NASA photos, videos & audio across missions. Full metadata, collections API, CC-BY.",
+    "keywords": [
+      "images",
+      "video",
+      "library",
+      "photos",
+      "archive",
+      "missions",
+      "collection"
+    ],
+    "concepts": [
+      "nasa images video library archive media"
+    ],
+    "endpoint": "https://images-api.nasa.gov/search?q=",
+    "params": [
+      {
+        "n": "q",
+        "t": "string",
+        "d": "Search term",
+        "req": 1
+      },
+      {
+        "n": "media_type",
+        "t": "enum",
+        "d": "image/video/audio",
+        "req": 0
+      },
+      {
+        "n": "year_start/year_end",
+        "t": "int",
+        "d": "Year filter",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET /search?q=Artemis&media_type=image&page_size=5",
+    "sampleResponse": "{\n  \"collection\": {\n    \"metadata\": {\"total_hits\": 2843},\n    \"items\": [{\"data\": [{\n      \"title\": \"Artemis II crew\",\n      \"nasa_id\": \"KSC-2024\",\n      \"date_created\": \"2024-…\",\n      \"description\": \"…\"\n    }]}]\n  }\n}",
+    "mcpTools": [
+      "search_nasa_media",
+      "get_media_details"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.8,
+    "downloads": 312000,
+    "long": "images.nasa.gov — powerful search API with collections, assets, captions. Powers NASA Image of the Day, mission galleries & Wikipedia."
+  },
+  {
+    "id": "nasa-firms",
+    "title": "Fire Information for Resource Management System",
+    "agency": "NASA",
+    "theme": [
+      "Earth Science",
+      "Climate",
+      "Earth Observation"
+    ],
+    "description": "Near-real-time global fire detection & thermal anomalies from MODIS/VIIRS. Used for wildfires, deforestation, air quality.",
+    "keywords": [
+      "fire",
+      "wildfire",
+      "forest",
+      "burn",
+      "thermal",
+      "hotspots",
+      "viirs",
+      "modis"
+    ],
+    "concepts": [
+      "fire information resource management thermal anomaly"
+    ],
+    "endpoint": "https://firms.modaps.eosdis.nasa.gov/api",
+    "params": [
+      {
+        "n": "source",
+        "t": "VIIRS_SNPP_NRT",
+        "d": "Source",
+        "req": 1
+      },
+      {
+        "n": "bbox",
+        "t": "minx,miny,maxx,maxy",
+        "d": "Bounding box",
+        "req": 1
+      },
+      {
+        "n": "day_range",
+        "t": "1-10",
+        "d": "Days back",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET /api/area/csv/MAP_KEY/VIIRS_SNPP_NRT/world/1",
+    "sampleResponse": "country_code,latitude,longitude,brightness,scan,track,acq_time,satellite,confidence,version,bright_ti4,nominal,date,jday\nUS,38.2,-97.1,312.5,1.2,1.1,0130,NPP,78,6.1,320.5,1,2026-11-06,310",
+    "mcpTools": [
+      "get_active_fires",
+      "query_fire_hotspots"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.6,
+    "downloads": 94000,
+    "long": "FIRMS — LANCE/EOSDIS. CSV/JSON/SHAPEFILE. ~375m–1km resolution, near-real-time (<3h). Essential for disaster & climate apps."
+  },
+  {
+    "id": "nasa-donki",
+    "title": "Space Weather Database (DONKI)",
+    "agency": "NASA",
+    "theme": [
+      "Space Weather",
+      "Sun & Heliophysics"
+    ],
+    "description": "Coronal mass ejections, solar flares, geomagnetic storms, SEP & shock data from CCMC. Forecast & historical.",
+    "keywords": [
+      "space",
+      "weather",
+      "solar",
+      "flare",
+      "coronal",
+      "mass",
+      "ejection",
+      "geomagnetic",
+      "storm",
+      "donki",
+      "cme"
+    ],
+    "concepts": [
+      "space weather donki coronal mass ejection solar flare"
+    ],
+    "endpoint": "https://api.nasa.gov/DONKI/FLR",
+    "params": [
+      {
+        "n": "startDate",
+        "t": "YYYY-MM-DD",
+        "d": "Start",
+        "req": 1
+      },
+      {
+        "n": "endDate",
+        "t": "YYYY-MM-DD",
+        "d": "End",
+        "req": 1
+      }
+    ],
+    "sampleRequest": "GET /DONKI/FLR?startDate=2026-11-01&endDate=2026-11-07&api_key=DEMO_KEY",
+    "sampleResponse": "[\n  {\n    \"flrID\": \"2026-11-03T…\",\n    \"beginTime\": \"2026-11-03T02:12:00Z\",\n    \"peakTime\": \"2026-11-03T02:34:00Z\",\n    \"classType\": \"M4.2\",\n    \"sourceLocation\": \"S12E40\",\n    \"activeRegionNum\": 14910,\n    \"linkedEvents\": []\n  }\n]",
+    "mcpTools": [
+      "get_solar_flares",
+      "get_cmes",
+      "get_geomagnetic_storms"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.7,
+    "downloads": 76000,
+    "long": "DONKI = Database Of Notifications, Knowledge and Information. Flare, CME, ISS, SEP, IMAP, notifications, HST, RPG, RBE endpoints."
+  },
+  {
+    "id": "nasa-artemis",
+    "title": "Artemis Program Data",
+    "agency": "NASA",
+    "theme": [
+      "Moon",
+      "Human Spaceflight"
+    ],
+    "description": "Artemis I/II/III mission data: trajectories, Orion, lunar Gateway, suits, ground systems & science.",
+    "keywords": [
+      "artemis",
+      "orion",
+      "moon",
+      "lunar",
+      "gateway",
+      "mission",
+      "trajectory"
+    ],
+    "concepts": [
+      "artemis program orion lunar gateway moon"
+    ],
+    "endpoint": "https://images-api.nasa.gov/search?q=Artemis",
+    "params": [
+      {
+        "n": "q",
+        "t": "artemis",
+        "d": "Mission phase",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET /search?q=Artemis II Orion crew&page_size=3",
+    "sampleResponse": "{\n  \"collection\": {\"items\": [{\n    \"data\": [{\"title\": \"Artemis II crew\", \"nasa_id\": \"…\"}]\n  }]}",
+    "mcpTools": [
+      "search_artemis"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.8,
+    "downloads": 67000,
+    "long": "Artemis is NASA's lunar return program. Portal links mission pages, trajectory maps, EVA data (via PDS), & NTRS reports."
+  },
+  {
+    "id": "nasa-landsat",
+    "title": "Landsat Science",
+    "agency": "NASA",
+    "theme": [
+      "Earth Observation",
+      "Earth Science",
+      "Climate"
+    ],
+    "description": "50+ years of 30m multispectral Earth imagery (Landsat 1–9). Agriculture, land cover, climate change.",
+    "keywords": [
+      "landsat",
+      "earth",
+      "observation",
+      "land",
+      "cover",
+      "agriculture",
+      "imagery"
+    ],
+    "concepts": [
+      "landsat science earth observation multispectral"
+    ],
+    "endpoint": "https://landsat.gsfc.nasa.gov/",
+    "params": [
+      {
+        "n": "sensor",
+        "t": "Landsat 8/9 OLI",
+        "d": "Sensor",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET landsat.gsfc.nasa.gov — browse by path/row/date",
+    "sampleResponse": "exports: GeoTIFF, browse JPG, scene metadata",
+    "mcpTools": [
+      "search_landsat_scenes"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.6,
+    "downloads": 112000,
+    "long": "USGS/NASA Landsat — longest-running Earth-observation (1972→). Open data via USGS EROS / EarthExplorer."
+  },
+  {
+    "id": "nasa-exoplanet-watch",
+    "title": "Exoplanet Watch & TESS",
+    "agency": "NASA",
+    "theme": [
+      "Exoplanets",
+      "Astronomy"
+    ],
+    "description": "TESS & Kepler transit candidates, TOIs, and citizen-science follow-up observations.",
+    "keywords": [
+      "tess",
+      "kepler",
+      "transit",
+      "candidate",
+      "toi",
+      "exoplanet"
+    ],
+    "concepts": [
+      "tess kepler transit candidates"
+    ],
+    "endpoint": "https://exoplanetarchive.ipac.caltech.edu/",
+    "params": [],
+    "sampleRequest": "",
+    "sampleResponse": "",
+    "mcpTools": [
+      "get_tess_candidates"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.5,
+    "downloads": 41000
+  },
+  {
+    "id": "nasa-planetary",
+    "title": "Planetary Data System (PDS)",
+    "agency": "NASA",
+    "theme": [
+      "Planetary Science",
+      "Research & Tech"
+    ],
+    "description": "Archival data for all NASA planetary missions — geometry, labels, bundles, NASA PDS Atlas.",
+    "keywords": [
+      "planetary",
+      "data",
+      "system",
+      "pds",
+      "archive",
+      "orbits",
+      "spectroscopy"
+    ],
+    "concepts": [
+      "planetary data system archive mission"
+    ],
+    "endpoint": "https://naif.jpl.nasa.gov/",
+    "params": [
+      {
+        "n": "bundle",
+        "t": "string",
+        "d": "Bundle label",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET pds.nasa.gov — search by mission / instrument / target",
+    "sampleResponse": "{\n  \"bundle\": \"…\",\n  \"target\": \"Mars\",\n  \"instruments\": […]\n}",
+    "mcpTools": [
+      "search_pds"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.4,
+    "downloads": 29000,
+    "long": "PDS is the NASA archive standard (since 1989). Data volumes, SPICE kernels, raw + calibrated products."
+  },
+  {
+    "id": "nasa-gesdisc",
+    "title": "GES DISC Earth Science Data",
+    "agency": "NASA",
+    "theme": [
+      "Earth Science",
+      "Climate"
+    ],
+    "description": "Atmosphere, hydrology, cryosphere, ocean color, precipitation & more. OPeNDAP + subsets (AURA, MERRA, TRMM/GPM).",
+    "keywords": [
+      "earth",
+      "data",
+      "ges",
+      "disc",
+      "atmosphere",
+      "ocean",
+      "precipitation",
+      "climate"
+    ],
+    "concepts": [
+      "ges disc earth science atmosphere ocean"
+    ],
+    "endpoint": "https://disc.gsfc.nasa.gov/",
+    "params": [
+      {
+        "n": "dataset",
+        "t": "string",
+        "d": "Dataset short name",
+        "req": 1
+      }
+    ],
+    "sampleRequest": "GET disc.gsfc.nasa.gov — OPeNDAP / subsetting",
+    "sampleResponse": "subset: variable, region, time → NetCDF / CSV",
+    "mcpTools": [
+      "subset_earth_data"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.5,
+    "downloads": 38000,
+    "long": "Goddard Earth Sciences Data & Information Services Center. Huge NetCDF/HDF archives with OPeNDAP access."
+  },
+  {
+    "id": "nasa-ntrs",
+    "title": "NASA Technical Reports Server (NTRS)",
+    "agency": "NASA",
+    "theme": [
+      "Research & Tech"
+    ],
+    "description": "NASA research papers, reports, patents & presentations. Full-text search, STI Repository.",
+    "keywords": [
+      "ntrs",
+      "research",
+      "papers",
+      "reports",
+      "patents",
+      "technical"
+    ],
+    "concepts": [
+      "ntrs technical reports research"
+    ],
+    "endpoint": "https://ntrs.nasa.gov/api/citations/search",
+    "params": [
+      {
+        "n": "q",
+        "t": "string",
+        "d": "Search term",
+        "req": 1
+      }
+    ],
+    "sampleRequest": "POST /api/citations/search { \"q\": \"propulsion\" }",
+    "sampleResponse": "{\n  \"docs\": [{\"id\": \"…\", \"title\": \"…propulsion…\", \"downloadCount\": 42}]\n}",
+    "mcpTools": [
+      "search_ntrs_papers"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.6,
+    "downloads": 53000,
+    "long": "NTRS — NASA STI Repository. 400k+ docs, citation + download counts, filters by center/year/subject."
+  },
+  {
+    "id": "nasa-climate",
+    "title": "NASA Climate Data & Portal",
+    "agency": "NASA",
+    "theme": [
+      "Climate",
+      "Earth Science"
+    ],
+    "description": "Climate indicators, GISTEMP, sea level, carbon cycle & visualizations.",
+    "keywords": [
+      "climate",
+      "sea",
+      "level",
+      "gistemp",
+      "indicators",
+      "earth"
+    ],
+    "concepts": [
+      "climate data gistemp sea level"
+    ],
+    "endpoint": "https://climate.nasa.gov/",
+    "params": [
+      {
+        "n": "indicator",
+        "t": "enum",
+        "d": "temperature/sea level/CO2",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET climate.nasa.gov — Vital Signs feeds",
+    "sampleResponse": "{\n  \"indicator\": \"global_sea_level\",\n  \"series\": […]\n}",
+    "mcpTools": [
+      "get_climate_indicator"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.7,
+    "downloads": 88000,
+    "long": "NASA Scientific Visualization Studio (SVS) + Goddard Institute. Global climate indicators updated monthly."
+  },
+  {
+    "id": "nasa-ephemeris",
+    "title": "JPL Horizons & Small-Body Database",
+    "agency": "NASA",
+    "theme": [
+      "Asteroids & Comets",
+      "Planetary Science",
+      "Astrophysics"
+    ],
+    "description": "Precise ephemeris for planets, asteroids, comets & spacecraft. SPICE kernels.",
+    "keywords": [
+      "ephemeris",
+      "orbit",
+      "jpl",
+      "horizons",
+      "small",
+      "body",
+      "database",
+      "comet",
+      "asteroid",
+      "position"
+    ],
+    "concepts": [
+      "jpl horizons ephemeris small body"
+    ],
+    "endpoint": "https://ssd.jpl.nasa.gov/api/sbdb.api",
+    "params": [
+      {
+        "n": "sstr",
+        "t": "string",
+        "d": "Object (name/designation)",
+        "req": 1
+      }
+    ],
+    "sampleRequest": "GET /api/sbdb.api?sstr=433&sb-kind=a",
+    "sampleResponse": "{\n  \"object\": {\"fullname\": \"433 Eros\", \"des\": \"433\"},\n  \"orbit\": {\"i\": 10.8, \"e\": 0.22, \"a\": 1.45},\n  \"approach_data\": []\n}",
+    "mcpTools": [
+      "lookup_small_body",
+      "get_ephemeris"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.9,
+    "downloads": 143000,
+    "long": "JPL Small-Body Database + Horizons — gold standard for asteroid/comet orbits, close approaches & ephemeris."
+  },
+  {
+    "id": "esa-hubble",
+    "title": "Hubble Space Telescope Archive",
+    "agency": "ESA",
+    "theme": [
+      "Astrophysics",
+      "Astronomy",
+      "Images & Media"
+    ],
+    "description": "Hubble science & public imagery (ESA/Hubble), Mikulski Archive (MAST) — spectra, images, light curves.",
+    "keywords": [
+      "hubble",
+      "telescope",
+      "archive",
+      "mast",
+      "spectra",
+      "galaxy"
+    ],
+    "concepts": [
+      "hubble space telescope archive mast"
+    ],
+    "endpoint": "https://mast.stsci.edu/",
+    "params": [
+      {
+        "n": "target",
+        "t": "string",
+        "d": "Target name",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET mast.stsci.edu — search by target/coordinates",
+    "sampleResponse": "{\n  \"obs\": [{\"target\": \"Carina Nebula\", \"type\": \"science\"}]\n}",
+    "mcpTools": [
+      "search_hubble_archive"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.8,
+    "downloads": 91000,
+    "long": "ESA/Hubble + STScI MAST. Public data after proprietary period. HSTView, browse images."
+  },
+  {
+    "id": "esa-gaia",
+    "title": "Gaia Mission — Star Catalog",
+    "agency": "ESA",
+    "theme": [
+      "Astrophysics",
+      "Astronomy"
+    ],
+    "description": "Billion-star catalog: positions, parallaxes, proper motions, photometry. 1.8B+ sources (DR3).",
+    "keywords": [
+      "gaia",
+      "stars",
+      "catalog",
+      "parallax",
+      "astrometry",
+      "billion"
+    ],
+    "concepts": [
+      "gaia mission star catalog parallax"
+    ],
+    "endpoint": "https://gea.esac.esa.int/archive/",
+    "params": [
+      {
+        "n": "query",
+        "t": "ADQL",
+        "d": "ADQL query",
+        "req": 1
+      }
+    ],
+    "sampleRequest": "SELECT TOP 10 source_id, ra, dec, parallax FROM gaiadr3.gaia_source",
+    "sampleResponse": "source_id,ra,dec,parallax\n…",
+    "mcpTools": [
+      "query_gaia_stars"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.9,
+    "downloads": 124000,
+    "long": "ESA Gaia — precise 3D map of the Milky Way. ADQL/TAP + CSV/VOTable. DR3/DR4 releases."
+  },
+  {
+    "id": "esa-copernicus",
+    "title": "Copernicus Earth Observation (Sentinels)",
+    "agency": "ESA",
+    "theme": [
+      "Earth Observation",
+      "Earth Science",
+      "Climate"
+    ],
+    "description": "Sentinel-1/2/3/5P open Earth data: land, ocean, atmosphere, emergencies (EMS). 10m Sentinel-2.",
+    "keywords": [
+      "copernicus",
+      "sentinel",
+      "earth",
+      "observation",
+      "open",
+      "data",
+      "land",
+      "ocean"
+    ],
+    "concepts": [
+      "copernicus sentinel earth observation"
+    ],
+    "endpoint": "https://scihub.copernicus.eu/",
+    "params": [
+      {
+        "n": "bbox",
+        "t": "WKT",
+        "d": "Region",
+        "req": 0
+      },
+      {
+        "n": "sensor",
+        "t": "S2",
+        "d": "Sentinel sensor",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET scihub.copernicus.eu — OpenSearch / OData",
+    "sampleResponse": "{\n  \"feed\": {\"entry\": [{\"title\": \"S2A_…\", \"summary\": \"…\"}]}\n}",
+    "mcpTools": [
+      "search_copernicus_scenes"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.7,
+    "downloads": 167000,
+    "long": "EU Copernicus — free & open Earth data. SciHub + Copernicus Data Space Ecosystem (CDSE) API."
+  },
+  {
+    "id": "esa-webb",
+    "title": "James Webb Space Telescope (JWST)",
+    "agency": "ESA",
+    "theme": [
+      "Astrophysics",
+      "Astronomy",
+      "Images & Media"
+    ],
+    "description": "Webb public imagery, science data via MAST, STScI. Infrared deep-field data.",
+    "keywords": [
+      "webb",
+      "jwst",
+      "deep",
+      "field",
+      "infrared",
+      "telescope"
+    ],
+    "concepts": [
+      "webb space telescope jwst infrared deep field"
+    ],
+    "endpoint": "https://webbtelescope.org/",
+    "params": [
+      {
+        "n": "target",
+        "t": "string",
+        "d": "Target",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET webbtelescope.org + MAST",
+    "sampleResponse": "{\n  \"title\": \"Deep Field\",\n  \"image\": \"…jpg\",\n  \"description\": \"…\"\n}",
+    "mcpTools": [
+      "search_webb_archive"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.9,
+    "downloads": 201000,
+    "long": "ESA/NASA/CSA Webb. Science data public after 12-month proprietary (MAST). Public images immediate."
+  },
+  {
+    "id": "esa-euclid",
+    "title": "Euclid Dark Universe Survey",
+    "agency": "ESA",
+    "theme": [
+      "Astrophysics",
+      "Exoplanets"
+    ],
+    "description": "Euclid wide-field visible/NIR survey — dark matter, dark energy, galaxy morphology.",
+    "keywords": [
+      "euclid",
+      "dark",
+      "matter",
+      "dark",
+      "energy",
+      "galaxy",
+      "survey"
+    ],
+    "concepts": [
+      "euclid dark universe survey"
+    ],
+    "endpoint": "https://euclid.esac.esa.int/",
+    "params": [
+      {
+        "n": "survey",
+        "t": "Q1/Q2",
+        "d": "Release",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET euclid.esac.esa.int — archive releases",
+    "sampleResponse": "{\n  \"release\": \"Q1\",\n  \"galaxies\": 4.2e6,\n  \"lensing\": 17e6\n}",
+    "mcpTools": [
+      "search_euclid_data"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.6,
+    "downloads": 33000,
+    "long": "ESA Euclid (2023→). Public releases include images, spectra, catalogs."
+  },
+  {
+    "id": "jaxa-earth",
+    "title": "JAXA Earth Observation (EORC/G-Portal)",
+    "agency": "JAXA",
+    "theme": [
+      "Earth Observation",
+      "Earth Science",
+      "Climate"
+    ],
+    "description": "ALOS, GCOM, Himawari, GOSAT, Earth-observation open data & quicklooks.",
+    "keywords": [
+      "jaxa",
+      "earth",
+      "observation",
+      "alos",
+      "gcom",
+      "himawari",
+      "gosat"
+    ],
+    "concepts": [
+      "jaxa earth observation alos gcom"
+    ],
+    "endpoint": "https://www.eorc.jaxa.jp/",
+    "params": [
+      {
+        "n": "sensor",
+        "t": "ALOS-2",
+        "d": "Sensor",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET eorc.jaxa.jp — search by region/date",
+    "sampleResponse": "{\n  \"scene\": \"ALOS2_…\",\n  \"quicklook\": \"…jpg\"\n}",
+    "mcpTools": [
+      "search_jaxa_scenes"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.5,
+    "downloads": 29000,
+    "long": "JAXA Earth Observation Research Center (EORC). G-Portal + JAXA Earth data portal."
+  },
+  {
+    "id": "jaxa-himawari",
+    "title": "Himawari-8/9 Weather Imagery",
+    "agency": "JAXA",
+    "theme": [
+      "Earth Observation",
+      "Space Weather"
+    ],
+    "description": "High-cadence full-disc Asia-Pacific weather imagery (2.5-min RAPID sector).",
+    "keywords": [
+      "himawari",
+      "weather",
+      "satellite",
+      "asia",
+      "pacific",
+      "full",
+      "disc"
+    ],
+    "concepts": [
+      "himawari weather imagery"
+    ],
+    "endpoint": "https://himawari.as.csiro.au/",
+    "params": [
+      {
+        "n": "band",
+        "t": "B03/B13…",
+        "d": "Band",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET himawari.as.csiro.au — browse by time/band",
+    "sampleResponse": "image: full-disc PNG/JPEG\n+ Himawari User's Guide",
+    "mcpTools": [
+      "get_himawari_image"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.6,
+    "downloads": 67000,
+    "long": "JMA/JAXA Himawari — geostationary weather satellite over Asia-Pacific. Himawari Standard Data."
+  },
+  {
+    "id": "isro-bhuvan",
+    "title": "Bhuvan — ISRO Geoportal",
+    "agency": "ISRO",
+    "theme": [
+      "Earth Observation",
+      "Earth Science"
+    ],
+    "description": "ISRO Bhuvan — Indian remote-sensing geoportal: Bhuvan, Bhoosat, thematic maps, APIs.",
+    "keywords": [
+      "bhuvan",
+      "isro",
+      "india",
+      "remote",
+      "sensing",
+      "geoportal",
+      "maps"
+    ],
+    "concepts": [
+      "bhuvan isro geoportal"
+    ],
+    "endpoint": "https://bhuvan.nrsc.gov.in/",
+    "params": [
+      {
+        "n": "layer",
+        "t": "string",
+        "d": "Layer",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET bhuvan.nrsc.gov.in — WMS/WFS + REST",
+    "sampleResponse": "{\n  \"layers\": […]\n}",
+    "mcpTools": [
+      "search_bhuvan_layers"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.3,
+    "downloads": 21000,
+    "long": "Bhuvan (NRSC) — India's geoportal, 10m–50m imagery, 3D views, thematic maps."
+  },
+  {
+    "id": "isro-mosdac",
+    "title": "MOSDAC — ISRO Weather & Ocean",
+    "agency": "ISRO",
+    "theme": [
+      "Earth Observation",
+      "Climate",
+      "Earth Science"
+    ],
+    "description": "INSAT-3D/3DR weather, OCEANSAT ocean color, scatterometer wind, CYGNSS.",
+    "keywords": [
+      "mosdac",
+      "insat",
+      "weather",
+      "oceansat",
+      "ocean",
+      "color"
+    ],
+    "concepts": [
+      "mosdac insat oceansat weather"
+    ],
+    "endpoint": "https://www.mosdac.gov.in/",
+    "params": [
+      {
+        "n": "satellite",
+        "t": "INSAT-3DR/OCEANSAT-3",
+        "d": "Satellite",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET mosdac.gov.in — product catalog",
+    "sampleResponse": "{\n  \"product\": \"INSAT-3DR_IMAGERY\",\n  \"date\": \"2026-11-06\"\n}",
+    "mcpTools": [
+      "search_mosdac_products"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.4,
+    "downloads": 17000,
+    "long": "Meteorological & Oceanic Satellite Data Archival Centre — INSAT/OCEANSAT products."
+  },
+  {
+    "id": "csa-radarsat",
+    "title": "RADARSAT & Canadian Space Data",
+    "agency": "CSA",
+    "theme": [
+      "Earth Observation",
+      "Earth Science"
+    ],
+    "description": "RADARSAT-2/RCM SAR data, satellite imagery, Arctic & maritime monitoring.",
+    "keywords": [
+      "radarsat",
+      "sar",
+      "canada",
+      "radar",
+      "maritime",
+      "arctic"
+    ],
+    "concepts": [
+      "radarsat canadian space radar"
+    ],
+    "endpoint": "https://www.asc-csa.gc.ca/",
+    "params": [
+      {
+        "n": "satellite",
+        "t": "RADARSAT-2/RCM",
+        "d": "Satellite",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET asc-csa.gc.ca — EO data portal",
+    "sampleResponse": "{\n  \"scene\": \"RS2_…\",\n  \"polarization\": \"HH\"\n}",
+    "mcpTools": [
+      "search_radarsat"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.4,
+    "downloads": 12000,
+    "long": "Canadian Space Agency — RADARSAT Constellation Mission (RCM) — SAR for Arctic, oceans & disaster."
+  },
+  {
+    "id": "cnsa-data",
+    "title": "CNSA Open Data (China)",
+    "agency": "CNSA",
+    "theme": [
+      "Earth Observation",
+      "Planetary Science"
+    ],
+    "description": "GF, HJ, ZY Earth satellites, Chang'e lunar, Tianwen Mars — limited public catalogs.",
+    "keywords": [
+      "china",
+      "cnsa",
+      "chang",
+      "e",
+      "tianwen",
+      "lunar",
+      "mars",
+      "gaofen"
+    ],
+    "concepts": [
+      "cnsa china lunar mars chang e"
+    ],
+    "endpoint": "https://www.cnsa.gov.cn/",
+    "params": [
+      {
+        "n": "mission",
+        "t": "Chang'e/Tianwen/GF",
+        "d": "Mission",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET cnsa.gov.cn — mission data portals",
+    "sampleResponse": "{\n  \"mission\": \"Chang'e-5\",\n  \"samples_returned\": true\n}",
+    "mcpTools": [
+      "search_cnsa_data"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.1,
+    "downloads": 9000,
+    "long": "CNSA public data policy is selective; Chang'e lunar science & GF Earth data via CEDA/China GEOSS."
+  },
+  {
+    "id": "asi-cosmo",
+    "title": "ASI COSMO-SkyMed & Italian Data",
+    "agency": "ASI",
+    "theme": [
+      "Earth Observation",
+      "Earth Science"
+    ],
+    "description": "COSMO-SkyMed SAR, PRISMA hyperspectral, AGILE gamma-ray.",
+    "keywords": [
+      "asi",
+      "cosmo",
+      "skymed",
+      "sar",
+      "prisma",
+      "hyperspectral"
+    ],
+    "concepts": [
+      "asi cosmo skymed prisma"
+    ],
+    "endpoint": "https://www.asi.it/",
+    "params": [
+      {
+        "n": "satellite",
+        "t": "COSMO-SkyMed/PRISMA",
+        "d": "Satellite",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET asi.it — open data / e-Geos",
+    "sampleResponse": "{\n  \"product\": \"CSK_…\"\n}",
+    "mcpTools": [
+      "search_asi_data"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.4,
+    "downloads": 11000,
+    "long": "Italian Space Agency (ASI) + e-Geos (ASI/Telespazio) — COSMO-SkyMed SAR open data."
+  },
+  {
+    "id": "dlr-tdm",
+    "title": "DLR TanDEM-X & TerraSAR-X",
+    "agency": "DLR",
+    "theme": [
+      "Earth Observation",
+      "Earth Science"
+    ],
+    "description": "TanDEM-X global DEM (12m), TerraSAR-X SAR, ENMAP hyperspectral, DLR Earth data.",
+    "keywords": [
+      "dlr",
+      "tandem",
+      "x",
+      "terrasar",
+      "sar",
+      "dem",
+      "germany"
+    ],
+    "concepts": [
+      "dlr tandem x terrasar"
+    ],
+    "endpoint": "https://www.dlr.de/",
+    "params": [
+      {
+        "n": "product",
+        "t": "TanDEM-X DEM",
+        "d": "Product",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET dlr.de — EOC geodata portal",
+    "sampleResponse": "{\n  \"product\": \"TanDEM-X 90m DEM\",\n  \"mosaic\": \"…\"\n}",
+    "mcpTools": [
+      "search_dlr_data"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.6,
+    "downloads": 23000,
+    "long": "German Aerospace Center (DLR) Earth Observation Center — open DEM & SAR since 2015."
+  },
+  {
+    "id": "eumetsat",
+    "title": "EUMETSAT Weather Satellites",
+    "agency": "EUMETSAT",
+    "theme": [
+      "Earth Observation",
+      "Space Weather"
+    ],
+    "description": "Meteosat, Metop, Sentinel-3/4/5/6 weather & climate data, EUMETSAT Data Centre.",
+    "keywords": [
+      "eumetsat",
+      "meteosat",
+      "metop",
+      "weather",
+      "climate"
+    ],
+    "concepts": [
+      "eumetsat meteosat metop"
+    ],
+    "endpoint": "https://www.eumetsat.int/",
+    "params": [
+      {
+        "n": "satellite",
+        "t": "Meteosat/Metop",
+        "d": "Satellite",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET eumetsat.int — Data Centre",
+    "sampleResponse": "{\n  \"product\": \"MSG_SEVIRI\",\n  \"level\": \"L1.5\"\n}",
+    "mcpTools": [
+      "search_eumetsat"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.6,
+    "downloads": 31000,
+    "long": "European weather satellite organisation — MSG/MTG, Metop, Sentinel synergy."
+  },
+  {
+    "id": "kari",
+    "title": "KARI — Korea Aerospace Data",
+    "agency": "KARI",
+    "theme": [
+      "Earth Observation",
+      "Planetary Science"
+    ],
+    "description": "KOMPSAT, DANURI lunar orbiter, KPLO, KARI open data.",
+    "keywords": [
+      "kari",
+      "kompsat",
+      "danuri",
+      "lunar",
+      "korea"
+    ],
+    "concepts": [
+      "kari kompsat danuri"
+    ],
+    "endpoint": "https://www.kari.re.kr/",
+    "params": [
+      {
+        "n": "satellite",
+        "t": "KOMPSAT/DANURI",
+        "d": "Satellite",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET kari.re.kr — data portal",
+    "sampleResponse": "{\n  \"satellite\": \"KOMPSAT-3\",\n  \"resolution\": \"0.5m\"\n}",
+    "mcpTools": [
+      "search_kari_data"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.3,
+    "downloads": 8000,
+    "long": "Korea Aerospace Research Institute — KOMPSAT geoportal + DANURI lunar science (from 2023)."
+  },
+  {
+    "id": "nasa-spice",
+    "title": "SPICE Kernels & Navigation",
+    "agency": "NASA",
+    "theme": [
+      "Research & Tech",
+      "Planetary Science"
+    ],
+    "description": "SPICE ephemeris, SCLK, FK, leapseconds — spacecraft & planet positions.",
+    "keywords": [
+      "spice",
+      "kernels",
+      "ephemeris",
+      "navigation",
+      "spacecraft"
+    ],
+    "concepts": [
+      "spice kernels navigation ephemeris"
+    ],
+    "endpoint": "https://naif.jpl.nasa.gov/pub/naif/",
+    "params": [
+      {
+        "n": "kernel",
+        "t": "SPK/CK/FK",
+        "d": "Kernel type",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET naif.jpl.nasa.gov/pub/naif/ — NAIF archives",
+    "sampleResponse": "{\n  \"kernel\": \"de440.bsp\",\n  \"bodies\": [\"399\",\"301\"]\n}",
+    "mcpTools": [
+      "list_spice_kernels"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.7,
+    "downloads": 45000,
+    "long": "NAIF SPICE — planetary & spacecraft ephemeris files (bsp, bc). CSPICE/CSPICE tools."
+  },
+  {
+    "id": "nasa-sdo",
+    "title": "Solar Dynamics Observatory (SDO)",
+    "agency": "NASA",
+    "theme": [
+      "Sun & Heliophysics",
+      "Space Weather"
+    ],
+    "description": "SDO/AIA solar imagery in 10 wavelengths — daily sun movies, flare watching.",
+    "keywords": [
+      "sdo",
+      "solar",
+      "dynamics",
+      "observatory",
+      "sun",
+      "aia",
+      "flare"
+    ],
+    "concepts": [
+      "sdo solar dynamics observatory"
+    ],
+    "endpoint": "https://sdo.gsfc.nasa.gov/",
+    "params": [
+      {
+        "n": "channel",
+        "t": "AIA 171/193/304",
+        "d": "Channel",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET sdo.gsfc.nasa.gov — browse / AIA viewer",
+    "sampleResponse": "{\n  \"channel\": \"AIA 193\",\n  \"date\": \"2026-11-06\",\n  \"image\": \"…jpg\"\n}",
+    "mcpTools": [
+      "get_sdo_image",
+      "get_sdo_movie"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.7,
+    "downloads": 58000,
+    "long": "SDO (2010→) — ultra-high cadence solar imaging. SDO Data Portal + JSOC."
+  },
+  {
+    "id": "nasa-iss",
+    "title": "ISS Telemetry & Tracking",
+    "agency": "NASA",
+    "theme": [
+      "Human Spaceflight",
+      "Research & Tech",
+      "Earth Observation"
+    ],
+    "description": "ISS position, crew, experiments, HDEV earth video, spot-the-station passes.",
+    "keywords": [
+      "iss",
+      "international",
+      "space",
+      "station",
+      "tracking",
+      "telemetry",
+      "crew"
+    ],
+    "concepts": [
+      "iss international space station"
+    ],
+    "endpoint": "https://api.wheretheiss.at/v1/satellites/25544",
+    "params": [
+      {
+        "n": "units",
+        "t": "km",
+        "d": "Units",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET /v1/satellites/25544",
+    "sampleResponse": "{\n  \"name\": \"ISS (ZARYA)\",\n  \"latitude\": 12.4,\n  \"longitude\": -84.2,\n  \"altitude\": 412.5,\n  \"velocity\": 7.66\n}",
+    "mcpTools": [
+      "get_iss_position",
+      "get_iss_passes"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.8,
+    "downloads": 176000,
+    "long": "ISS live position (Whence the ISS at / JPL), crew manifest (HowDidiDo), HDEV video, SpotTheStation predictions."
+  },
+  {
+    "id": "nasa-moon",
+    "title": "Lunar Reconnaissance Orbiter (LRO)",
+    "agency": "NASA",
+    "theme": [
+      "Moon",
+      "Planetary Science"
+    ],
+    "description": "LRO global lunar maps: LOLA topography, LROC mosaics, Diviner temps. PDS Geosciences Node.",
+    "keywords": [
+      "lunar",
+      "reconnaissance",
+      "orbiter",
+      "lro",
+      "moon",
+      "topography",
+      "map"
+    ],
+    "concepts": [
+      "lunar reconnaissance orbiter moon map"
+    ],
+    "endpoint": "https://lroc.sese.asu.edu/",
+    "params": [
+      {
+        "n": "instrument",
+        "t": "LROC/LOLA/Diviner",
+        "d": "Instrument",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET lroc.sese.asu.edu — LROC QuickMap",
+    "sampleResponse": "{\n  \"mosaic\": \"LRO WAC global\",\n  \"resolution\": \"100m\"\n}",
+    "mcpTools": [
+      "search_lro_data"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.5,
+    "downloads": 26000,
+    "long": "LRO (2009→) — high-res Moon atlas via ASU (LROC) & PDS. Lunar QuickMap."
+  },
+  {
+    "id": "nasa-wind",
+    "title": "Ocean Color & Sea Surface (MODIS)",
+    "agency": "NASA",
+    "theme": [
+      "Earth Science",
+      "Climate",
+      "Earth Observation"
+    ],
+    "description": "Ocean color (chlorophyll), SST, PAR, winds — SeaWiFS/MODIS/VIIRS ocean products.",
+    "keywords": [
+      "ocean",
+      "color",
+      "chlorophyll",
+      "sea",
+      "surface",
+      "temperature",
+      "modis"
+    ],
+    "concepts": [
+      "ocean color sea surface temperature"
+    ],
+    "endpoint": "https://oceancolor.gsfc.nasa.gov/",
+    "params": [
+      {
+        "n": "variable",
+        "t": "chlorophyll/SST",
+        "d": "Variable",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET oceancolor.gsfc.nasa.gov — OPeNDAP",
+    "sampleResponse": "{\n  \"variable\": \"chlorophyll_a\",\n  \"resolution\": \"4km\"\n}",
+    "mcpTools": [
+      "get_ocean_color"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.5,
+    "downloads": 34000,
+    "long": "Ocean Biology Processing Group (OBPG) — ocean color since 1997. Crucial for climate & fisheries."
+  },
+  {
+    "id": "nasa-icesat",
+    "title": "ICESat-2 Ice & Elevation",
+    "agency": "NASA",
+    "theme": [
+      "Earth Science",
+      "Climate",
+      "Earth Observation"
+    ],
+    "description": "Laser altimetry: ice sheets, sea ice, forest heights, topography. ATL06/08 products.",
+    "keywords": [
+      "icesat",
+      "2",
+      "ice",
+      "altimetry",
+      "laser",
+      "elevation",
+      "glacier"
+    ],
+    "concepts": [
+      "icesat 2 ice elevation altimetry"
+    ],
+    "endpoint": "https://icesat-2.gsfc.nasa.gov/",
+    "params": [
+      {
+        "n": "product",
+        "t": "ATL06/ATL08",
+        "d": "Product",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET icesat-2.gsfc.nasa.gov — NSIDC DAAC",
+    "sampleResponse": "{\n  \"track\": \"…\",\n  \"elevation_m\": 3204.5,\n  \"slope\": 0.02\n}",
+    "mcpTools": [
+      "get_icesat_elevation"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.6,
+    "downloads": 27000,
+    "long": "ICESat-2 (2018→) — photon-counting lidar. NSIDC/ORNL DAAC. Ice-sheet mass balance."
+  },
+  {
+    "id": "nasa-grace",
+    "title": "GRACE-FO Gravity & Water",
+    "agency": "NASA",
+    "theme": [
+      "Earth Science",
+      "Climate"
+    ],
+    "description": "Gravity field changes → groundwater, ocean mass, ice melt. GRACE-FO monthly solutions.",
+    "keywords": [
+      "grace",
+      "gravity",
+      "groundwater",
+      "ocean",
+      "mass",
+      "water",
+      "climate"
+    ],
+    "concepts": [
+      "grace gravity water mass"
+    ],
+    "endpoint": "https://grace.jpl.nasa.gov/",
+    "params": [
+      {
+        "n": "solution",
+        "t": "RL06",
+        "d": "Release",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET grace.jpl.nasa.gov — GRACEDaVis",
+    "sampleResponse": "{\n  \"field\": \"c20\",\n  \"trend_mm_yr\": -12.5\n}",
+    "mcpTools": [
+      "get_grace_gravity"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.6,
+    "downloads": 19000,
+    "long": "GRACE/GRACE-FO (2002→) — twin-satellite gravimetry. NASA JPL + GFZ Potsdam."
+  },
+  {
+    "id": "nasa-sentinel",
+    "title": "NASA Earthdata — All Earth Science",
+    "agency": "NASA",
+    "theme": [
+      "Earth Science",
+      "Earth Observation",
+      "Climate"
+    ],
+    "description": "Single gateway to 30+ Earth-science DAACs: MODIS, ASTER, OCO-2, GPM, SMAP, SWOT…",
+    "keywords": [
+      "earthdata",
+      "earth",
+      "science",
+      "modis",
+      "aster",
+      "gpm",
+      "smap",
+      "swot"
+    ],
+    "concepts": [
+      "earthdata earth science gateway"
+    ],
+    "endpoint": "https://earthdata.nasa.gov/",
+    "params": [
+      {
+        "n": "dataset",
+        "t": "MODIS/GPM/SMAP…",
+        "d": "Dataset",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET earthdata.nasa.gov — CMR API",
+    "sampleResponse": "{\n  \"granules\": […],\n  \"format\": \"HDF5/NetCDF\"\n}",
+    "mcpTools": [
+      "search_earthdata"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.7,
+    "downloads": 220000,
+    "long": "Earthdata (EOSDIS) — CMR concept API + Harmony + LAADS. 2B+ granules. Login required for downloads (free)."
+  },
+  {
+    "id": "nasa-air-quality",
+    "title": "NASA Air Quality & TEMPO",
+    "agency": "NASA",
+    "theme": [
+      "Earth Science",
+      "Climate",
+      "Earth Observation"
+    ],
+    "description": "TEMPO (North America), TROPOMI air quality, NO2, O3, aerosols, fire smoke.",
+    "keywords": [
+      "air",
+      "quality",
+      "tempo",
+      "tropomi",
+      "no2",
+      "ozone",
+      "aerosol",
+      "air",
+      "pollution"
+    ],
+    "concepts": [
+      "air quality tempo tropomi"
+    ],
+    "endpoint": "https://tempo.gsfc.nasa.gov/",
+    "params": [
+      {
+        "n": "pollutant",
+        "t": "NO2/O3/HCHO",
+        "d": "Pollutant",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET tempo.gsfc.nasa.gov — TEMPO data",
+    "sampleResponse": "{\n  \"pollutant\": \"NO2\",\n  \"column_ppb\": 1.2e15\n}",
+    "mcpTools": [
+      "get_air_quality"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.5,
+    "downloads": 15000,
+    "long": "TEMPO + OCO-2/3 CO2. Air-quality forecasts & hourly maps."
+  },
+  {
+    "id": "nasa-biological",
+    "title": "NASA Biological & Physical Sciences",
+    "agency": "NASA",
+    "theme": [
+      "Research & Tech",
+      "Human Spaceflight"
+    ],
+    "description": "Life & physical sciences experiments on ISS — gene expression, plants, materials.",
+    "keywords": [
+      "biology",
+      "space",
+      "iss",
+      "gene",
+      "expression",
+      "plants"
+    ],
+    "concepts": [
+      "biological physical sciences iss"
+    ],
+    "endpoint": "https://science.nasa.gov/biological-physical/",
+    "params": [
+      {
+        "n": "experiment",
+        "t": "string",
+        "d": "Experiment",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET science.nasa.gov/biological-physical/",
+    "sampleResponse": "{\n  \"experiment\": \"…\",\n  \"organism\": \"Arabidopsis\"\n}",
+    "mcpTools": [
+      "search_bio_experiments"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.3,
+    "downloads": 12000,
+    "long": "Space Biology & Physical Sciences portfolio. Data via NASA Open Science Data Repository (OSDR)."
+  },
+  {
+    "id": "esa-planck",
+    "title": "Planck CMB — Cosmic Microwave Background",
+    "agency": "ESA",
+    "theme": [
+      "Astrophysics",
+      "Astronomy"
+    ],
+    "description": "All-sky CMB temperature & polarization maps (Planck 2018 legacy).",
+    "keywords": [
+      "planck",
+      "cmb",
+      "cosmic",
+      "microwave",
+      "background",
+      "all",
+      "sky"
+    ],
+    "concepts": [
+      "planck cosmic microwave background"
+    ],
+    "endpoint": "https://www.esa.int/Science_Exploration/Space_Science/Planck",
+    "params": [
+      {
+        "n": "release",
+        "t": "PR4",
+        "d": "Release",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET esa.int/Planck — ESOC archive",
+    "sampleResponse": "{\n  \"map\": \"TT\",\n  \"resolution\": \"5 arcmin\"\n}",
+    "mcpTools": [
+      "search_planck_maps"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.7,
+    "downloads": 25000,
+    "long": "ESA Planck (2009–2013). Legacy maps in ESOC archive. Cosmology gold mine."
+  },
+  {
+    "id": "nasa-parker",
+    "title": "Parker Solar Probe",
+    "agency": "NASA",
+    "theme": [
+      "Sun & Heliophysics",
+      "Space Weather"
+    ],
+    "description": "Closest approach to the Sun — corona, solar wind, magnetic fields. FIELDS, WISPR, SWEAP.",
+    "keywords": [
+      "parker",
+      "solar",
+      "probe",
+      "corona",
+      "solar",
+      "wind",
+      "magnetic"
+    ],
+    "concepts": [
+      "parker solar probe sun"
+    ],
+    "endpoint": "https://parker.gsfc.nasa.gov/",
+    "params": [
+      {
+        "n": "instrument",
+        "t": "WISPR/FIELDS",
+        "d": "Instrument",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET parker.gsfc.nasa.gov — science data",
+    "sampleResponse": "{\n  \"encounter\": 12,\n  \"distance_solar_radii\": 8.86\n}",
+    "mcpTools": [
+      "get_parker_data"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.8,
+    "downloads": 18000,
+    "long": "Parker (2018→) — 24 encounters. Solar Orbiter complementary (ESA)."
+  },
+  {
+    "id": "nasa-messenger",
+    "title": "MESSENGER Mercury Atlas",
+    "agency": "NASA",
+    "theme": [
+      "Planetary Science"
+    ],
+    "description": "Mercury global maps: MDIS, MASCS, topography. PDS Geosciences.",
+    "keywords": [
+      "messenger",
+      "mercury",
+      "planet",
+      "atlas",
+      "maps"
+    ],
+    "concepts": [
+      "messenger mercury atlas"
+    ],
+    "endpoint": "https://messenger.jhuapl.edu/",
+    "params": [
+      {
+        "n": "instrument",
+        "t": "MDIS/MASCS",
+        "d": "Instrument",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET messenger.jhuapl.edu — PDS atlas",
+    "sampleResponse": "{\n  \"map\": \"MDIS global mosaic\",\n  \"resolution\": \"250m\"\n}",
+    "mcpTools": [
+      "search_messenger_data"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.5,
+    "downloads": 9000,
+    "long": "MESSENGER (2004–2015) Mercury global survey. JHUAPL/PDS."
+  },
+  {
+    "id": "nasa-juno",
+    "title": "Juno Jupiter Science",
+    "agency": "NASA",
+    "theme": [
+      "Planetary Science"
+    ],
+    "description": "Jupiter gravity, magnetosphere, aurora, microwave sounding. PDS/PDS4 + MAST?",
+    "keywords": [
+      "juno",
+      "jupiter",
+      "gravity",
+      "magnetosphere",
+      "aurora"
+    ],
+    "concepts": [
+      "juno jupiter science"
+    ],
+    "endpoint": "https://www.missionjuno.swri.edu/",
+    "params": [
+      {
+        "n": "instrument",
+        "t": "JIRAM/JADE",
+        "d": "Instrument",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET missionjuno.swri.edu — PDS",
+    "sampleResponse": "{\n  \"orbit\": 45,\n  \"gravity_harmonic\": \"J6\"\n}",
+    "mcpTools": [
+      "search_juno_data"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.6,
+    "downloads": 14000,
+    "long": "Juno (2011→) polar orbits of Jupiter. SwRI PI."
+  },
+  {
+    "id": "nasa-cassini",
+    "title": "Cassini Saturn System",
+    "agency": "NASA",
+    "theme": [
+      "Planetary Science"
+    ],
+    "description": "Saturn, rings, Titan, Enceladus — images, spectra, magnetosphere. PDS Small Bodies/Outer Planets.",
+    "keywords": [
+      "cassini",
+      "saturn",
+      "rings",
+      "titan",
+      "enceladus"
+    ],
+    "concepts": [
+      "cassini saturn rings"
+    ],
+    "endpoint": "https://science.nasa.gov/mission/cassini/",
+    "params": [
+      {
+        "n": "target",
+        "t": "Saturn/Titan/Enceladus",
+        "d": "Target",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET science.nasa.gov/mission/cassini/",
+    "sampleResponse": "{\n  \"target\": \"Titan\",\n  \"images\": 32000\n}",
+    "mcpTools": [
+      "search_cassini_data"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.6,
+    "downloads": 15000,
+    "long": "Cassini-Huygens (1997–2017) — 13-year Saturn tour. Legacy archive."
+  },
+  {
+    "id": "nasa-newhorizons",
+    "title": "New Horizons Pluto & KBO",
+    "agency": "NASA",
+    "theme": [
+      "Planetary Science"
+    ],
+    "description": "Pluto flyby + Kuiper Belt objects (Arrokoth). LORRI, Ralph, Alice.",
+    "keywords": [
+      "new",
+      "horizons",
+      "pluto",
+      "kuiper",
+      "arrokoth"
+    ],
+    "concepts": [
+      "new horizons pluto"
+    ],
+    "endpoint": "https://www.nasa.gov/image-article/new-horizons",
+    "params": [
+      {
+        "n": "target",
+        "t": "Pluto/Arrokoth",
+        "d": "Target",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET nasa.gov — New Horizons archive",
+    "sampleResponse": "{\n  \"target\": \"Arrokoth\",\n  \"images\": 1300\n}",
+    "mcpTools": [
+      "search_newhorizons"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.7,
+    "downloads": 11000,
+    "long": "New Horizons (2006→) — Pluto 2015, Arrokoth 2019, ongoing KBO flybys."
+  },
+  {
+    "id": "nasa-osiris",
+    "title": "OSIRIS-REx Asteroid Bennu",
+    "agency": "NASA",
+    "theme": [
+      "Asteroids & Comets",
+      "Planetary Science"
+    ],
+    "description": "Bennu asteroid sample return, maps, spectroscopy, OTES. PDS Small Bodies Node.",
+    "keywords": [
+      "osiris",
+      "rex",
+      "bennu",
+      "asteroid",
+      "sample",
+      "return"
+    ],
+    "concepts": [
+      "osiris rex bennu asteroid"
+    ],
+    "endpoint": "https://www.asteroidmission.org/",
+    "params": [
+      {
+        "n": "instrument",
+        "t": "OTES/OVIRS",
+        "d": "Instrument",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET asteroidmission.org — PDS",
+    "sampleResponse": "{\n  \"sample_mass_g\": 121.6,\n  \"target\": \"Bennu\"\n}",
+    "mcpTools": [
+      "search_osiris"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.7,
+    "downloads": 13000,
+    "long": "OSIRIS-REx (2016–2023) — Bennu samples returned Sep 2023, now curated at JSC."
+  },
+  {
+    "id": "nasa-psyche",
+    "title": "Psyche Metal Asteroid",
+    "agency": "NASA",
+    "theme": [
+      "Asteroids & Comets",
+      "Planetary Science"
+    ],
+    "description": "Metal asteroid Psyche core investigation — multispectral imager, GRF, magnetometer.",
+    "keywords": [
+      "psyche",
+      "metal",
+      "asteroid",
+      "core"
+    ],
+    "concepts": [
+      "psyche metal asteroid"
+    ],
+    "endpoint": "https://psyche.asu.edu/",
+    "params": [
+      {
+        "n": "instrument",
+        "t": "Multispectral Imager",
+        "d": "Instrument",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET psyche.asu.edu — mission data",
+    "sampleResponse": "{\n  \"target\": \"16 Psyche\",\n  \"arrival\": \"2029\"\n}",
+    "mcpTools": [
+      "search_psyche"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.4,
+    "downloads": 6000,
+    "long": "Psyche (2023→) — first metal world visit. ASU PI."
+  },
+  {
+    "id": "nasa-lucy",
+    "title": "Lucy Trojan Asteroids",
+    "agency": "NASA",
+    "theme": [
+      "Asteroids & Comets",
+      "Planetary Science"
+    ],
+    "description": "Jupiter Trojan asteroids — 8 targets, L’TES, LORRI, E-THERM.",
+    "keywords": [
+      "lucy",
+      "trojan",
+      "asteroids",
+      "jupiter"
+    ],
+    "concepts": [
+      "lucy trojan asteroids"
+    ],
+    "endpoint": "https://lucy.swri.edu/",
+    "params": [
+      {
+        "n": "target",
+        "t": "Eurybates/Polymele…",
+        "d": "Target",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET lucy.swri.edu — PDS",
+    "sampleResponse": "{\n  \"target\": \"Polymele\",\n  \"flyby\": \"2024-09\"\n}",
+    "mcpTools": [
+      "search_lucy"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.5,
+    "downloads": 7000,
+    "long": "Lucy (2021→) — first Trojan mission. SwRI PI."
+  },
+  {
+    "id": "nasa-dart",
+    "title": "DART Planetary Defense",
+    "agency": "NASA",
+    "theme": [
+      "Asteroids & Comets",
+      "Planetary Science"
+    ],
+    "description": "Dimorphos kinetic impact — orbit change, ejecta, LICCIACube images.",
+    "keywords": [
+      "dart",
+      "planetary",
+      "defense",
+      "dimorphos",
+      "impact"
+    ],
+    "concepts": [
+      "dart dimorphos impact"
+    ],
+    "endpoint": "https://www.nasa.gov/image-article/dart",
+    "params": [
+      {
+        "n": "epoch",
+        "t": "impact",
+        "d": "Epoch",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET nasa.gov — DART archive",
+    "sampleResponse": "{\n  \"orbit_period_change_min\": -32\n}",
+    "mcpTools": [
+      "search_dart"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.7,
+    "downloads": 15000,
+    "long": "DART (2021–2022) — first asteroid deflection. Heliophysics? Planetary Defense."
+  },
+  {
+    "id": "nasa-europa",
+    "title": "Europa Clipper",
+    "agency": "NASA",
+    "theme": [
+      "Planetary Science",
+      "Moon"
+    ],
+    "description": "Europa ocean world — EIS, REASON, MASPEX. Launch 2024, arrival 2030.",
+    "keywords": [
+      "europa",
+      "clipper",
+      "ocean",
+      "icy",
+      "moon",
+      "jupiter"
+    ],
+    "concepts": [
+      "europa clipper"
+    ],
+    "endpoint": "https://europa.nasa.gov/",
+    "params": [
+      {
+        "n": "instrument",
+        "t": "EIS/REASON",
+        "d": "Instrument",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET europa.nasa.gov",
+    "sampleResponse": "{\n  \"target\": \"Europa\",\n  \"arrival\": \"2030\"\n}",
+    "mcpTools": [
+      "search_europa"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.6,
+    "downloads": 8000,
+    "long": "Europa Clipper (2024→) — JPL. 49 flybys."
+  },
+  {
+    "id": "nasa-horizons-api",
+    "title": "Horizons API (JPL)",
+    "agency": "NASA",
+    "theme": [
+      "Research & Tech",
+      "Astrophysics"
+    ],
+    "description": "Machine-readable ephemeris for any body/spacecraft — vectors, elements, small-body.",
+    "keywords": [
+      "horizons",
+      "api",
+      "ephemeris",
+      "vectors",
+      "elements"
+    ],
+    "concepts": [
+      "horizons api ephemeris"
+    ],
+    "endpoint": "https://ssd.jpl.nasa.gov/api/horizons.api",
+    "params": [
+      {
+        "n": "COMMAND",
+        "t": "DEQ/SPK",
+        "d": "Command",
+        "req": 1
+      },
+      {
+        "n": "TARGET",
+        "t": "499/301…",
+        "d": "Target",
+        "req": 1
+      }
+    ],
+    "sampleRequest": "GET /api/horizons.api?COMMAND=DEQ&TARGET=499&EPHEM_TYPE=OBSERVER&START_TIME=...",
+    "sampleResponse": "{\n  \"result\": \"…ephemeris…\",\n  \"target\": \"Mars\"\n}",
+    "mcpTools": [
+      "get_horizons_ephemeris"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.8,
+    "downloads": 98000,
+    "long": "Horizons — scriptable JPL ephemeris. Browser + API. Essential for mission design."
+  },
+  {
+    "id": "esa-solar-orbiter",
+    "title": "Solar Orbiter (ESA/NASA)",
+    "agency": "ESA",
+    "theme": [
+      "Sun & Heliophysics",
+      "Space Weather"
+    ],
+    "description": "Close Sun views, polar views, in-situ + remote sensing. EUI, SoloHI, in-situ suite.",
+    "keywords": [
+      "solar",
+      "orbiter",
+      "sun",
+      "polar",
+      "eui"
+    ],
+    "concepts": [
+      "solar orbiter"
+    ],
+    "endpoint": "https://www.esa.int/Science_Exploration/Space_Science/Solar_Orbiter",
+    "params": [
+      {
+        "n": "instrument",
+        "t": "EUI/SoloHI",
+        "d": "Instrument",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET esa.int/Solar_Orbiter — archive",
+    "sampleResponse": "{\n  \"distance_au\": 0.5,\n  \"latitude\": 33\n}",
+    "mcpTools": [
+      "search_solar_orbiter"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.6,
+    "downloads": 12000,
+    "long": "Solar Orbiter (2020→) — ESA PI, NASA contribution."
+  },
+  {
+    "id": "nasa-swot",
+    "title": "SWOT Ocean & Water (NASA/CNES)",
+    "agency": "NASA",
+    "theme": [
+      "Earth Science",
+      "Earth Observation",
+      "Climate"
+    ],
+    "description": "KaRIn radar — sea-surface height, rivers, lakes, inland water.",
+    "keywords": [
+      "swot",
+      "ocean",
+      "sea",
+      "surface",
+      "height",
+      "rivers",
+      "lakes",
+      "karin"
+    ],
+    "concepts": [
+      "swot ka rin ocean"
+    ],
+    "endpoint": "https://swot.jpl.nasa.gov/",
+    "params": [
+      {
+        "n": "variable",
+        "t": "SSH/water level",
+        "d": "Variable",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET swot.jpl.nasa.gov — PO.DAAC",
+    "sampleResponse": "{\n  \"ssh_m\": 0.42,\n  \"river_width_m\": 120\n}",
+    "mcpTools": [
+      "get_swot_data"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.6,
+    "downloads": 9000,
+    "long": "SWOT (2022→) — NASA/CNES. First 2D water topography. PO.DAAC + CNES."
+  },
+  {
+    "id": "nasa-gpm",
+    "title": "Global Precipitation Mission (GPM)",
+    "agency": "NASA",
+    "theme": [
+      "Earth Science",
+      "Climate",
+      "Earth Observation"
+    ],
+    "description": "Rain, snow, cyclones — DPR/GMI merged products, IMERG.",
+    "keywords": [
+      "global",
+      "precipitation",
+      "gpm",
+      "rain",
+      "snow",
+      "imerg"
+    ],
+    "concepts": [
+      "global precipitation mission gpm"
+    ],
+    "endpoint": "https://gpm.nasa.gov/",
+    "params": [
+      {
+        "n": "product",
+        "t": "IMERG",
+        "d": "Product",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET gpm.nasa.gov — PPS API",
+    "sampleResponse": "{\n  \"rain_mm_hr\": 12.5,\n  \"product\": \"IMERG\"\n}",
+    "mcpTools": [
+      "get_precipitation"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.6,
+    "downloads": 21000,
+    "long": "GPM (2014→) — NASA/JAXA. IMERG global 30-min precipitation."
+  },
+  {
+    "id": "nasa-smap",
+    "title": "Soil Moisture Active Passive (SMAP)",
+    "agency": "NASA",
+    "theme": [
+      "Earth Science",
+      "Climate"
+    ],
+    "description": "Global soil moisture, freeze/thaw. L-band radiometer/radar.",
+    "keywords": [
+      "smap",
+      "soil",
+      "moisture",
+      "freeze",
+      "thaw"
+    ],
+    "concepts": [
+      "smap soil moisture"
+    ],
+    "endpoint": "https://smap.jpl.nasa.gov/",
+    "params": [
+      {
+        "n": "variable",
+        "t": "soil moisture",
+        "d": "Variable",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET smap.jpl.nasa.gov — NSIDC",
+    "sampleResponse": "{\n  \"soil_moisture_m3_m3\": 0.28\n}",
+    "mcpTools": [
+      "get_soil_moisture"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.5,
+    "downloads": 16000,
+    "long": "SMAP (2015→) — 9km soil moisture, 3-day revisit. NSIDC DAAC."
+  },
+  {
+    "id": "nasa-ocean",
+    "title": "Ocean Data View / PO.DAAC",
+    "agency": "NASA",
+    "theme": [
+      "Earth Science",
+      "Earth Observation"
+    ],
+    "description": "Sea-surface height, currents, winds, SST — PO.DAAC merged products.",
+    "keywords": [
+      "po",
+      "daac",
+      "ocean",
+      "sea",
+      "surface",
+      "height",
+      "currents"
+    ],
+    "concepts": [
+      "po daac ocean"
+    ],
+    "endpoint": "https://podaac.jpl.nasa.gov/",
+    "params": [
+      {
+        "n": "dataset",
+        "t": "OSTM/Jason/SWOT",
+        "d": "Dataset",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET podaac.jpl.nasa.gov — PO.DAAC API",
+    "sampleResponse": "{\n  \"ssh_m\": 0.35\n}",
+    "mcpTools": [
+      "search_podaac"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.6,
+    "downloads": 28000,
+    "long": "Physical Oceanography DAAC — altimetry, scatterometry, SAR."
+  },
+  {
+    "id": "nasa-cubesats",
+    "title": "NASA CubeSat & SmallSat Data",
+    "agency": "NASA",
+    "theme": [
+      "Research & Tech"
+    ],
+    "description": "CubeSat science returns, rideshare, technology demos.",
+    "keywords": [
+      "cubesat",
+      "smallsat",
+      "technology",
+      "rideshare"
+    ],
+    "concepts": [
+      "cubesat smallsat"
+    ],
+    "endpoint": "https://www.nasa.gov/smallsat-institute/",
+    "params": [
+      {
+        "n": "mission",
+        "t": "string",
+        "d": "Mission",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET nasa.gov/smallsat-institute/",
+    "sampleResponse": "{\n  \"mission\": \"…\",\n  \"status\": \"operational\"\n}",
+    "mcpTools": [
+      "search_cubesat"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.2,
+    "downloads": 5000,
+    "long": "SmallSat Institute + SMD CubeSats."
+  },
+  {
+    "id": "nasa-missions",
+    "title": "NASA Missions & Spacecraft",
+    "agency": "NASA",
+    "theme": [
+      "Research & Tech",
+      "Human Spaceflight"
+    ],
+    "description": "Mission pages, spacecraft status, trajectories, media — unified mission graph.",
+    "keywords": [
+      "missions",
+      "spacecraft",
+      "status",
+      "trajectory"
+    ],
+    "concepts": [
+      "nasa missions spacecraft"
+    ],
+    "endpoint": "https://science.nasa.gov/missions/",
+    "params": [
+      {
+        "n": "mission",
+        "t": "string",
+        "d": "Mission",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET science.nasa.gov/missions/",
+    "sampleResponse": "{\n  \"mission\": \"…\",\n  \"spacecraft\": \"…\",\n  \"status\": \"…\"\n}",
+    "mcpTools": [
+      "search_missions"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.7,
+    "downloads": 84000,
+    "long": "science.nasa.gov — mission finder, spacecraft pages, latest news."
+  },
+  {
+    "id": "nasa-people",
+    "title": "Astronauts & People in Space",
+    "agency": "NASA",
+    "theme": [
+      "Human Spaceflight"
+    ],
+    "description": "Crew rosters, EVAs, astronaut bios, historical missions.",
+    "keywords": [
+      "astronauts",
+      "crew",
+      "eva",
+      "people",
+      "space"
+    ],
+    "concepts": [
+      "astronauts crew eva"
+    ],
+    "endpoint": "https://www.nasa.gov/astronauts/",
+    "params": [
+      {
+        "n": "name",
+        "t": "string",
+        "d": "Name",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET nasa.gov/astronauts/",
+    "sampleResponse": "{\n  \"name\": \"…\",\n  \"missions\": […]\n}",
+    "mcpTools": [
+      "search_astronauts"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.5,
+    "downloads": 47000,
+    "long": "NASA Astronaut Office + ESA/Roscosmos crew data exchanges (WhereNow)."
+  },
+  {
+    "id": "esa-cluster",
+    "title": "Cluster & Magnetosphere (ESA)",
+    "agency": "ESA",
+    "theme": [
+      "Space Weather",
+      "Sun & Heliophysics"
+    ],
+    "description": "Four-spacecraft magnetospheric constellation.",
+    "keywords": [
+      "cluster",
+      "magnetosphere",
+      "spacecraft",
+      "constellation"
+    ],
+    "concepts": [
+      "cluster magnetosphere"
+    ],
+    "endpoint": "https://www.esa.int/Science_Exploration/Space_Science/Cluster",
+    "params": [
+      {
+        "n": "spacecraft",
+        "t": "SC1-4",
+        "d": "Spacecraft",
+        "req": 0
+      }
+    ],
+    "sampleRequest": "GET esa.int/Cluster — CDAWeb",
+    "sampleResponse": "{\n  \"spacecraft\": \"SC2\",\n  \"b_field_nt\": 42\n}",
+    "mcpTools": [
+      "search_cluster_data"
+    ],
+    "formats": [
+      "JSON",
+      "API"
+    ],
+    "access": "Public",
+    "license": "Public Domain (US Gov)",
+    "updated": "2026-10-15",
+    "rating": 4.3,
+    "downloads": 7000,
+    "long": "Cluster II (2000–2024) — tetrahedron magnetospheric. CDAWeb/NASA."
+  }
+]
