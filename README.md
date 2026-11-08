@@ -24,7 +24,7 @@
 2. Search `asteroids near Earth` → open a card → **▶ Try API** → **Run**.
 3. Scroll to **⚡ MCP Builder** → Download → paste config into your AI app.
 
-> **No key yet?** Try with `DEMO_KEY`. For real use, get a free key at <https://api.nasa.gov> (30 req/hr demo, 1000/hr with key).
+> **API key?** `DEMO_KEY` = shared demo (**30 req/hr**) — good for a first test, exhausts after ~10 AI questions (`429`). Your **free key** = **1,000 req/hr**, 1 min at **[api.nasa.gov](https://api.nasa.gov/index.html#browse-api)** → *Generate API Key* → email. Paste it in Playground + Builder Step 5. See [GUIDE-NONTECH.md Step 4](GUIDE-NONTECH.md#step-4--get-your-free-nasa-api-key-1-minute--read-this-first) for screenshots-in-words.
 
 ## 🗂️ Repo layout
 

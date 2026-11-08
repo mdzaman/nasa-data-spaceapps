@@ -308,6 +308,23 @@ kbd{background:rgba(255,255,255,.08);border:1px solid var(--border);border-botto
 /* responsive tightening */
 @media(max-width:800px){.hero{padding:34px 16px 26px}.layout{padding:0 14px}.stats,.charts,.journey,.builder,.guide{padding:0 14px}.builder-card{padding:16px}}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+/* API-key explainer */
+.keybox{background:rgba(255,176,32,.07);border:1px solid rgba(255,176,32,.35);border-radius:13px;padding:14px 15px;margin-top:10px;font-size:13px}
+.keybox h4{font-size:13.5px;color:var(--amber);margin-bottom:8px}
+.keybox p,.keybox li{color:var(--muted);font-size:12.8px;line-height:1.55}
+.keybox ol,.keybox ul{padding-left:18px;margin:8px 0}
+.keybox li{margin:5px 0}
+.keybox code{background:rgba(0,210,255,.12);color:var(--accent2);padding:1px 7px;border-radius:6px;font-size:12px;font-family:'JetBrains Mono',monospace}
+.keybox .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.keybox .row a,.keybox .row button{padding:8px 14px;border-radius:9px;font-size:12.5px;font-weight:700;border:1px solid var(--border);background:rgba(255,255,255,.05);color:#fff}
+.keybox .row a.primary{background:var(--accent);border-color:var(--accent)}
+.keybox .vs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+@media(max-width:560px){.keybox .vs{grid-template-columns:1fr}}
+.keybox .vs div{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:10px 12px}
+.keybox .vs b{display:block;margin-bottom:4px;font-size:12.8px}
+.keybox .ok{color:var(--green)} .keybox .warn{color:var(--amber)}
+.sum.warn{cursor:pointer}
+.sum.warn:hover{border-color:var(--amber)}
 </style>
 </head>
 <body>
@@ -455,7 +472,24 @@ kbd{background:rgba(255,255,255,.08);border:1px solid var(--border);border-botto
       <div class="bgroup"><label>2 · Language</label><div class="opt-grid" id="mcpLang"><button class="opt on" data-v="python" onclick="setMcp('lang','python',this)">🐍 Python</button><button class="opt" data-v="node" onclick="setMcp('lang','node',this)">🟨 Node.js</button></div><div class="hint"><b>Python</b> = easiest for beginners. <b>Node</b> = if you already use JavaScript.</div></div>
       <div class="bgroup"><label>3 · How it connects</label><div class="opt-grid"><button class="opt on" data-v="stdio" onclick="setMcp('transport','stdio',this)">📟 On this computer <span style="font-weight:400">stdio</span></button><button class="opt" data-v="http" onclick="setMcp('transport','http',this)">🌐 Web address <span style="font-weight:400">HTTP</span></button></div><div class="hint"><b>On this computer</b> (most people): your AI app is on the same PC. <b>Web address</b>: for cloud tools like ChatGPT/n8n.</div></div>
       <div class="bgroup"><label>4 · Your AI app</label><div class="opt-grid"><button class="opt on" data-v="claude" onclick="setMcp('client','claude',this)">Claude Desktop</button><button class="opt" data-v="cursor" onclick="setMcp('client','cursor',this)">Cursor</button><button class="opt" data-v="vscode" onclick="setMcp('client','vscode',this)">VS Code</button><button class="opt" data-v="opencode" onclick="setMcp('client','opencode',this)">OpenCode</button><button class="opt" data-v="generic" onclick="setMcp('client','generic',this)">Generic MCP</button></div><div class="hint">We generate the <b>exact config file</b> for the app you pick — open the <b>⚙️ App config</b> tab on the right.</div></div>
-      <div class="bgroup"><label>5 · API key <span style="text-transform:none;font-weight:400">— optional, DEMO_KEY works for trying</span></label><input id="apiKey" type="text" placeholder="Paste your NASA API key (or leave blank)" style="width:100%;background:#070b18;border:1px solid var(--border);color:#fff;border-radius:10px;padding:11px;font-size:13px;font-family:inherit" oninput="buildMcp()" aria-label="NASA API key"><div class="hint">Free at <code>api.nasa.gov</code> · 1,000 req/hr vs 30/hr demo. No key? Leave blank — we use DEMO_KEY.</div></div>
+      <div class="bgroup" id="apiKeyGroup"><label>5 · API key <span style="text-transform:none;font-weight:400">— NASA's free ID for asking for data</span></label>
+      <input id="apiKey" type="text" placeholder="Paste your key here — or leave blank to use DEMO_KEY" style="width:100%;background:#070b18;border:1px solid var(--border);color:#fff;border-radius:10px;padding:11px;font-size:13px;font-family:inherit" oninput="buildMcp()" aria-label="NASA API key" autocomplete="off">
+      <div class="keybox" id="apiKeyHelp">
+        <h4>🔑 DEMO_KEY vs. your free key — what’s the difference?</h4>
+        <p>Every time your MCP server asks NASA for data it must send an <b style="color:#fff">API key</b>. NASA gives you two kinds:</p>
+        <div class="vs">
+          <div><b>🆓 DEMO_KEY</b><span class="warn">30 requests / hour</span><p style="margin-top:5px">Shared demo for trying things. Fine for a first test. <br><b>Problem:</b> 10 questions to your AI = 10 requests. It runs out fast (you’ll see <code>429</code>).</p></div>
+          <div><b>✅ Your free key</b><span class="ok">1,000 requests / hour</span><p style="margin-top:5px">Free, 1 minute, yours alone. <br><b>Recommended</b> for any real use — 33× more headroom.</p></div>
+        </div>
+        <ol>
+          <li>Open <b style="color:#fff">api.nasa.gov</b> → click <b style="color:#fff">Generate API Key</b> (top of the page)</li>
+          <li>Enter your email + a short “what is this for?” (e.g. <i>“OrbitDB MCP experiments”</i>) → <b>Submit</b></li>
+          <li>Check your inbox (1 min; check Spam) → copy the key from the email</li>
+          <li>Paste it <b>here</b> and in the <b>▶ Playground</b> — we bake it into your server code + config</li>
+        </ol>
+        <p>💡 It’s <b>not a password</b> — it only rate-limits NASA data requests. Free forever, no card. If you skip it, nothing breaks — you just get <code>30/hr</code>.</p>
+        <div class="row"><a class="primary" href="https://api.nasa.gov/index.html#browse-api" target="_blank" rel="noopener">↗ Get free key (1 min)</a><button onclick="copyText('https://api.nasa.gov/index.html#browse-api','Copied — open it in your browser')">📋 Copy link</button><button onclick="openHelp('key')">❓ More help</button></div>
+      </div></div>
       <ul class="check-list"><li>✅ Generated code is <b>complete &amp; runnable</b> — not a snippet</li><li>✅ Includes install + run + config for your app</li><li>✅ Test prompts included — copy &amp; paste into your AI chat</li></ul>
     </div>
     <div class="mcp-out">
@@ -498,7 +532,7 @@ kbd{background:rgba(255,255,255,.08);border:1px solid var(--border);border-botto
   <div class="section-head" style="padding:0"><h2>📘 Step-by-Step Guide — For Non-Tech Professionals</h2><p>You need zero coding experience. Follow the numbers. Everything takes ~10 minutes.</p></div>
   <div class="guide-grid">
     <div class="gstep"><div class="n">1</div><h3>Pick what you need</h3><p>Search OrbitDB in plain English. Example: type <code>Mars rover photos</code> → click Search. Open any card, hit <b>▶ Try API</b> to see live data. No sign-up needed.</p><div class="check"><input type="checkbox" data-g="g1" onchange="toggleGuide(this)"><span>I searched and opened a dataset</span><button class="copybtn" onclick="copyText('Mars rover photos','Copied — paste into search')">📋 Copy example</button></div></div>
-    <div class="gstep"><div class="n">2</div><h3>Get your free API key</h3><p>Go to <code>api.nasa.gov</code> and click <b>Generate API Key</b>. It's free &amp; instant (Demo: <code>DEMO_KEY</code> also works for trying). Save it somewhere safe.</p><div class="check"><input type="checkbox" data-g="g2" onchange="toggleGuide(this)"><span>I have my key (or will use DEMO_KEY)</span><button class="copybtn" onclick="copyText('api.nasa.gov','Copied')">📋 Copy link</button></div></div>
+    <div class="gstep"><div class="n">2</div><h3>Get your free API key</h3><p><b>What it is:</b> your personal ID for asking NASA for data — like a library card.</p><ol><li>Open <code>api.nasa.gov/index.html#browse-api</code> → click <b>Generate API Key</b></li><li>Email + “OrbitDB experiments” → Submit. Check inbox (~1 min, check Spam)</li><li>Copy the key → paste it in the <b>▶ Playground</b> and the <b>Builder Step 5</b></li></ol><p>🆓 <b>DEMO_KEY</b> (default) = shared demo, <b>30 req/hr</b> — try it, but you’ll hit <code>429</code> fast. ✅ <b>Free key</b> = <b>1,000 req/hr</b>, free forever, no card. It’s not a password — safe to put in your MCP config.</p><div class="check"><input type="checkbox" data-g="g2" onchange="toggleGuide(this)"><span>I have my key (or will use DEMO_KEY for now)</span><button class="copybtn" onclick="copyText('https://api.nasa.gov/index.html#browse-api','Copied — open it in your browser')">📋 Copy link</button></div></div>
     <div class="gstep"><div class="n">3</div><h3>Install Python <span style="font-size:12px;color:#5a6790">(one time)</span></h3><p>Go to python.org → Download → Install. Tick <b>“Add to PATH”</b>. Then open Terminal and run: <code>pip install mcp httpx</code></p><div class="check"><input type="checkbox" data-g="g3" onchange="toggleGuide(this)"><span>Python installed + pip ran</span><button class="copybtn" onclick="copyText('pip install mcp httpx','Copied — paste into Terminal')">📋 Copy command</button></div></div>
     <div class="gstep"><div class="n">4</div><h3>Create your MCP server</h3><p>Scroll to <b>⚡ MCP Builder</b> above. Pick datasets, choose <b>Python</b> + your app. Click <b>⬇ Download file</b> → save as <code>space_mcp.py</code>. Paste your API key in the box.</p><div class="check"><input type="checkbox" data-g="g4" onchange="toggleGuide(this)"><span>I downloaded my server file</span><button class="copybtn" onclick="document.getElementById('builder').scrollIntoView({behavior:'smooth'})">↑ Go to Builder</button></div></div>
     <div class="gstep"><div class="n">5</div><h3>Connect your AI app</h3><p>In the Builder, open the <b>⚙️ App config</b> tab → Copy. Open your app (Claude/Cursor/VS Code) → Settings → MCP / Servers → Paste. Restart the app.</p><div class="check"><input type="checkbox" data-g="g5" onchange="toggleGuide(this)"><span>I pasted config + restarted app</span><button class="copybtn" onclick="copyText('space_mcp.py','Remember your file path — you need it in the config')">📋 Path tip</button></div></div>
@@ -536,8 +570,10 @@ kbd{background:rgba(255,255,255,.08);border:1px solid var(--border);border-botto
       <label>Dataset / endpoint</label><select id="pgEndpoint" onchange="onPgChange()"></select>
       <div class="url-bar"><span class="method get" id="pgMethod">GET</span><span id="pgUrl"></span></div>
       <div id="pgParams"></div>
-      <label>API key</label><input id="pgKey" value="DEMO_KEY" placeholder="DEMO_KEY">
-      <div class="btn-row"><button class="btn primary" id="pgRun" onclick="runPlayground()">▶ Run request</button><button class="btn small" onclick="copyPgUrl()">📋 Copy URL</button></div>
+      <label>API key <span style="color:var(--accent2);font-weight:700">— your free NASA ID (or DEMO_KEY for trying)</span></label>
+      <input id="pgKey" value="DEMO_KEY" placeholder="Paste your key, or keep DEMO_KEY">
+      <div class="param-hint">🆓 <code>DEMO_KEY</code> = shared demo, <b>30 requests/hour</b> per IP. ✅ Your own free key (api.nasa.gov, 1 min) = <b>1,000/hour</b>. Each ▶ Run = 1 request. <a href="https://api.nasa.gov/index.html#browse-api" target="_blank" rel="noopener" style="color:var(--accent2);font-weight:700">Get free key ↗</a></div>
+      <div class="btn-row"><button class="btn primary" id="pgRun" onclick="runPlayground()">▶ Run request</button><button class="btn small" onclick="copyPgUrl()">📋 Copy URL</button><button class="btn small" onclick="openHelp('key')">🔑 How to get a key?</button></div>
       <div id="pgStatus" style="font-size:12.5px;color:var(--muted);margin-top:10px"></div>
     </div>
     <div class="pg-panel"><h5>📥 Response <span style="float:right"><button class="btn small" onclick="copyPgResp()">📋 Copy</button> <button class="btn small" onclick="downloadPgResp()">⬇ JSON</button></span></h5>
@@ -561,7 +597,7 @@ kbd{background:rgba(255,255,255,.08);border:1px solid var(--border);border-botto
   <p style="color:var(--muted);font-size:13.5px;margin-top:6px">OrbitDB = a search engine for space data + a plug-in builder for AI apps. No account, no code required to browse.</p>
   <div class="help-grid">
     <div class="help-card"><h4>🔍 What is a “dataset”?</h4><p>One topic NASA/ESA tracks — e.g. Mars rover photos, asteroid orbits. Each has a live API + downloads.</p></div>
-    <div class="help-card"><h4>🔑 <span id="helpKey">What is an API key?</span></h4><p>Your free ID for NASA (api.nasa.gov). More requests than the demo. Paste it in Playground + Builder.</p></div>
+    <div class="help-card" style="border-color:rgba(255,176,32,.5)"><h4>🔑 <span id="helpKey">API key — DEMO_KEY vs. free key (read this!)</span></h4><p><b>DEMO_KEY</b> = shared demo, <b>30 requests/hour</b> per IP — fine for a first Play or one test question. 10 AI questions ≈ 10 requests, so it exhausts quickly (<code>429</code> = “too many”).<br><br><b>Your free key</b> = <b>1,000 requests/hour</b>, free forever, 1 minute, no card:<br><b>1.</b> Open <code>api.nasa.gov</code> → <b>Generate API Key</b><br><b>2.</b> Email + “OrbitDB experiments” → Submit<br><b>3.</b> Check inbox → copy key → paste in <b>Playground</b> + <b>Builder Step 5</b><br><br>It’s not a password — only rate-limits data requests. Paste it into generated code/config safely; don’t commit it to public git.</p><div class="btn-row" style="margin-top:8px"><a class="btn small primary" href="https://api.nasa.gov/index.html#browse-api" target="_blank" rel="noopener" style="text-align:center">↗ Get free key</a><button class="btn small" onclick="copyText('https://api.nasa.gov/index.html#browse-api','Copied link')">📋 Copy link</button></div></div>
     <div class="help-card"><h4>🔌 What is an MCP server?</h4><p>A tiny “cable” between your AI app and NASA data. Your AI asks it for live data instead of guessing.</p></div>
     <div class="help-card"><h4>📟 stdio vs 🌐 HTTP</h4><p><b>stdio</b> = AI app on same computer (most people). <b>HTTP</b> = server on a web address (ChatGPT, cloud tools).</p></div>
     <div class="help-card"><h4>⌨️ Shortcuts</h4><p><kbd>/</kbd> search · <kbd>Enter</kbd> run search · <kbd>Esc</kbd> close panels · <kbd>↑↓</kbd> move in suggestions</p></div>
@@ -777,12 +813,12 @@ function updateBuilderMeta(){
   const sum=$('builderSummary');
   let html=`<span class="sum">✓ ${ds.length} dataset${ds.length!==1?'s':''}</span><span class="sum">✓ ${tools} tool${tools!==1?'s':''}</span>`;
   if(!ds.length) html+=`<span class="sum warn">⚠️ Pick at least one dataset above</span>`;
-  if(!($('apiKey')?.value||'').trim()) html+=`<span class="sum warn">ℹ️ Using DEMO_KEY — get a free key for 1,000 req/hr</span>`;
-  else html+=`<span class="sum">✓ Custom API key</span>`;
+  if(!($('apiKey')?.value||'').trim()) html+=`<button class="sum warn" onclick="document.getElementById('apiKeyGroup').scrollIntoView({behavior:'smooth',block:'center'})" title="Click to learn more">ℹ️ Using DEMO_KEY (30/hr) — tap for free 1,000/hr key →</button>`;
+  else html+=`<span class="sum">✓ Custom API key (1,000/hr)</span>`;
   sum.innerHTML=html;
   const step= ds.length? ( ($('apiKey')?.value||'').trim() ? 5 : 4) :1;
   $('builderFill').style.width=(step/5*100)+'%';
-  $('builderStepLbl').textContent='Step '+step+' of 5 · '+(step===1?'pick data':step===4?'almost ready — add a key (optional)':step+"/"+5+' ready ✓');
+  $('builderStepLbl').textContent='Step '+step+' of 5 · '+(step===1?'pick data':step===4?'almost ready — add a key (optional, below ↓)':step+"/"+5+' ready ✓');
 }
 
 /* ================= RENDER: SIDEBAR / CHARTS ================= */

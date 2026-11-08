@@ -60,16 +60,35 @@ Think of it as a **USB cable between your AI app and NASA data**.
 
 > **If you see “CORS blocked / sample shown”** — that's normal for some endpoints in a browser. Don't worry: the **MCP server** runs outside the browser and always gets live data. Continue to Step 5.
 
-## STEP 4 — Get your free NASA API key (1 minute)
+## STEP 4 — Get your free NASA API key (1 minute) — read this first
 
-1. Go to **https://api.nasa.gov**
-2. Click **Generate API Key** (or **Sign Up**, whichever appears).
-3. Enter your email → click **Submit** → check your inbox → copy the key.
-4. Save it in your password manager / notes. You'll paste it in two places:
-   - In the **API Playground** (replace `DEMO_KEY`)
-   - In the **MCP Builder** (API key box)
+### What is an API key? (plain English)
 
-> **Why bother?** `DEMO_KEY` = 30 requests/hour. Your free key = **1,000/hour**. It costs nothing.
+Every time your MCP server asks NASA for data, it must send a **key** — like a library card that says “this is me”. NASA lets you make **1,000 requests/hour** with your own key.
+
+### DEMO_KEY vs. your free key
+
+| | 🆓 `DEMO_KEY` (default in OrbitDB) | ✅ Your free key |
+|---|---|---|
+| **Limit** | **30 requests/hour** (shared, per IP) | **1,000 requests/hour** (yours alone) |
+| **What 1 request is** | 1× ▶ Run in Playground **or** 1× AI tool call | same |
+| **When it breaks** | After ~10 AI questions you’ll see `429 Too Many Requests` | you’d need ~30× more questions |
+| **Cost** | $0 | $0, free forever, no card |
+
+> **That’s what “Using DEMO_KEY — get a free key for 1,000 req/hr” means in the Builder:** nothing is broken. It’s OrbitDB telling you “you’re on the 30/hr demo; 1 minute of signup gets you 33× more.” You can ignore it for a first test — you’ll just hit the wall sooner.
+
+### Where to get it (exact clicks)
+
+1. Open **[https://api.nasa.gov/index.html#browse-api](https://api.nasa.gov/index.html#browse-api)**
+2. Click **Generate API Key** (top of page; says **Sign Up** on some layouts)
+3. Enter your **email** + a one-line purpose (e.g. `OrbitDB MCP experiments`) → **Submit**
+4. Check your inbox (~1 min; check **Spam/Junk** if missing) → **copy the key** from the email (looks like `aBc123XyZ…`)
+5. Save it in your password manager / notes. Paste it in **two places** in OrbitDB:
+   - **▶ API Playground** — replace `DEMO_KEY` in the API key field
+   - **⚡ MCP Builder → Step 5** — paste into the API key box → it’s baked into your downloaded server + config
+6. In your AI app’s config, it appears as `NASA_API_KEY` in `env` — **don’t commit that file to public GitHub** (it’s not a password, but it’s yours; revoke + regenerate if leaked).
+
+> **Is it safe?** Yes. NASA API keys only rate-limit data requests — not a password, not payment info. Free forever. If you skip it, nothing breaks — you just get `30/hr` and a `429` when you exceed it. Wait 1 minute (limit resets hourly) or paste your key and re-run.
 
 ## STEP 5 — Install Python (one-time, 2 minutes)
 
