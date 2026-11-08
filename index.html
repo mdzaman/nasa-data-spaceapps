@@ -351,6 +351,17 @@ kbd{background:rgba(255,255,255,.08);border:1px solid var(--border);border-botto
 .kcard code{background:rgba(0,210,255,.12);color:var(--accent2);padding:1px 6px;border-radius:6px;font-size:12px;font-family:'JetBrains Mono',monospace}
 .kcard .tag{display:inline-block;font-size:11px;font-weight:800;padding:3px 9px;border-radius:99px;margin:6px 6px 0 0}
 .tag.need{background:rgba(255,176,32,.16);color:var(--amber)} .tag.free{background:rgba(0,214,143,.14);color:var(--green)} .tag.login{background:rgba(0,210,255,.14);color:var(--accent2)}
+/* builder arrival flash + next-steps banner */
+@keyframes builderFlash{0%{box-shadow:0 0 0 0 rgba(0,210,255,.0);border-color:var(--border)}20%{box-shadow:0 0 0 5px rgba(0,210,255,.35);border-color:var(--accent2)}100%{box-shadow:0 0 0 0 rgba(0,210,255,0)}}
+.builder-card.flash{animation:builderFlash 1.6s ease}
+.builder-next{display:none;background:linear-gradient(135deg,rgba(0,214,143,.12),rgba(108,92,231,.1));border:1px solid rgba(0,214,143,.5);border-radius:14px;padding:13px 16px;margin:0 0 16px;font-size:13.5px}
+.builder-next.show{display:block}
+.builder-next b{color:#fff}
+.builder-next .steps{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
+.builder-next .steps span{background:rgba(255,255,255,.07);padding:6px 11px;border-radius:99px;font-size:12px;font-weight:600;color:var(--muted)}
+.builder-next .steps span b{color:#fff}
+.mcp-search{width:100%;background:#070b18;border:1px solid var(--border);color:#fff;border-radius:10px;padding:10px 12px;font-size:13px;font-family:inherit;margin-bottom:9px}
+.tool-added{border-color:var(--green)!important;color:var(--green)!important}
 /* wizard modal */
 .wiz-steps{display:flex;gap:6px;margin:16px 0}
 .wiz-steps button{flex:1;height:8px;border-radius:99px;border:none;background:rgba(255,255,255,.09)}
@@ -568,10 +579,13 @@ kbd{background:rgba(255,255,255,.08);border:1px solid var(--border);border-botto
   <div class="builder-progress" aria-label="Builder progress"><b>Step by step</b><div class="track"><div class="fill" id="builderFill" style="width:20%"></div></div><span style="font-size:12.5px;color:var(--muted)" id="builderStepLbl">Step 1 of 5 · pick data</span></div>
   <label class="nontech"><input type="checkbox" id="nonTechCb" onchange="toggleNonTech(this.checked)"><span><b>🧑‍🎓 Non-tech mode</b> <small>Hide code details — show only Config, Install & Test (the 3 things you’ll actually use)</small></span></label>
   <div class="summary" id="builderSummary"></div>
-  <div class="builder-card">
+  <div class="builder-next" id="builderNext" role="status"></div>
+  <div class="builder-card" id="builderCard">
     <div>
       <div class="presets" aria-label="Presets"><span style="font-size:12px;color:var(--muted);align-self:center">Quick presets:</span><button onclick="applyPreset('beginner')">🌱 Beginner · 3 tools</button><button onclick="applyPreset('earth')">🌍 Earth Watcher</button><button onclick="applyPreset('deep')">🚀 Deep Space</button><button onclick="applyPreset('search')">🔍 My search results</button></div>
-      <div class="bgroup"><label>1 · Choose datasets / tools <span style="text-transform:none;font-weight:400">(click to toggle — purple = in your server)</span></label><div class="opt-grid" id="mcpPick"></div><div class="hint">New currency? Start with <b>🌱 Beginner</b> above — you can add more later.</div></div>
+      <div class="bgroup"><label>1 · Choose datasets / tools <span style="text-transform:none;font-weight:400">(click to toggle — purple = in your server)</span></label>
+      <input class="mcp-search" id="mcpSearch" type="text" placeholder="🔍 Find any dataset to add (all 62 — e.g. Mars, Gaia, weather)…" oninput="renderMcpPick()" aria-label="Find dataset to add">
+      <div class="opt-grid" id="mcpPick"></div><div class="hint">New here? Start with <b>🌱 Beginner</b> above — you can add more later. Added datasets always sort <b>first + ✓</b> so you can see them.</div></div>
       <div class="bgroup"><label>2 · Language</label><div class="opt-grid" id="mcpLang"><button class="opt on" data-v="python" onclick="setMcp('lang','python',this)">🐍 Python</button><button class="opt" data-v="node" onclick="setMcp('lang','node',this)">🟨 Node.js</button></div><div class="hint"><b>Python</b> = easiest for beginners. <b>Node</b> = if you already use JavaScript.</div></div>
       <div class="bgroup"><label>3 · How it connects</label><div class="opt-grid"><button class="opt on" data-v="stdio" onclick="setMcp('transport','stdio',this)">📟 On this computer <span style="font-weight:400">stdio</span></button><button class="opt" data-v="http" onclick="setMcp('transport','http',this)">🌐 Web address <span style="font-weight:400">HTTP</span></button></div><div class="hint"><b>On this computer</b> (most people): your AI app is on the same PC. <b>Web address</b>: for cloud tools like ChatGPT/n8n.</div></div>
       <div class="bgroup"><label>4 · Your AI app</label><div class="opt-grid"><button class="opt on" data-v="claude" onclick="setMcp('client','claude',this)">Claude Desktop</button><button class="opt" data-v="cursor" onclick="setMcp('client','cursor',this)">Cursor</button><button class="opt" data-v="vscode" onclick="setMcp('client','vscode',this)">VS Code</button><button class="opt" data-v="opencode" onclick="setMcp('client','opencode',this)">OpenCode</button><button class="opt" data-v="generic" onclick="setMcp('client','generic',this)">Generic MCP</button></div><div class="hint">We generate the <b>exact config file</b> for the app you pick — open the <b>⚙️ App config</b> tab on the right.</div></div>
@@ -947,7 +961,7 @@ function applyPreset(name){
     search:filtered.slice(0,6).map(x=>x.d.id),
   };
   if(!P[name]?.length){toast('Search first, then use this preset');return;}
-  mcp.selected=new Set(P[name]);buildMcpPick();markJourney('build');toast('⚡ Preset applied — '+P[name].length+' datasets');
+  mcp.selected=new Set(P[name]);buildMcpPick();markJourney('build');updateBuilderNext(selectedDatasets()[0]);toast('⚡ Preset applied — '+P[name].length+' datasets');
 }
 function toggleNonTech(on){
   $('mcpCode').classList.toggle('nontech-hide',!!on);
@@ -1117,16 +1131,47 @@ function openDetail(id){
    <label style="font-size:12px;color:var(--muted);display:block;margin:14px 0 6px">Sample request</label><pre class="code">${esc(d.api.sampleRequest||'—')}</pre>
    <label style="font-size:12px;color:var(--muted);display:block;margin:14px 0 6px">Sample response (truncated)</label><pre class="code">${esc(d.api.sampleResponse||'—')}</pre>
   </div>
-  <div class="sec"><h4>🧩 MCP tools provided</h4>${(d.mcpTools||[]).map(t=>`<div class="res-row"><span class="fmt api">TOOL</span><code style="font-size:13px">${esc(t)}</code><button class="dl" style="background:var(--card);border:1px solid var(--border)" onclick="addToolToBuilder('${d.id}')">+ Add to builder</button></div>`).join('')||'<p style="color:var(--muted)">Generic search tools will be generated.</p>'}
-  <button class="btn primary" style="width:100%;margin-top:10px" onclick="addToolToBuilder('${d.id}');document.getElementById('builder').scrollIntoView({behavior:'smooth'})">⚡ Build MCP server with this dataset →</button></div>
+  <div class="sec"><h4>🧩 MCP tools provided</h4>${(d.mcpTools||[]).map(t=>`<div class="res-row"><span class="fmt api">TOOL</span><code style="font-size:13px">${esc(t)}</code><button class="dl isAdd" style="background:var(--card);border:1px solid var(--border)" onclick="addToolToBuilder('${d.id}',this)">${mcp.selected.has(d.id)?'✓ In builder':'+ Add'}</button></div>`).join('')||'<p style="color:var(--muted)">Generic search tools will be generated.</p>'}
+  <button class="btn primary" style="width:100%;margin-top:10px" onclick="goToBuilderWith('${d.id}')">⚡ Build MCP server with this dataset →</button>
+  <div class="hint" style="margin-top:8px">👉 Clicking jumps you to the Builder with this dataset <b>selected (✓)</b> and highlights your next 3 steps. Nothing to type.</div></div>
   <div class="sec"><h4>🔗 Related datasets</h4>${related.map(r=>`<div class="res-row" style="cursor:pointer" onclick="openDetail('${r.id}')"><span class="fmt">${esc(agByCode(r.agency).name)}</span><div><b style="font-size:13.5px">${esc(r.title)}</b><div style="font-size:12px;color:var(--muted)">${esc(r.theme.join(', '))}</div></div></div>`).join('')}</div>
-  <div class="drawer-actions"><button class="btn primary" onclick="openPlayground('${d.id}')">▶ Try API</button><button class="btn" onclick="openMcpFor('${d.id}')">⚡ Use in AI</button><button class="btn" onclick="nextDataset()">Next dataset →</button></div>`;
+  <div class="drawer-actions"><button class="btn primary" onclick="openPlayground('${d.id}')">▶ Try API</button><button class="btn" onclick="goToBuilderWith('${d.id}')">⚡ Use in AI</button><button class="btn" onclick="nextDataset()">Next dataset →</button></div>`;
   $('drawer').classList.add('open');$('overlay').classList.add('open');
 }
 function copyTitle(id){const d=DATA.find(x=>x.id===id);navigator.clipboard.writeText(d.title+' — '+d.api.endpoint);toast('📋 Copied dataset name + endpoint')}
 function nextDataset(){if(!current)return;const idx=DATA.findIndex(d=>d.id===current.id);openDetail(DATA[(idx+1)%DATA.length].id);$('drawer').scrollTo({top:0});}
 function downloadDCAT(id){const d=DATA.find(x=>x.id===id);const rec={'@type':'dcat:Dataset',title:d.title,description:d.description,publisher:d.publisher,theme:d.theme,keyword:d.keywords,license:d.license,issued:d.created,modified:d.updated,distribution:[{accessURL:d.api.endpoint,mediaType:'application/json'}]};download(d.id+'.dcat.json',JSON.stringify(rec,null,2),'application/json');toast('DCAT record downloaded')}
-function addToolToBuilder(id){mcp.selected.add(id);buildMcpPick();markJourney('build');toast('✅ Added — see Builder below')}
+function addToolToBuilder(id,btn){
+  const wasAdded=mcp.selected.has(id);
+  mcp.selected.add(id); buildMcpPick(); markJourney('build');
+  if(btn){btn.textContent='✓ In builder';btn.classList.add('tool-added');btn.disabled=true;}
+  document.querySelectorAll('.isAdd').forEach(b=>{if(b.closest('.res-row')?.textContent.includes('get_')===false){}});
+  const d=DATA.find(x=>x.id===id);
+  toast(wasAdded?'✓ Already in builder — tap Build below to jump there':`✅ “${d?d.title:id}” added (${mcp.selected.size} in builder). Tap the purple Build button to jump there.`);
+  updateBuilderNext(d);
+}
+function goToBuilderWith(id){
+  const d=DATA.find(x=>x.id===id);
+  mcp.selected.add(id); buildMcpPick();
+  closeAll(); markJourney('build');
+  // clear picker search so the just-added pill is visible
+  const ms=$('mcpSearch'); if(ms) ms.value='';
+  renderMcpPick();
+  document.getElementById('builder').scrollIntoView({behavior:'smooth',block:'start'});
+  const card=$('builderCard');
+  card.classList.remove('flash'); void card.offsetWidth; card.classList.add('flash');
+  setTimeout(()=>card.classList.remove('flash'),1700);
+  updateBuilderNext(d);
+  toast(`⚡ “${d?d.title:id}” added — pick your AI app → Download.`);
+}
+function updateBuilderNext(d){
+  const el=$('builderNext'); if(!el) return;
+  const ds=selectedDatasets();
+  if(!ds.length){el.classList.remove('show');return;}
+  const clientLbl={claude:'Claude Desktop',cursor:'Cursor',vscode:'VS Code',opencode:'OpenCode',generic:'Generic'}[mcp.client]||mcp.client;
+  el.innerHTML=`✅ <b>${d?esc(d.title):''} added</b> — your server now has <b>${ds.length} dataset${ds.length!==1?'s':''}</b>. <b>Next (30 seconds):</b> <div class="steps"><span><b>1</b> Pick <b>${esc(clientLbl)}</b> (Step 4) if not already</span><span><b>2</b> Open <b>⚙️ App config</b> → Copy</span><span><b>3</b> In your app: paste → restart → test</span></div>`;
+  el.classList.add('show');
+}
 function download(name,content,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([content],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)}
 function closeAll(){$('drawer')?.classList.remove('open');$('overlay')?.classList.remove('open');$('pgModal')?.classList.remove('open');$('mcpModal')?.classList.remove('open');$('helpModal')?.classList.remove('open');$('keyWizard')?.classList.remove('open');}
 
@@ -1188,14 +1233,20 @@ function copyPgResp(){navigator.clipboard.writeText(pgLastResp||'');toast('📋 
 function downloadPgResp(){download('orbitdb-response.json',pgLastResp||'{}','application/json');toast('Response downloaded')}
 
 /* ================= MCP BUILDER ================= */
-function buildMcpPick(){
-  $('mcpPick').innerHTML=DATA.slice(0,24).map(d=>{
+function renderMcpPick(){
+  const q=(($('mcpSearch')?.value||'').trim().toLowerCase());
+  let list=[...DATA];
+  // selected always first so added datasets are visible
+  list.sort((a,b)=>(mcp.selected.has(b.id)?1:0)-(mcp.selected.has(a.id)?1:0));
+  if(q) list=list.filter(d=>(d.title+' '+d.agency+' '+d.theme.join(' ')).toLowerCase().includes(q));
+  const shown=list.slice(0,40);
+  $('mcpPick').innerHTML=shown.map(d=>{
     const on=mcp.selected.has(d.id);
-    return `<button class="opt ${on?'on':''}" onclick="toggleMcpPick('${d.id}',this)">${on?'✓ ':''}${esc(agByCode(d.agency).name)} · ${esc(d.title.split(' ').slice(0,3).join(' '))}</button>`;
-  }).join('')+`<span style="font-size:12px;color:var(--muted);width:100%">+ ${DATA.length-24} more in catalog — all searchable above. Selection keeps your picks.</span>`;
-  buildMcp();
+    return `<button class="opt ${on?'on':''}" onclick="toggleMcpPick('${d.id}',this)" title="${esc(d.title)}">${on?'✓ ':''}${esc(agByCode(d.agency).name)} · ${esc(d.title.split(' ').slice(0,3).join(' '))}</button>`;
+  }).join('')+(list.length>40?`<span style="font-size:12px;color:var(--muted);width:100%">+ ${list.length-40} more — type to filter · ${mcp.selected.size} selected</span>`:`<span style="font-size:12px;color:var(--muted);width:100%">${mcp.selected.size} selected · ${list.length} shown</span>`);
 }
-function toggleMcpPick(id,el){mcp.selected.has(id)?mcp.selected.delete(id):mcp.selected.add(id);if(mcp.selected.size)markJourney('build');buildMcpPick()}
+function buildMcpPick(){renderMcpPick();buildMcp();}
+function toggleMcpPick(id,el){mcp.selected.has(id)?mcp.selected.delete(id):mcp.selected.add(id);if(mcp.selected.size){markJourney('build');updateBuilderNext(DATA.find(d=>d.id===id));}buildMcpPick()}
 function setMcp(k,v,el){mcp[k]=v; el.parentElement.querySelectorAll('.opt').forEach(b=>b.classList.remove('on')); el.classList.add('on'); buildMcp()}
 function mcpTab(el,tab){mcp.tab=tab;el.parentElement.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));el.classList.add('on');buildMcp()}
 function selectedDatasets(){return DATA.filter(d=>mcp.selected.has(d.id))}
@@ -1332,7 +1383,7 @@ function buildMcp(){
 function copyMcp(){navigator.clipboard.writeText($('mcpCode').textContent);toast('📋 Copied — paste into your app / editor');if(mcp.tab==='config')markJourney('connect');if(mcp.tab==='test')markJourney('test');}
 function downloadMcp(){const ext=mcp.tab==='code'?(mcp.lang==='python'?'.py':'.js'):(mcp.tab==='config'?'.json':'.txt');download('orbitdb-mcp'+ext,$('mcpCode').textContent,'text/plain');markJourney('build');toast('⬇ Downloaded — next: paste the App config tab into your AI app')}
 function downloadAll(){const ds=selectedDatasets();const bundle=`ORBITDB MCP BUNDLE\n${'='.repeat(60)}\nDatasets: ${ds.map(d=>d.title).join('\n - ')}\n\n--- SERVER CODE ---\n${mcp.lang==='python'?generatePython(ds,mcp.key,mcp.transport):generateNode(ds,mcp.key,mcp.transport)}\n\n--- CONFIG (${mcp.client}) ---\n${generateConfig(mcp.client)}\n\n--- INSTALL ---\n${generateInstall()}\n\n--- TEST PROMPTS ---\n${generateTest()}\n\n--- DATASET CATALOG (JSON) ---\n${JSON.stringify(ds.map(d=>({id:d.id,title:d.title,agency:d.agency,api:d.api.endpoint,tools:d.mcpTools})),null,2)}\n`;download('orbitdb-full-bundle.txt',bundle,'text/plain');markJourney('build');toast('⬇ Full bundle downloaded — see Install + App config tabs next')}
-function openMcpFor(id){mcp.selected.add(id);buildMcpPick();closeAll();markJourney('build');document.getElementById('builder').scrollIntoView({behavior:'smooth'});toast('⚡ Dataset added — builder updated. Next: pick your AI app → Download.')}
+function openMcpFor(id){goToBuilderWith(id);}
 
 /* ================= INIT ================= */
 buildFilters();buildCharts();render();buildMcpPick();renderJourney();renderRecent();renderGuidePct();
